@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+<title>Russian Museum Knowledge Project</title>
+<meta name="description" content="Institutional Pivot in Russian Museum Discourse — A Knowledge Engineering Study of Exhibition Policy Transformation." />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="navbar-brand">
+    <a href="#/" data-link>Institutional Pivot</a>
+  </div>
+  <nav class="navbar-links" id="navLinks">
+    <a href="#/" data-link data-route="/">Home</a>
+    <a href="#/data" data-link data-route="/data">Data</a>
+    <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
+    <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
+    <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
+    <a href="#/team" data-link data-route="/team">Team</a>
+  </nav>
+  <button class="navbar-toggle" id="navToggle" aria-label="Toggle menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#/" data-link data-route="/">Home</a>
+  <a href="#/data" data-link data-route="/data">Data</a>
+  <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
+  <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
+  <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
+  <a href="#/team" data-link data-route="/team">Team</a>
+</div>
+
+<main>
+
+  <!-- HOME -->
+  <div class="page" id="page-home">
+    <section class="hero">
+      <div class="hero-bg"><img src="images/museum-hall.webp" alt="Museum Hall" /></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal">KNOWLEDGE REPRESENTATION &amp; EXTRACTION &nbsp;·&nbsp; UNIVERSITY OF BOLOGNA</p>
+        <h1 class="hero-title reveal reveal-delay-1">Institutional Pivot in Russian Museum Discourse</h1>
+        <div class="hero-rule reveal reveal-delay-2"></div>
+        <p class="hero-subtitle reveal reveal-delay-3">A Knowledge Engineering Study of Exhibition Policy Transformation</p>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="section-stack reveal">
+        <div style="text-align:center;">
+          <h2 class="section-heading" style="margin-bottom:24px;">Abstract</h2>
+          <p class="lead" style="max-width:720px;margin:0 auto;">
+            This project analyzes the structural shift in exhibition policy at the Pushkin Museum and Tretyakov Gallery before and after 2022. Using semantic ontologies and knowledge graphs, we quantify how Russian museums repositioned their institutional identity from <span class="highlight">"Global Cultural Hub"</span> to <span class="highlight">"Archival/Provenance-focused Institution"</span>.
+          </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="home-grid">
+          <div class="home-block">
+            <h3><span class="bar"></span>Data Sources</h3>
+            <ul class="home-list">
+              <li>Pushkin Museum Archive</li>
+              <li>Tretyakov Gallery Archive</li>
+              <li>Open news and critical sources</li>
+            </ul>
+          </div>
+          <div class="home-block">
+            <h3><span class="bar"></span>Acknowledgement</h3>
+            <p>Supervised by <strong>Prof. Aldo Gangemi</strong>. We acknowledge the guidance and methodological frameworks provided in translating tacit curatorial knowledge into formal semantic representations.</p>
+          </div>
+        </div>
+
+        <div class="cta-wrap">
+          <a href="#/data" data-link class="btn">Explore the Project</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- DATA -->
+  <div class="page" id="page-data">
+    <div class="container">
+      <div class="reveal">
+        <h1 class="page-title">Data Map &amp; Conceptual Model</h1>
+        <div class="title-rule"></div>
+      </div>
+
+      <div class="section-stack" style="gap:80px;">
+        <section class="reveal">
+          <div style="display:grid;gap:32px;align-items:start;" class="data-intro-grid">
+            <h2 class="section-heading" style="font-size:24px;">Knowledge Extraction Goal</h2>
+            <p class="lead">By modeling the shift from <span class="tag">Object-Loan-from-Foreign-Museum</span> to <span class="tag">Object-from-Internal-Reserve</span>, we quantify this "Institutional Pivot" as a graph transformation — revealing how museums repositioned their identity from a Global Hub to an Archival Institution.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Entities &amp; Relations</h2>
+          <div class="entity-grid" style="margin-top:32px;">
+            <div class="entity-card"><h3>Exhibition</h3></div>
+            <div class="entity-card"><h3>Institution</h3></div>
+            <div class="entity-card"><h3>Curator</h3></div>
+            <div class="entity-card"><h3>Artistic_Movement</h3></div>
+            <div class="entity-card"><h3>Origin_of_Artworks</h3><div class="note">Key vector: International_Loan vs. Internal_Reserve</div></div>
+            <div class="entity-card"><h3>Theme</h3></div>
+          </div>
+        </section>
+
+        <div class="decorative-img-wrap reveal">
+          <img src="images/museum-green.jpeg" alt="Museum detail" />
+        </div>
+
+        <section class="case-study reveal">
+          <h2>Tacit Knowledge Extraction: Pushkin Museum</h2>
+          <div class="timeline">
+            <div class="timeline-item">
+              <span class="timeline-num">1</span>
+              <h3>Pre-2022</h3>
+              <p><strong>"The Morozov Collection"</strong> — Linked to the Louis Vuitton Foundation. Modeled as a node in a Transnational Network representing "Global Cultural Exchange".</p>
+              <div class="triple-line">
+                <span>Exhibition</span><span class="arrow">→</span><span>[hasOrigin]</span><span class="arrow">→</span><span>International_Loan</span>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-num">2</span>
+              <h3>Post-2022</h3>
+              <p><strong>"After Impressionism" (2023)</strong> — Modeled as a node in an Intra-National / Provenance-focused Network, utilizing domestic collections.</p>
+              <div class="triple-line">
+                <span>Exhibition</span><span class="arrow">→</span><span>[hasOrigin]</span><span class="arrow">→</span><span>Internal_Reserve</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- ONTOLOGY -->
+  <div class="page" id="page-ontology">
+    <div class="container">
+      <div class="reveal">
+        <h1 class="page-title">Ontology &amp; Graph Representation</h1>
+        <div class="title-rule"></div>
+      </div>
+
+      <div class="section-stack" style="gap:64px;">
+        <section class="reveal">
+          <h2 class="section-heading">Methodological Approach</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">We use a subset of the full dataset (3–5 representative examples) to model the schema before scaling to 500+ exhibition records. The "pivot" is encoded as a measurable graph property: the dramatic shift in the ratio of <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">International_Loan</code> nodes to <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">Internal_Reserve</code> nodes post-2022.</p>
+        </section>
+
+        <section class="schema-box reveal">
+          <h3>Core Schema</h3>
+          <div class="schema-diagram">
+            <div class="schema-root">Exhibition</div>
+            <div class="schema-children">
+              <div class="schema-child">
+                <div class="rel-label">[hasInstitution]</div>
+                <div class="node">Institution</div>
+              </div>
+              <div class="schema-child">
+                <div class="rel-label">[hasCurator]</div>
+                <div class="node">Curator</div>
+              </div>
+              <div class="schema-child">
+                <div class="rel-label">[hasOrigin]</div>
+                <div class="node highlight">Origin_of_Artworks</div>
+              </div>
+              <div class="schema-child">
+                <div class="rel-label">[hasMovement]</div>
+                <div class="node">Artistic_Movement</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+          <h2 class="section-heading reveal" style="margin-bottom:32px;">Temporal Axis: Network Poles</h2>
+          <div class="pole-grid">
+            <div class="pole-card reveal">
+              <div class="pole-label">Pre-2022</div>
+              <h3>The Morozov Collection</h3>
+              <p class="sub">Pushkin Museum</p>
+              <div class="pole-stats">
+                <div class="pole-stat-row"><span class="k">Origin</span><span class="v">International Loan</span></div>
+                <div class="pole-stat-row"><span class="k">Network</span><span class="v">Global Exchange</span></div>
+              </div>
+            </div>
+            <div class="pole-card post reveal reveal-delay-1">
+              <div class="pole-label">Post-2022</div>
+              <h3>After Impressionism</h3>
+              <p class="sub">Pushkin Museum (2023)</p>
+              <div class="pole-stats">
+                <div class="pole-stat-row"><span class="k">Origin</span><span class="v">Internal Reserve</span></div>
+                <div class="pole-stat-row"><span class="k">Network</span><span class="v">Domestic Provenance</span></div>
+              </div>
+            </div>
+            <div class="pole-card east reveal reveal-delay-2">
+              <div class="pole-label">The Eastern Pivot</div>
+              <h3>Asian Cultural Exchange</h3>
+              <p class="sub">Multiple Institutions</p>
+              <div class="pole-stats">
+                <div class="pole-stat-row"><span class="k">Origin</span><span class="v">Bilateral Loan</span></div>
+                <div class="pole-stat-row"><span class="k">Network</span><span class="v">Non-Western Partnership</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- KNOWLEDGE GRAPH -->
+  <div class="page" id="page-knowledge-graph">
+    <div class="container">
+      <div class="reveal">
+        <h1 class="page-title">Knowledge Graph</h1>
+        <p class="page-subtitle">A graph representation of the institutional pivot in Russian museum exhibition policy</p>
+        <div class="title-rule"></div>
+      </div>
+
+      <div class="section-stack" style="gap:64px;">
+        <section class="reveal">
+          <h2 class="section-heading">About this graph</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">This knowledge graph encodes exhibition events from the Pushkin Museum and Tretyakov Gallery as nodes, connected by semantic relationships. The critical axis is temporal: pre-2022 nodes cluster around international loan relationships; post-2022 nodes shift toward internal archive provenance.</p>
+        </section>
+
+        <section class="graph-box reveal">
+          <svg width="100%" viewBox="0 0 900 520">
+            <path d="M 450 260 L 160 150" stroke="#C9A84C" stroke-width="1.5" fill="none" opacity="0.6" />
+            <text x="300" y="195" fill="#C9A84C" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(20 300 195)">organized</text>
+
+            <path d="M 160 150 L 80 280" stroke="#C9A84C" stroke-width="1.5" fill="none" opacity="0.6" />
+            <text x="110" y="215" fill="#C9A84C" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(-58 110 215)">borrowedFrom</text>
+
+            <path d="M 160 150 L 220 310" stroke="#C9A84C" stroke-width="1.5" fill="none" opacity="0.6" />
+            <text x="200" y="230" fill="#C9A84C" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(69 200 230)">hasOrigin</text>
+
+            <path d="M 450 260 L 120 420" stroke="#C9A84C" stroke-width="1.5" fill="none" opacity="0.6" />
+            <text x="280" y="350" fill="#C9A84C" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(26 280 350)">partOf</text>
+
+            <path d="M 450 260 L 740 150" stroke="#A06060" stroke-width="1.5" fill="none" opacity="0.6" />
+            <text x="600" y="195" fill="#A06060" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(-20 600 195)">organized</text>
+
+            <path d="M 740 150 L 680 310" stroke="#A06060" stroke-width="1.5" fill="none" opacity="0.6" />
+            <text x="700" y="235" fill="#A06060" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(69 700 235)">hasOrigin</text>
+
+            <path d="M 740 150 L 780 380" stroke="#A06060" stroke-width="1.5" fill="none" opacity="0.6" />
+            <text x="770" y="260" fill="#A06060" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(80 770 260)">belongsTo</text>
+
+            <path d="M 450 420 L 700 460" stroke="#A06060" stroke-width="1.5" fill="none" opacity="0.6" />
+            <text x="580" y="435" fill="#A06060" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(9 580 435)">organized</text>
+
+            <path d="M 700 460 L 680 310" stroke="#A06060" stroke-width="1.5" fill="none" opacity="0.6" />
+            <text x="680" y="390" fill="#A06060" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(-82 680 390)">hasOrigin</text>
+
+            <circle cx="160" cy="150" r="28" fill="#C9A84C" />
+            <text x="160" y="195" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">The Morozov Collection</text>
+
+            <circle cx="80" cy="280" r="24" fill="#C9A84C" />
+            <text x="80" y="320" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">Louis Vuitton Foundation</text>
+
+            <rect x="160" y="295" width="120" height="30" rx="4" fill="#C9A84C" />
+            <text x="220" y="315" fill="#fff" font-size="12" font-family="sans-serif" text-anchor="middle">International Loan</text>
+
+            <circle cx="120" cy="420" r="22" fill="#C9A84C" />
+            <text x="120" y="460" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">Global Exchange Network</text>
+
+            <circle cx="740" cy="150" r="28" fill="#A06060" />
+            <text x="740" y="195" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">After Impressionism 2023</text>
+
+            <rect x="620" y="295" width="120" height="30" rx="4" fill="#A06060" />
+            <text x="680" y="315" fill="#fff" font-size="12" font-family="sans-serif" text-anchor="middle">Internal Reserve</text>
+
+            <circle cx="780" cy="380" r="22" fill="#A06060" />
+            <text x="780" y="420" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">Domestic Provenance</text>
+
+            <circle cx="700" cy="460" r="24" fill="#A06060" />
+            <text x="700" y="500" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">Eastern Pivot Exhibition</text>
+
+            <circle cx="450" cy="260" r="36" fill="#3D7A76" />
+            <text x="450" y="315" fill="#222" font-size="14" font-weight="bold" font-family="sans-serif" text-anchor="middle">Pushkin Museum</text>
+
+            <circle cx="450" cy="420" r="30" fill="#3D7A76" />
+            <text x="450" y="465" fill="#222" font-size="14" font-weight="bold" font-family="sans-serif" text-anchor="middle">Tretyakov Gallery</text>
+          </svg>
+
+          <div class="graph-legend">
+            <div class="item"><span class="legend-dot" style="background:#C9A84C;"></span>Pre-2022 exhibitions (International focus)</div>
+            <div class="item"><span class="legend-dot" style="background:#A06060;"></span>Post-2022 exhibitions (Domestic focus)</div>
+            <div class="item"><span class="legend-dot" style="background:#3D7A76;"></span>Institutions</div>
+          </div>
+        </section>
+
+        <section>
+          <div class="stat-grid">
+            <div class="stat-card reveal">
+              <div class="num">2 Institutions</div>
+              <div class="label">Pushkin Museum, Tretyakov Gallery</div>
+            </div>
+            <div class="stat-card reveal reveal-delay-1">
+              <div class="num">Pre / Post 2022</div>
+              <div class="label">Temporal pivot axis</div>
+            </div>
+            <div class="stat-card reveal reveal-delay-2">
+              <div class="num">6 Semantic Relations</div>
+              <div class="label">hasOrigin, borrowedFrom, organizes, partOf, linkedTo, exhibits</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="transform-box reveal">
+            <h2>Graph Transformation</h2>
+            <p>The structural pivot is measurable as a graph transformation: the ratio of edges typed <code>borrowedFrom:ForeignInstitution</code> to <code>hasOrigin:InternalReserve</code> inverts after 2022. This graph property encodes what we call the Institutional Pivot — a shift from a transnational network identity to an archival, provenance-centered one.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="page" id="page-methodology">
+    <div class="container">
+      <div class="reveal">
+        <h1 class="page-title">Methodology</h1>
+        <p class="page-subtitle">How we extract and represent tacit institutional knowledge</p>
+        <div class="title-rule title-rule-lg"></div>
+      </div>
+
+      <div class="steps-wrap" id="methodologySteps"></div>
+
+      <div class="methodology-footer reveal">
+        <p>This methodology was developed in response to feedback from Prof. Aldo Gangemi, who emphasized the value of demonstrating the extraction schema on representative cases before scaling to the full corpus.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <div class="page" id="page-team">
+    <div class="container container-narrow">
+      <div class="reveal">
+        <h1 class="page-title">Research Team</h1>
+        <div class="title-rule"></div>
+      </div>
+
+      <div class="section-stack" style="gap:64px;">
+        <div class="team-grid reveal">
+          <div class="team-block">
+            <div>
+              <h2>Project Lead</h2>
+              <p class="name">Student Researcher</p>
+              <p class="role">Master's / PhD Candidate in Knowledge Engineering</p>
+            </div>
+            <div>
+              <h2>Supervisor</h2>
+              <p class="name">Prof. Aldo Gangemi</p>
+              <p class="role">Professor at University of Bologna</p>
+              <p class="desc">Expert in knowledge engineering and semantic web. We thank Prof. Gangemi for his feedback on our data map and conceptual model, which shaped the direction of this research.</p>
+            </div>
+            <div>
+              <h2>Institutions</h2>
+              <ul>
+                <li>University of Bologna</li>
+                <li>[Student's University]</li>
+              </ul>
+            </div>
+          </div>
+          <div class="team-img">
+            <img src="images/museum-dark.jpeg" alt="Museum interior" />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <section class="about-box reveal">
+          <h2>About This Project</h2>
+          <p>This site presents a structured academic response to the challenge of modeling tacit institutional knowledge. Rather than manually cataloguing all 500+ exhibition records upfront, we demonstrate the approach on a set of 3-5 representative cases, then outline the full scaling methodology. The study investigates institutional memory and discourse shift through computational methods.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- 404 -->
+  <div class="page" id="page-notfound">
+    <div class="notfound-wrap">
+      <div class="notfound-card">
+        <div class="head">
+          <svg class="alert-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <h1>404 Page Not Found</h1>
+        </div>
+        <p>The page you're looking for doesn't exist.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p id="footerText">© <span id="year"></span> Institutional Pivot: Russian Museum Discourse. A Knowledge Engineering Study.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
