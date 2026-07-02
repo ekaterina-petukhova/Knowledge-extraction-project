@@ -16,6 +16,7 @@
   <nav class="navbar-links" id="navLinks">
     <a href="#/" data-link data-route="/">Home</a>
     <a href="#/data" data-link data-route="/data">Data</a>
+    <a href="#/analytics" data-link data-route="/analytics">Analytics</a>
     <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
     <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
     <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
@@ -28,6 +29,7 @@
 <div class="mobile-menu" id="mobileMenu">
   <a href="#/" data-link data-route="/">Home</a>
   <a href="#/data" data-link data-route="/data">Data</a>
+  <a href="#/analytics" data-link data-route="/analytics">Analytics</a>
   <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
   <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
   <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
@@ -135,6 +137,84 @@
                 <span>Exhibition</span><span class="arrow">→</span><span>[hasOrigin]</span><span class="arrow">→</span><span>Internal_Reserve</span>
               </div>
             </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div class="page" id="page-analytics">
+    <div class="container">
+      <div class="reveal">
+        <h1 class="page-title">Exhibition Analytics</h1>
+        <p class="page-subtitle">Quantifying the thematic pivot across 400 exhibitions, 2014&ndash;2026</p>
+        <div class="title-rule"></div>
+      </div>
+
+      <div class="section-stack" style="gap:64px;">
+        <section class="reveal">
+          <p class="lead" style="max-width:720px;">Every exhibition record from the Tretyakov Gallery and Pushkin Museum was classified into one of three idea blocks &mdash; <span class="tag">Western Art</span>, <span class="tag">Eastern Art</span> and <span class="tag">National Russian Art</span>. Plotted year by year, the corpus shows a clear structural break: after 2022, national and eastern themes come to dominate the programme where Western art once led.</p>
+        </section>
+
+        <section class="stat-grid reveal">
+          <div class="stat-card">
+            <div class="num">400</div>
+            <div class="label">Exhibitions analyzed &middot; 2 institutions</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">35% &rarr; 23%</div>
+            <div class="label">Western art share, pre- vs. post-2022</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">65% &rarr; 77%</div>
+            <div class="label">National + Eastern share, pre- vs. post-2022</div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">Dynamics of Exhibition Cultural Focus</h2>
+            <p class="chart-sub">Click a legend item to isolate a theme &middot; hover or tap a bar for the year's breakdown &middot; click a period below to compare eras</p>
+          </div>
+
+          <div class="chart-legend" id="chartLegend"></div>
+
+          <div class="chart-svg-wrap">
+            <svg id="trendsSvg" viewBox="0 0 960 480" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="chart-tooltip" id="chartTooltip"></div>
+          </div>
+
+          <div class="chart-periods" id="chartPeriods">
+            <button type="button" class="period-btn" data-period="pre"><span class="period-swatch pre"></span>Pre-2022 &middot; Global engagement</button>
+            <button type="button" class="period-btn" data-period="transition"><span class="period-swatch transition"></span>2022 &middot; Transition year</button>
+            <button type="button" class="period-btn" data-period="post"><span class="period-swatch post"></span>Post-2022 &middot; Domestic &amp; Eastern focus</button>
+          </div>
+
+          <div class="chart-detail" id="chartDetail">Click or tap a bar for a year's breakdown, or a period above for that era's totals.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>Reading the Pivot</h2>
+            <p>Before 2022, Western art anchored roughly a third of every year's programme, on par with national and eastern themes combined. From 2023 onward, that balance inverts: National Russian Art becomes the single largest block in every post-2022 year, and Eastern Art holds steady or grows, while Western Art's share shrinks by more than a third. 2022 itself sits as a transition year in the dataset &mdash; already tilted toward national themes, but not yet at the post-2022 peak.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <div class="dataset-card">
+            <div class="dataset-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
+            </div>
+            <div class="dataset-info">
+              <h3>final_analysis_fixed.csv</h3>
+              <p>400 exhibition records &middot; Tretyakov Gallery &amp; Pushkin Museum &middot; 2014&ndash;2026 &middot; title, dates, source URL and thematic category for every entry.</p>
+            </div>
+            <a href="data/final_analysis_fixed.csv" download class="btn dataset-btn">Download CSV</a>
           </div>
         </section>
       </div>
