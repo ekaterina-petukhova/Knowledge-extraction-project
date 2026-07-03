@@ -868,6 +868,114 @@ footer p {
   padding: 12px 24px;
 }
 
+.keyword-chart-grid {
+  display: grid;
+  gap: 40px;
+}
+
+@media (min-width: 1024px) {
+  .keyword-chart-grid {
+    grid-template-columns: 1fr 1.5fr;
+    align-items: start;
+  }
+}
+
+.keyword-panel-title {
+  font-size: 16px;
+  color: var(--primary);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.keyword-tables-grid {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .keyword-tables-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.keyword-table-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 24px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.keyword-table-card h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 18px;
+  color: var(--primary);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.count-pill {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--primary);
+  background: rgba(47, 102, 99, 0.08);
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.count-pill.post {
+  color: #A06060;
+  background: rgba(160, 96, 96, 0.1);
+}
+
+.keyword-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.keyword-table tr {
+  border-bottom: 1px solid rgba(221,212,199,0.4);
+  transition: background-color 0.15s ease;
+}
+
+.keyword-table tr:last-child {
+  border-bottom: none;
+}
+
+.keyword-table tr:hover {
+  background: var(--faf);
+}
+
+.keyword-table td {
+  padding: 9px 4px;
+}
+
+.keyword-table td.kw-word {
+  font-family: var(--font-mono);
+  color: var(--foreground);
+}
+
+.keyword-table td.kw-word .ru-tag {
+  font-size: 10px;
+  color: var(--muted-foreground);
+  margin-left: 6px;
+  font-family: var(--font-sans);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+
+.keyword-table td.kw-weight {
+  text-align: right;
+  font-family: var(--font-mono);
+  color: var(--secondary);
+  font-weight: 600;
+}
+
 /* ===== Ontology page ===== */
 .schema-box {
   background: #fff;

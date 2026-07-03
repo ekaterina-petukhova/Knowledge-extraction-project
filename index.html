@@ -218,6 +218,97 @@
             <a href="data/final_analysis_fixed.csv" download class="btn dataset-btn">Download CSV</a>
           </div>
         </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">From Corpus to Concepts: Extracting Themes</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">Classifying exhibitions by idea block is only half the picture. To see <em>which words</em> defined museum discourse before and after 2022, we needed a second pipeline &mdash; one that took four attempts to get right.</p>
+
+          <div class="timeline" style="margin-top:48px;">
+            <div class="timeline-item">
+              <span class="timeline-num">1</span>
+              <h3>Ollama Summarization</h3>
+              <p>Each scraped exhibition page was passed through <strong>Ollama</strong> to produce a short, clean description &mdash; compressing noisy scraped HTML down to its curatorial essence, so later steps could work with clean text rather than raw web clutter.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-num">2</span>
+              <h3>BERTopic <span style="font-weight:400;color:var(--muted-foreground);font-size:14px;">(attempted)</span></h3>
+              <p>Topic modeling with <strong>BERTopic</strong> came next, but the output was dominated by noise: articles, stopwords and other low-signal tokens crowded out the actual themes.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-num">3</span>
+              <h3>Ollama Tag Extraction <span style="font-weight:400;color:var(--muted-foreground);font-size:14px;">(attempted)</span></h3>
+              <p>We returned to Ollama to extract tags directly, but hit a different wall: the volume of text per record was too heavy for the model to summarize reliably at full corpus scale.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-num">4</span>
+              <h3>TF-IDF Vector Analysis <span style="font-weight:400;color:var(--secondary);font-size:14px;">(adopted)</span></h3>
+              <p>The method that held up: a <strong>TF-IDF</strong> vector analysis across the pre- and post-2022 sub-corpora, yielding a frequency-weighted score for every term &mdash; the results plotted below.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">Keyword Shift: Before vs. After 2022</h2>
+            <p class="chart-sub">Hover a bar for its exact weight &middot; click a keyword to compare it across periods &middot; click the share chart to see the underlying record counts</p>
+          </div>
+
+          <div class="keyword-chart-grid">
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">National Component Share</h3>
+              <div class="chart-svg-wrap">
+                <svg id="nationalShareSvg" viewBox="0 0 380 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="nationalShareTooltip"></div>
+              </div>
+            </div>
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">Top Keywords (TF-IDF Weight)</h3>
+              <div class="chart-legend" id="keywordLegend"></div>
+              <div class="chart-svg-wrap">
+                <svg id="keywordSvg" viewBox="0 0 560 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="keywordTooltip"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-detail" id="keywordDetail">Hover or click either chart to see the numbers behind it.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>What the Keywords Tell Us</h2>
+            <p>"Unique" &mdash; the top discriminating word in pre-2022 discourse &mdash; disappears entirely from the post-2022 vocabulary. In its place: institutional and historical markers like <code>century</code> (the single highest-weighted term after 2022) and named institutions such as <code>tretyakov</code>. The vocabulary shifts from claims of individuality toward claims of institutional history and heritage.</p>
+          </div>
+        </section>
+
+        <section class="reveal">
+          <h2 class="section-heading">Full Keyword Extraction (TF-IDF)</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">The complete term list behind the chart above. Russian-language terms from the bilingual corpus are marked <span class="tag">RU</span> and kept as separate entries, since they carry their own weight in the source text.</p>
+
+          <div class="keyword-tables-grid">
+            <div class="keyword-table-card">
+              <h3>Before 2022 <span class="count-pill">202 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="keywordTableBefore"></tbody>
+              </table>
+            </div>
+            <div class="keyword-table-card">
+              <h3>After 2022 <span class="count-pill post">198 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="keywordTableAfter"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>The National Pivot, Quantified</h2>
+            <p>Records with a national/Russian component rose from <strong>45 of 202 (22.3%)</strong> before 2022 to <strong>71 of 198 (35.9%)</strong> after &mdash; more than a 1.5&times; increase in share. A jump of 13.6 percentage points across a corpus of nearly 400 documents isn't noise; it's a systemic shift in curatorial agenda. Together with the keyword shift above, this supports our central claim: the post-2022 pivot is a pivot toward <strong>nationalization</strong> &mdash; institutions doubling down on their own history and significance rather than global exchange.</p>
+          </div>
+        </section>
       </div>
     </div>
   </div>

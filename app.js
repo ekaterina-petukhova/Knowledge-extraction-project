@@ -392,3 +392,300 @@ function initTrendsChart() {
 }
 
 initTrendsChart();
+
+// ===== Keyword / TF-IDF analysis =====
+// Values verified against the TF-IDF extraction output (before/after 2022).
+const nationalShareData = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663', count: 45, total: 202, pct: 22.3 },
+  { key: 'after',  label: 'After 2022',  color: '#A06060', count: 71, total: 198, pct: 35.9 }
+];
+
+const keywordCompareData = [
+  { word: 'art',        before: 7.5455, after: 7.3371 },
+  { word: 'works',      before: 7.7288, after: 7.0628 },
+  { word: 'russian',    before: 4.5246, after: 6.2481 },
+  { word: 'collection', before: 5.8772, after: 4.7494 },
+  { word: 'unique',     before: 4.6174, after: 0 },
+  { word: 'museum',     before: 4.2727, after: 3.5332 },
+  { word: 'century',    before: 0,      after: 7.8787 },
+  { word: 'tretyakov',  before: 0,      after: 3.5966 }
+];
+
+const keywordSeries = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663' },
+  { key: 'after',  label: 'After 2022',  color: '#A06060' }
+];
+
+// Full TF-IDF term lists. Russian-language terms from the bilingual corpus
+// are flagged `ru: true` and rendered with an RU tag rather than merged
+// into their English near-equivalents, since they carry a distinct weight.
+const keywordFullBefore = [
+  { word: 'works', weight: 7.7288 },
+  { word: 'art', weight: 7.5455 },
+  { word: 'collection', weight: 5.8772 },
+  { word: 'unique', weight: 4.6174 },
+  { word: 'russian', weight: 4.5246 },
+  { word: 'artists', weight: 4.4484 },
+  { word: 'museum', weight: 4.2727 },
+  { word: 'artist', weight: 4.2098 },
+  { word: 'exhibition', weight: 4.1491, ru: true },
+  { word: 'works', weight: 4.1419, ru: true },
+  { word: 'showcases', weight: 3.9867 },
+  { word: 'artists', weight: 3.8178, ru: true },
+  { word: 'selection', weight: 3.6328 }
+];
+
+const keywordFullAfter = [
+  { word: 'art', weight: 7.3371 },
+  { word: 'works', weight: 7.0628 },
+  { word: 'russian', weight: 6.2481 },
+  { word: 'collection', weight: 4.7494 },
+  { word: 'artists', weight: 4.3856 },
+  { word: 'exhibition', weight: 4.2424, ru: true },
+  { word: 'century', weight: 7.8787 },
+  { word: 'gallery', weight: 3.9971 },
+  { word: 'features', weight: 3.7497 },
+  { word: 'works', weight: 3.6335, ru: true },
+  { word: 'tretyakov', weight: 3.5966 },
+  { word: 'museum', weight: 3.5332 }
+];
+
+const keywordChartState = { hidden: new Set(), selectedWord: null };
+
+function buildKeywordLegend() {
+  const legend = document.getElementById('keywordLegend');
+  if (!legend) return;
+  legend.innerHTML = '';
+  keywordSeries.forEach(s => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'legend-btn';
+    btn.dataset.key = s.key;
+    btn.innerHTML = `<span class="dot" style="background:${s.color}"></span>${s.label}`;
+    btn.addEventListener('click', () => {
+      if (keywordChartState.hidden.has(s.key)) {
+        keywordChartState.hidden.delete(s.key);
+      } else {
+        keywordChartState.hidden.add(s.key);
+      }
+      renderKeywordChart();
+    });
+    legend.appendChild(btn);
+  });
+}
+
+function showKeywordTooltip(e, word, series, value) {
+  const tooltip = document.getElementById('keywordTooltip');
+  if (!tooltip) return;
+  tooltip.innerHTML = `<strong>${word}</strong> &middot; ${series.label}<br>TF-IDF weight: ${value.toFixed(4)}`;
+  tooltip.classList.add('visible');
+  positionKeywordTooltip(e, 'keywordTooltip');
+}
+
+function positionKeywordTooltip(e, tooltipId) {
+  const tooltip = document.getElementById(tooltipId);
+  const wrap = e.currentTarget.closest('.chart-svg-wrap');
+  if (!tooltip || !wrap) return;
+  const rect = wrap.getBoundingClientRect();
+  tooltip.style.left = (e.clientX - rect.left) + 'px';
+  tooltip.style.top = (e.clientY - rect.top) + 'px';
+}
+
+function hideKeywordTooltip(tooltipId) {
+  const tooltip = document.getElementById(tooltipId);
+  if (tooltip) tooltip.classList.remove('visible');
+}
+
+function selectKeyword(word) {
+  keywordChartState.selectedWord = word;
+  renderKeywordChart();
+  const item = keywordCompareData.find(d => d.word === word);
+  const detail = document.getElementById('keywordDetail');
+  if (!item || !detail) return;
+  let msg;
+  if (item.before === 0 && item.after > 0) {
+    msg = `<strong>"${word}"</strong> is absent before 2022 and emerges afterward with a weight of <strong>${item.after.toFixed(2)}</strong> &mdash; a genuinely new term in the vocabulary.`;
+  } else if (item.after === 0 && item.before > 0) {
+    msg = `<strong>"${word}"</strong> carried a weight of <strong>${item.before.toFixed(2)}</strong> before 2022 and disappears entirely from the post-2022 top terms.`;
+  } else {
+    const delta = item.after - item.before;
+    msg = `<strong>"${word}"</strong>: ${item.before.toFixed(2)} before 2022 &rarr; ${item.after.toFixed(2)} after (${delta >= 0 ? '+' : ''}${delta.toFixed(2)}).`;
+  }
+  detail.innerHTML = msg;
+}
+
+function renderKeywordChart() {
+  const svg = document.getElementById('keywordSvg');
+  if (!svg) return;
+  svg.innerHTML = '';
+
+  document.querySelectorAll('#keywordLegend .legend-btn').forEach(btn => {
+    btn.classList.toggle('dimmed', keywordChartState.hidden.has(btn.dataset.key));
+  });
+
+  const W = 560, H = 320;
+  const marginLeft = 34, marginRight = 12, marginTop = 16, marginBottom = 44;
+  const plotW = W - marginLeft - marginRight;
+  const plotH = H - marginTop - marginBottom;
+
+  const maxVal = Math.max(...keywordCompareData.map(d => Math.max(d.before, d.after)));
+  const yMax = Math.ceil(maxVal) + 1;
+  const yTicks = [];
+  for (let t = 0; t <= yMax; t += 2) yTicks.push(t);
+
+  const n = keywordCompareData.length;
+  const band = plotW / n;
+  const groupW = band * 0.68;
+  const barW = groupW / 2;
+
+  const gridG = elNS('g', {});
+  yTicks.forEach(t => {
+    const y = marginTop + plotH - (t / yMax) * plotH;
+    gridG.appendChild(elNS('line', {
+      x1: marginLeft, x2: W - marginRight, y1: y.toFixed(2), y2: y.toFixed(2),
+      stroke: '#DDD4C7', 'stroke-width': 1
+    }));
+    const label = elNS('text', {
+      x: marginLeft - 8, y: (y + 4).toFixed(2), 'text-anchor': 'end', class: 'chart-axis-label'
+    });
+    label.textContent = t;
+    gridG.appendChild(label);
+  });
+  svg.appendChild(gridG);
+
+  keywordCompareData.forEach((item, i) => {
+    const groupX = marginLeft + i * band + (band - groupW) / 2;
+    const isSelected = keywordChartState.selectedWord === item.word;
+
+    keywordSeries.forEach((s, si) => {
+      if (keywordChartState.hidden.has(s.key)) return;
+      const value = item[s.key];
+      const segH = Math.max((value / yMax) * plotH, value > 0 ? 2 : 0);
+      const x = groupX + si * barW;
+      const y = marginTop + plotH - segH;
+
+      const rect = elNS('rect', {
+        x: x.toFixed(2), y: y.toFixed(2), width: (barW - 3).toFixed(2), height: segH.toFixed(2),
+        fill: s.color, class: 'chart-bar-seg',
+        stroke: isSelected ? '#2C2416' : 'none', 'stroke-width': isSelected ? 1.5 : 0
+      });
+      rect.addEventListener('mouseenter', (e) => showKeywordTooltip(e, item.word, s, value));
+      rect.addEventListener('mousemove', (e) => positionKeywordTooltip(e, 'keywordTooltip'));
+      rect.addEventListener('mouseleave', () => hideKeywordTooltip('keywordTooltip'));
+      rect.addEventListener('click', () => selectKeyword(item.word));
+      svg.appendChild(rect);
+    });
+
+    const hit = elNS('rect', {
+      x: (marginLeft + i * band).toFixed(2), y: marginTop, width: band.toFixed(2), height: plotH,
+      fill: 'transparent'
+    });
+    hit.style.cursor = 'pointer';
+    hit.addEventListener('click', () => selectKeyword(item.word));
+    svg.appendChild(hit);
+
+    const label = elNS('text', {
+      x: (marginLeft + i * band + band / 2).toFixed(2), y: H - marginBottom + 20, 'text-anchor': 'middle',
+      class: 'chart-year-label' + (isSelected ? ' active-year' : '')
+    });
+    label.textContent = item.word;
+    svg.appendChild(label);
+  });
+}
+
+function showNationalTooltip(e, item) {
+  const tooltip = document.getElementById('nationalShareTooltip');
+  if (!tooltip) return;
+  tooltip.innerHTML = `<strong>${item.label}</strong><br>${item.count} of ${item.total} exhibitions (${item.pct}%)`;
+  tooltip.classList.add('visible');
+  positionKeywordTooltip(e, 'nationalShareTooltip');
+}
+
+function selectNationalShare() {
+  const detail = document.getElementById('keywordDetail');
+  if (!detail) return;
+  detail.innerHTML = `Records with a national/Russian component: <strong>45 of 202 (22.3%)</strong> before 2022 &rarr; <strong>71 of 198 (35.9%)</strong> after &mdash; a rise of 13.6 percentage points.`;
+}
+
+function renderNationalShareChart() {
+  const svg = document.getElementById('nationalShareSvg');
+  if (!svg) return;
+  svg.innerHTML = '';
+
+  const W = 380, H = 320;
+  const marginLeft = 40, marginRight = 16, marginTop = 30, marginBottom = 50;
+  const plotW = W - marginLeft - marginRight;
+  const plotH = H - marginTop - marginBottom;
+  const yMax = 45;
+  const yTicks = [0, 15, 30, 45];
+
+  const gridG = elNS('g', {});
+  yTicks.forEach(t => {
+    const y = marginTop + plotH - (t / yMax) * plotH;
+    gridG.appendChild(elNS('line', {
+      x1: marginLeft, x2: W - marginRight, y1: y.toFixed(2), y2: y.toFixed(2),
+      stroke: '#DDD4C7', 'stroke-width': 1
+    }));
+    const label = elNS('text', {
+      x: marginLeft - 8, y: (y + 4).toFixed(2), 'text-anchor': 'end', class: 'chart-axis-label'
+    });
+    label.textContent = t;
+    gridG.appendChild(label);
+  });
+  svg.appendChild(gridG);
+
+  const n = nationalShareData.length;
+  const band = plotW / n;
+  const barW = band * 0.55;
+
+  nationalShareData.forEach((item, i) => {
+    const x = marginLeft + i * band + (band - barW) / 2;
+    const segH = (item.pct / yMax) * plotH;
+    const y = marginTop + plotH - segH;
+
+    const rect = elNS('rect', {
+      x: x.toFixed(2), y: y.toFixed(2), width: barW.toFixed(2), height: segH.toFixed(2),
+      fill: item.color, class: 'chart-bar-seg'
+    });
+    rect.addEventListener('mouseenter', (e) => showNationalTooltip(e, item));
+    rect.addEventListener('mousemove', (e) => positionKeywordTooltip(e, 'nationalShareTooltip'));
+    rect.addEventListener('mouseleave', () => hideKeywordTooltip('nationalShareTooltip'));
+    rect.addEventListener('click', selectNationalShare);
+    svg.appendChild(rect);
+
+    const valueLabel = elNS('text', {
+      x: (x + barW / 2).toFixed(2), y: (y - 10).toFixed(2), 'text-anchor': 'middle', class: 'chart-pivot-label'
+    });
+    valueLabel.textContent = `${item.pct}%`;
+    svg.appendChild(valueLabel);
+
+    const catLabel = elNS('text', {
+      x: (x + barW / 2).toFixed(2), y: H - marginBottom + 22, 'text-anchor': 'middle', class: 'chart-year-label'
+    });
+    catLabel.textContent = item.label;
+    svg.appendChild(catLabel);
+  });
+}
+
+function buildKeywordTable(id, rows) {
+  const tbody = document.getElementById(id);
+  if (!tbody) return;
+  const sorted = [...rows].sort((a, b) => b.weight - a.weight);
+  tbody.innerHTML = sorted.map(r => `
+    <tr>
+      <td class="kw-word">${r.word}${r.ru ? '<span class="ru-tag">RU</span>' : ''}</td>
+      <td class="kw-weight">${r.weight.toFixed(4)}</td>
+    </tr>
+  `).join('');
+}
+
+function initKeywordAnalysis() {
+  if (!document.getElementById('keywordSvg')) return;
+  buildKeywordLegend();
+  renderKeywordChart();
+  renderNationalShareChart();
+  buildKeywordTable('keywordTableBefore', keywordFullBefore);
+  buildKeywordTable('keywordTableAfter', keywordFullAfter);
+}
+
+initKeywordAnalysis();
