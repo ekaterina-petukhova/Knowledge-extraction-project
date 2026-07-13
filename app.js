@@ -689,3 +689,279 @@ function initKeywordAnalysis() {
 }
 
 initKeywordAnalysis();
+
+// ===== Hermitage Museum Exhibition Analytics chart =====
+// Data verified against hermitage_fixed.csv (counts by year x category, excludes 15 no-content records).
+const hermitageTrendsData = [
+  { year: 2014, eastern: 7,  western: 15, national: 4 },
+  { year: 2015, eastern: 15, western: 12, national: 9 },
+  { year: 2016, eastern: 15, western: 20, national: 7 },
+  { year: 2017, eastern: 15, western: 13, national: 13 },
+  { year: 2018, eastern: 13, western: 25, national: 4 },
+  { year: 2019, eastern: 16, western: 19, national: 10 },
+  { year: 2020, eastern: 13, western: 9,  national: 7 },
+  { year: 2021, eastern: 9,  western: 12, national: 9 },
+  { year: 2022, eastern: 8,  western: 9,  national: 14 },
+  { year: 2023, eastern: 10, western: 9,  national: 10 },
+  { year: 2024, eastern: 10, western: 17, national: 17 },
+  { year: 2025, eastern: 8,  western: 9,  national: 15 },
+  { year: 2026, eastern: 5,  western: 4,  national: 2 }
+];
+
+const hermitageTrendsCategories = [
+  { key: 'eastern', label: 'Eastern Art', color: '#A06060' },
+  { key: 'western', label: 'Western Art', color: '#2F6663' },
+  { key: 'national', label: 'National Russian Art', color: '#C9A84C' }
+];
+
+const hermitageChartState = { hidden: new Set(), selectedYear: null, selectedPeriod: null };
+const HERMITAGE_DEFAULT_DETAIL_HTML = "Click or tap a bar for a year's breakdown, or a period above for that era's totals.";
+
+function hermitageYearTotal(row) {
+  return row.eastern + row.western + row.national;
+}
+
+function hermitagePeriodOf(year) {
+  return year <= 2021 ? 'pre' : (year === 2022 ? 'transition' : 'post');
+}
+
+function hermitagePeriodRows(key) {
+  return hermitageTrendsData.filter(r => hermitagePeriodOf(r.year) === key);
+}
+
+function buildHermitageLegend() {
+  const legend = document.getElementById('hermitageChartLegend');
+  if (!legend) return;
+  legend.innerHTML = '';
+  hermitageTrendsCategories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'legend-btn';
+    btn.dataset.key = cat.key;
+    btn.innerHTML = `<span class="dot" style="background:${cat.color}"></span>${cat.label}`;
+    btn.addEventListener('click', () => {
+      if (hermitageChartState.hidden.has(cat.key)) {
+        hermitageChartState.hidden.delete(cat.key);
+      } else {
+        hermitageChartState.hidden.add(cat.key);
+      }
+      renderHermitageChart();
+    });
+    legend.appendChild(btn);
+  });
+}
+
+function buildHermitagePeriodButtons() {
+  document.querySelectorAll('#hermitageChartPeriods .period-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.period;
+      hermitageChartState.selectedPeriod = hermitageChartState.selectedPeriod === key ? null : key;
+      hermitageChartState.selectedYear = null;
+      renderHermitageChart();
+    });
+  });
+}
+
+function showHermitageTooltip(e, row, cat, value, total) {
+  const tooltip = document.getElementById('hermitageChartTooltip');
+  if (!tooltip) return;
+  const pct = total ? Math.round((value / total) * 100) : 0;
+  tooltip.innerHTML = `<strong>${row.year}</strong> &middot; ${cat.label}<br>${value} exhibitions (${pct}% of that year)`;
+  tooltip.classList.add('visible');
+  positionHermitageTooltip(e);
+}
+
+function positionHermitageTooltip(e) {
+  const tooltip = document.getElementById('hermitageChartTooltip');
+  const wrap = document.getElementById('hermitageChartSvgWrap');
+  if (!tooltip || !wrap) return;
+  const rect = wrap.getBoundingClientRect();
+  tooltip.style.left = (e.clientX - rect.left) + 'px';
+  tooltip.style.top = (e.clientY - rect.top) + 'px';
+}
+
+function hideHermitageTooltip() {
+  const tooltip = document.getElementById('hermitageChartTooltip');
+  if (tooltip) tooltip.classList.remove('visible');
+}
+
+function selectHermitageYear(year) {
+  hermitageChartState.selectedYear = year;
+  hermitageChartState.selectedPeriod = null;
+  renderHermitageChart();
+}
+
+function updateHermitageYearDetail(year) {
+  const row = hermitageTrendsData.find(r => r.year === year);
+  const detail = document.getElementById('hermitageChartDetail');
+  if (!row || !detail) return;
+  const total = hermitageYearTotal(row);
+  const periodLabel = row.year <= 2021 ? 'pre-2022' : (row.year === 2022 ? 'transition year' : 'post-2022');
+  const parts = hermitageTrendsCategories.map(cat => {
+    const v = row[cat.key];
+    const pct = total ? Math.round((v / total) * 100) : 0;
+    return `<strong style="color:${cat.color}">${cat.label}</strong>: ${v} (${pct}%)`;
+  }).join(' &middot; ');
+  detail.innerHTML = `<strong>${row.year}</strong> &middot; ${periodLabel} &middot; ${total} exhibitions total<br>${parts}`;
+}
+
+function updateHermitagePeriodDetail(key) {
+  const rows = hermitagePeriodRows(key);
+  const detail = document.getElementById('hermitageChartDetail');
+  if (!rows.length || !detail) return;
+  const sums = { eastern: 0, western: 0, national: 0 };
+  rows.forEach(r => { sums.eastern += r.eastern; sums.western += r.western; sums.national += r.national; });
+  const total = sums.eastern + sums.western + sums.national;
+  const years = rows.map(r => r.year);
+  const range = years.length > 1 ? `${years[0]}–${years[years.length - 1]}` : `${years[0]}`;
+  const label = key === 'pre' ? `Pre-2022 (${range})` : key === 'transition' ? '2022 · Transition year' : `Post-2022 (${range})`;
+  const parts = hermitageTrendsCategories.map(cat => {
+    const v = sums[cat.key];
+    const pct = total ? Math.round((v / total) * 100) : 0;
+    return `<strong style="color:${cat.color}">${cat.label}</strong>: ${v} (${pct}%)`;
+  }).join(' &middot; ');
+  detail.innerHTML = `<strong>${label}</strong> &middot; ${years.length} year${years.length > 1 ? 's' : ''} &middot; ${total} exhibitions total<br>${parts}`;
+}
+
+function resetHermitageDetail() {
+  const detail = document.getElementById('hermitageChartDetail');
+  if (detail) detail.innerHTML = HERMITAGE_DEFAULT_DETAIL_HTML;
+}
+
+function renderHermitageChart() {
+  const svg = document.getElementById('hermitageTrendsSvg');
+  if (!svg) return;
+  svg.innerHTML = '';
+
+  document.querySelectorAll('#hermitageChartLegend .legend-btn').forEach(btn => {
+    btn.classList.toggle('dimmed', hermitageChartState.hidden.has(btn.dataset.key));
+  });
+
+  document.querySelectorAll('#hermitageChartPeriods .period-btn').forEach(btn => {
+    const isActive = hermitageChartState.selectedPeriod === btn.dataset.period;
+    btn.classList.toggle('active', isActive);
+    btn.classList.toggle('dimmed', !!hermitageChartState.selectedPeriod && !isActive);
+  });
+
+  const W = 960, H = 480;
+  const marginLeft = 46, marginRight = 16, marginTop = 28, marginBottom = 56;
+  const plotW = W - marginLeft - marginRight;
+  const plotH = H - marginTop - marginBottom;
+
+  const maxCount = Math.max(...hermitageTrendsData.map(hermitageYearTotal));
+  const yMax = Math.ceil(maxCount / 10) * 10;
+  const yTicks = [0, yMax / 4, yMax / 2, (yMax * 3) / 4, yMax];
+
+  const n = hermitageTrendsData.length;
+  const band = plotW / n;
+  const barW = band * 0.6;
+
+  const periodBg = elNS('g', {});
+  hermitageTrendsData.forEach((row, i) => {
+    const x = marginLeft + i * band;
+    const fill = row.year <= 2021 ? 'rgba(47,102,99,0.045)'
+      : row.year === 2022 ? 'rgba(201,168,76,0.09)'
+      : 'rgba(160,96,96,0.055)';
+    periodBg.appendChild(elNS('rect', {
+      x: x.toFixed(2), y: marginTop, width: band.toFixed(2), height: plotH, fill
+    }));
+  });
+  svg.appendChild(periodBg);
+
+  const gridG = elNS('g', {});
+  yTicks.forEach(t => {
+    const y = marginTop + plotH - (t / yMax) * plotH;
+    gridG.appendChild(elNS('line', {
+      x1: marginLeft, x2: W - marginRight, y1: y.toFixed(2), y2: y.toFixed(2),
+      stroke: '#DDD4C7', 'stroke-width': 1
+    }));
+    const label = elNS('text', {
+      x: marginLeft - 10, y: (y + 4).toFixed(2), 'text-anchor': 'end', class: 'chart-axis-label'
+    });
+    label.textContent = Math.round(t);
+    gridG.appendChild(label);
+  });
+  svg.appendChild(gridG);
+
+  const pivotIndex = hermitageTrendsData.findIndex(r => r.year === 2022);
+  if (pivotIndex > -1) {
+    const xStart = marginLeft + pivotIndex * band;
+    const xEnd = xStart + band;
+    const g = elNS('g', {});
+    [xStart, xEnd].forEach(x => {
+      g.appendChild(elNS('line', {
+        x1: x.toFixed(2), x2: x.toFixed(2), y1: marginTop, y2: marginTop + plotH,
+        stroke: '#C9A84C', 'stroke-width': 1.5, 'stroke-dasharray': '4 4'
+      }));
+    });
+    const label = elNS('text', {
+      x: (xStart + band / 2).toFixed(2), y: marginTop - 10, 'text-anchor': 'middle', class: 'chart-pivot-label'
+    });
+    label.textContent = '2022 pivot';
+    g.appendChild(label);
+    svg.appendChild(g);
+  }
+
+  hermitageTrendsData.forEach((row, i) => {
+    const x = marginLeft + i * band + (band - barW) / 2;
+    const total = hermitageYearTotal(row);
+    const isSelected = hermitageChartState.selectedYear === row.year;
+    const isPeriodFaded = !!hermitageChartState.selectedPeriod && hermitageChartState.selectedPeriod !== hermitagePeriodOf(row.year);
+    let cumulative = 0;
+
+    const yearGroup = elNS('g', { class: 'chart-year-group', opacity: isPeriodFaded ? 0.2 : 1 });
+
+    hermitageTrendsCategories.forEach(cat => {
+      if (hermitageChartState.hidden.has(cat.key)) return;
+      const value = row[cat.key];
+      const segH = Math.max((value / yMax) * plotH, 0);
+      const y = marginTop + plotH - ((cumulative + value) / yMax) * plotH;
+
+      const rect = elNS('rect', {
+        x: x.toFixed(2), y: y.toFixed(2), width: barW.toFixed(2), height: segH.toFixed(2),
+        fill: cat.color, class: 'chart-bar-seg',
+        stroke: isSelected ? '#2C2416' : 'none', 'stroke-width': isSelected ? 1.5 : 0
+      });
+      rect.addEventListener('mouseenter', (e) => showHermitageTooltip(e, row, cat, value, total));
+      rect.addEventListener('mousemove', positionHermitageTooltip);
+      rect.addEventListener('mouseleave', hideHermitageTooltip);
+      rect.addEventListener('click', () => selectHermitageYear(row.year));
+
+      yearGroup.appendChild(rect);
+      cumulative += value;
+    });
+
+    const hit = elNS('rect', {
+      x: (marginLeft + i * band).toFixed(2), y: marginTop, width: band.toFixed(2), height: plotH,
+      fill: 'transparent', class: 'chart-year-hit'
+    });
+    hit.addEventListener('click', () => selectHermitageYear(row.year));
+    svg.appendChild(hit);
+    svg.appendChild(yearGroup);
+
+    const yl = elNS('text', {
+      x: (marginLeft + i * band + band / 2).toFixed(2), y: H - marginBottom + 20, 'text-anchor': 'middle',
+      class: 'chart-year-label' + (isSelected ? ' active-year' : ''),
+      opacity: isPeriodFaded ? 0.35 : 1
+    });
+    yl.textContent = row.year;
+    svg.appendChild(yl);
+  });
+
+  if (hermitageChartState.selectedYear != null) {
+    updateHermitageYearDetail(hermitageChartState.selectedYear);
+  } else if (hermitageChartState.selectedPeriod != null) {
+    updateHermitagePeriodDetail(hermitageChartState.selectedPeriod);
+  } else {
+    resetHermitageDetail();
+  }
+}
+
+function initHermitageTrendsChart() {
+  if (!document.getElementById('hermitageTrendsSvg')) return;
+  buildHermitageLegend();
+  buildHermitagePeriodButtons();
+  renderHermitageChart();
+}
+
+initHermitageTrendsChart();
