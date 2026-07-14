@@ -736,17 +736,10 @@ function buildGarageLegend() {
   });
 }
 
-function showGarageTooltip(e, item, series, value) {
-  const tooltip = document.getElementById('garageCategoryTooltip');
-  if (!tooltip) return;
-  tooltip.innerHTML = `<strong>${item.category}</strong> &middot; ${series.label}<br>${value.toFixed(1)}% of publications`;
-  tooltip.classList.add('visible');
-  positionGarageTooltip(e);
-}
-
 function positionGarageTooltip(e) {
   const tooltip = document.getElementById('garageCategoryTooltip');
   const wrap = e.currentTarget.closest('.chart-svg-wrap');
+
   if (!tooltip || !wrap) return;
   const rect = wrap.getBoundingClientRect();
   tooltip.style.left = (e.clientX - rect.left) + 'px';
@@ -797,9 +790,9 @@ function renderGarageChart() {
       stroke: '#DDD4C7', 'stroke-width': 1
     }));
     const label = elNS('text', {
-      x: marginLeft - 8, y: (y + 4).toFixed(2), 'text-anchor': 'end', class: 'chart-axis-label'
+      x: marginLeft - 10, y: (y + 4).toFixed(2), 'text-anchor': 'end', class: 'chart-axis-label'
     });
-    label.textContent = t + '%';
+    label.textContent = Math.round(t);
     gridG.appendChild(label);
   });
   svg.appendChild(gridG);
@@ -843,11 +836,3 @@ function renderGarageChart() {
     svg.appendChild(label);
   });
 }
-
-function initGarageChart() {
-  if (!document.getElementById('garageCategorySvg')) return;
-  buildGarageLegend();
-  renderGarageChart();
-}
-
-initGarageChart();
