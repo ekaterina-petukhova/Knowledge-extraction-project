@@ -17,8 +17,23 @@
   <nav class="navbar-links" id="navLinks">
     <a href="#/" data-link data-route="/">Home</a>
     <a href="#/data" data-link data-route="/data">Data</a>
-    <a href="#/analytics" data-link data-route="/analytics">Analytics</a>
-    <a href="#/garage" data-link data-route="/garage">Garage</a>
+    <div class="nav-dropdown" id="navDropdownMoscow">
+      <button type="button" class="nav-dropdown-toggle">Art of Moscow
+        <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="nav-dropdown-menu">
+        <a href="#/analytics" data-link data-route="/analytics">Pushkin &amp; Tretyakov</a>
+        <a href="#/garage" data-link data-route="/garage">Garage</a>
+      </div>
+    </div>
+    <div class="nav-dropdown" id="navDropdownPetersburg">
+      <button type="button" class="nav-dropdown-toggle">Art of Petersburg
+        <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="nav-dropdown-menu">
+        <a href="#/russian-museum" data-link data-route="/russian-museum">Russian Museum</a>
+      </div>
+    </div>
     <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
     <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
     <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
@@ -31,8 +46,15 @@
 <div class="mobile-menu" id="mobileMenu">
   <a href="#/" data-link data-route="/">Home</a>
   <a href="#/data" data-link data-route="/data">Data</a>
-  <a href="#/analytics" data-link data-route="/analytics">Analytics</a>
-  <a href="#/garage" data-link data-route="/garage">Garage</a>
+  <div class="mobile-menu-group">
+    <span class="mobile-menu-label">Art of Moscow</span>
+    <a href="#/analytics" data-link data-route="/analytics">Pushkin &amp; Tretyakov</a>
+    <a href="#/garage" data-link data-route="/garage">Garage</a>
+  </div>
+  <div class="mobile-menu-group">
+    <span class="mobile-menu-label">Art of Petersburg</span>
+    <a href="#/russian-museum" data-link data-route="/russian-museum">Russian Museum</a>
+  </div>
   <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
   <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
   <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
@@ -458,6 +480,168 @@
             <h2>From Global Bridge to National Platform</h2>
             <p>The data indicates a fundamental institutional pivot: the Garage Museum has transitioned from a globally integrated platform for international cultural exchange into a localized entity focused almost exclusively on the consolidation of national art. The complete cessation of Western-oriented programming, paired with the new strategic emphasis on forming a domestic collection, underscores a survival strategy centered on internal cultural preservation. Ultimately, the museum's current activities reflect a shift from being a bridge to the global art world to becoming a primary site for the institutionalization of the Russian contemporary scene.</p>
           </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- RUSSIAN MUSEUM -->
+  <div class="page" id="page-russian-museum">
+    <section class="hero">
+      <div class="hero-bg"><img src="images/russkmuz.jpeg" alt="State Russian Museum" /></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal">CASE STUDY &middot; ART OF PETERSBURG</p>
+        <h1 class="hero-title reveal reveal-delay-1">The Petersburg Mirror</h1>
+        <div class="hero-rule reveal reveal-delay-2"></div>
+        <p class="hero-subtitle reveal reveal-delay-3">The State Russian Museum tests the pivot outside Moscow</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="section-stack" style="gap:64px;">
+        <section class="reveal">
+          <p class="lead" style="max-width:720px;">Everything so far &mdash; Pushkin, Tretyakov, Garage &mdash; is a Moscow story. The State Russian Museum, in St. Petersburg, gives us an independent test: a different city, a different institution, working from its own exhibition archive. If the same national pivot shows up here too, it isn't a Moscow-specific artifact &mdash; it's a pattern.</p>
+        </section>
+
+        <section class="stat-grid reveal">
+          <div class="stat-card">
+            <div class="num">651</div>
+            <div class="label">Exhibitions analyzed &middot; 2014&ndash;2026</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">380 / 271</div>
+            <div class="label">Exhibitions before vs. after 2022</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">54.5% &rarr; 68.3%</div>
+            <div class="label">National Russian Art share, pre- vs. post-2022</div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">Dynamics of Exhibition Cultural Focus</h2>
+            <p class="chart-sub">Click a legend item to isolate a theme &middot; hover or tap a bar for the year's breakdown &middot; click a period below to compare eras</p>
+          </div>
+
+          <div class="chart-legend" id="rmChartLegend"></div>
+
+          <div class="chart-svg-wrap">
+            <svg id="rmTrendsSvg" viewBox="0 0 960 480" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="chart-tooltip" id="rmChartTooltip"></div>
+          </div>
+
+          <div class="chart-periods" id="rmChartPeriods">
+            <button type="button" class="period-btn" data-period="pre"><span class="period-swatch pre"></span>Pre-2022 &middot; Global engagement</button>
+            <button type="button" class="period-btn" data-period="transition"><span class="period-swatch transition"></span>2022 &middot; Transition year</button>
+            <button type="button" class="period-btn" data-period="post"><span class="period-swatch post"></span>Post-2022 &middot; Domestic &amp; Eastern focus</button>
+          </div>
+
+          <div class="chart-detail" id="rmChartDetail">Click or tap a bar for a year's breakdown, or a period above for that era's totals.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>Reading the Pattern</h2>
+            <p>Before 2022, National Russian Art already led the Russian Museum's programme (54.5%), with Western Art a substantial second (35.5%) and Eastern Art a minor presence (10.0%). After 2022, Western Art's share nearly halves to 21.0%, Eastern Art barely moves (10.7%), and National Russian Art absorbs almost all of the difference, climbing to 68.3%. The shape of the shift is the same one seen in Moscow: Western engagement contracts, and national programming fills the space it leaves behind.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">National Share &amp; Keyword Shift: Before vs. After 2022</h2>
+            <p class="chart-sub">Hover a bar for its exact value &middot; click a keyword or the share chart to see the numbers behind it</p>
+          </div>
+
+          <div class="keyword-chart-grid">
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">National Component Share</h3>
+              <div class="chart-svg-wrap">
+                <svg id="rmShareSvg" viewBox="0 0 380 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="rmShareTooltip"></div>
+              </div>
+            </div>
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">Top Keywords (Mean TF-IDF per Document)</h3>
+              <div class="chart-legend" id="rmKeywordLegend"></div>
+              <div class="chart-svg-wrap">
+                <svg id="rmKeywordSvg" viewBox="0 0 560 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="rmKeywordTooltip"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-detail" id="rmKeywordDetail">Hover or click either chart to see the numbers behind it.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>A Pattern That Holds</h2>
+            <p>The Russian Museum's national-share jump &mdash; <strong>54.5% &rarr; 68.3%</strong>, up 13.8 percentage points &mdash; lands almost exactly where Garage (<strong>79.4% &rarr; 96.6%</strong>) and the combined Pushkin/Tretyakov corpus (<strong>22.3% &rarr; 35.9%</strong>) landed too. Three institutions, two cities, two different eras of art (historical and contemporary), and three independent analyses all converge on the same direction and a similar magnitude of change &mdash; that convergence is what turns a single museum's numbers into a systemic finding.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Mapping the Regional Reach</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">Exhibition titles and descriptions were lemmatized &mdash; reduced to their dictionary form &mdash; and scanned for mentions of Russian cities, to see whether the museum's own programming became more centralized or more geographically distributed after 2022. The number of distinct cities mentioned <strong>doubled, from 8 before 2022 to 16 after</strong>.</p>
+        </section>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">Russian City Mentions in Exhibitions</h2>
+            <p class="chart-sub">Click a legend item to isolate a period &middot; hover or click a bar for its exact mention count</p>
+          </div>
+
+          <div class="chart-legend" id="rmCityLegend"></div>
+
+          <div class="chart-svg-wrap">
+            <svg id="rmCitySvg" viewBox="0 0 960 440" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="chart-tooltip" id="rmCityTooltip"></div>
+          </div>
+
+          <div class="chart-detail" id="rmCityDetail">Hover or click a bar to see the exact mention count.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>From a Single Hub to a Regional Network</h2>
+            <p>Before 2022, the list was short and lopsided: Vladimir alone (15 mentions) outweighed every other city, with Saint Petersburg, Moscow and Kazan a distant second tier, and four cities appearing only once. After 2022, Saint Petersburg becomes the clear leader (13 mentions), but the more telling change is in the tail &mdash; eight cities appear that weren't mentioned at all before 2022: Zvenigorod, Ryazan, Tula, Novosibirsk, Samara, Omsk, Ufa and Rostov. The museum's post-2022 focus on &ldquo;national&rdquo; art isn't just a turn toward Russia as an abstraction; it's a turn toward a wider, more distributed set of Russian regions.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Full Keyword Extraction (TF-IDF)</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">All ten keywords are Russian-language terms from the source corpus, translated to English and marked <span class="tag">RU</span>. Weights are the mean TF-IDF score per document, not a raw sum &mdash; this keeps the two periods comparable even though the post-2022 sub-corpus (271 records) is smaller than the pre-2022 one (380 records).</p>
+
+          <div class="keyword-tables-grid">
+            <div class="keyword-table-card">
+              <h3>Before 2022 <span class="count-pill">380 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="rmKeywordTableBefore"></tbody>
+              </table>
+            </div>
+            <div class="keyword-table-card">
+              <h3>After 2022 <span class="count-pill post">271 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="rmKeywordTableAfter"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Methodology, in Brief</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">Exhibitions were classified with the same zero-shot model as before, <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code>, refined with an explicit hypothesis template ("this art belongs to the category: &hellip;") for sharper category boundaries. TF-IDF keywords are scored as a <strong>mean weight per document</strong> rather than a raw corpus sum, so the before/after comparison isn't skewed by the pre-2022 sub-corpus simply containing more records.</p>
         </section>
       </div>
     </div>
