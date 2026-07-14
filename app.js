@@ -44,6 +44,7 @@ const routes = {
   '/': 'page-home',
   '/data': 'page-data',
   '/analytics': 'page-analytics',
+  '/garage': 'page-garage',
   '/ontology': 'page-ontology',
   '/knowledge-graph': 'page-knowledge-graph',
   '/methodology': 'page-methodology',
@@ -689,3 +690,164 @@ function initKeywordAnalysis() {
 }
 
 initKeywordAnalysis();
+
+// ===== Garage Museum: category balance, before vs. after 2022 =====
+const garageCategoryData = [
+  {
+    key: 'national', category: 'National Russian Art', before: 79.4, after: 96.6,
+    note: 'the increase from 79.4% to 96.6% indicates a near-total alignment with domestic cultural production &mdash; Garage becomes the primary platform for Russian contemporary art in the absence of international exchange.'
+  },
+  {
+    key: 'western', category: 'Western Art', before: 15.6, after: 0.0,
+    note: 'the drop from 15.6% to 0.0% is a complete cessation of international collaborations, marking the formal end of Garage\'s role as a bridge between the Western art market and the Russian scene.'
+  },
+  {
+    key: 'eastern', category: 'Eastern Art', before: 5.0, after: 3.4,
+    note: 'the decline from 5.0% to 3.4% shows that, in Garage\'s own programming, the &ldquo;Pivot to the East&rdquo; remains aspirational rather than an implemented institutional reality.'
+  }
+];
+
+const garageSeries = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663' },
+  { key: 'after',  label: 'After 2022',  color: '#A06060' }
+];
+
+const garageChartState = { hidden: new Set(), selectedCategory: null };
+
+function buildGarageLegend() {
+  const legend = document.getElementById('garageLegend');
+  if (!legend) return;
+  legend.innerHTML = '';
+  garageSeries.forEach(s => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'legend-btn';
+    btn.dataset.key = s.key;
+    btn.innerHTML = `<span class="dot" style="background:${s.color}"></span>${s.label}`;
+    btn.addEventListener('click', () => {
+      if (garageChartState.hidden.has(s.key)) {
+        garageChartState.hidden.delete(s.key);
+      } else {
+        garageChartState.hidden.add(s.key);
+      }
+      renderGarageChart();
+    });
+    legend.appendChild(btn);
+  });
+}
+
+function showGarageTooltip(e, item, series, value) {
+  const tooltip = document.getElementById('garageCategoryTooltip');
+  if (!tooltip) return;
+  tooltip.innerHTML = `<strong>${item.category}</strong> &middot; ${series.label}<br>${value.toFixed(1)}% of publications`;
+  tooltip.classList.add('visible');
+  positionGarageTooltip(e);
+}
+
+function positionGarageTooltip(e) {
+  const tooltip = document.getElementById('garageCategoryTooltip');
+  const wrap = e.currentTarget.closest('.chart-svg-wrap');
+  if (!tooltip || !wrap) return;
+  const rect = wrap.getBoundingClientRect();
+  tooltip.style.left = (e.clientX - rect.left) + 'px';
+  tooltip.style.top = (e.clientY - rect.top) + 'px';
+}
+
+function hideGarageTooltip() {
+  const tooltip = document.getElementById('garageCategoryTooltip');
+  if (tooltip) tooltip.classList.remove('visible');
+}
+
+function selectGarageCategory(key) {
+  garageChartState.selectedCategory = key;
+  renderGarageChart();
+  const item = garageCategoryData.find(d => d.key === key);
+  const detail = document.getElementById('garageCategoryDetail');
+  if (!item || !detail) return;
+  detail.innerHTML = `<strong>${item.category}</strong>: ${item.before.toFixed(1)}% before 2022 &rarr; ${item.after.toFixed(1)}% after &mdash; ${item.note}`;
+}
+
+function renderGarageChart() {
+  const svg = document.getElementById('garageCategorySvg');
+  if (!svg) return;
+  svg.innerHTML = '';
+
+  document.querySelectorAll('#garageLegend .legend-btn').forEach(btn => {
+    btn.classList.toggle('dimmed', garageChartState.hidden.has(btn.dataset.key));
+  });
+
+  const W = 720, H = 420;
+  const marginLeft = 44, marginRight = 12, marginTop = 16, marginBottom = 48;
+  const plotW = W - marginLeft - marginRight;
+  const plotH = H - marginTop - marginBottom;
+
+  const yMax = 100;
+  const yTicks = [0, 20, 40, 60, 80, 100];
+
+  const n = garageCategoryData.length;
+  const band = plotW / n;
+  const groupW = band * 0.6;
+  const barW = groupW / 2;
+
+  const gridG = elNS('g', {});
+  yTicks.forEach(t => {
+    const y = marginTop + plotH - (t / yMax) * plotH;
+    gridG.appendChild(elNS('line', {
+      x1: marginLeft, x2: W - marginRight, y1: y.toFixed(2), y2: y.toFixed(2),
+      stroke: '#DDD4C7', 'stroke-width': 1
+    }));
+    const label = elNS('text', {
+      x: marginLeft - 8, y: (y + 4).toFixed(2), 'text-anchor': 'end', class: 'chart-axis-label'
+    });
+    label.textContent = t + '%';
+    gridG.appendChild(label);
+  });
+  svg.appendChild(gridG);
+
+  garageCategoryData.forEach((item, i) => {
+    const groupX = marginLeft + i * band + (band - groupW) / 2;
+    const isSelected = garageChartState.selectedCategory === item.key;
+
+    garageSeries.forEach((s, si) => {
+      if (garageChartState.hidden.has(s.key)) return;
+      const value = item[s.key];
+      const segH = Math.max((value / yMax) * plotH, value > 0 ? 2 : 0);
+      const x = groupX + si * barW;
+      const y = marginTop + plotH - segH;
+
+      const rect = elNS('rect', {
+        x: x.toFixed(2), y: y.toFixed(2), width: (barW - 4).toFixed(2), height: segH.toFixed(2),
+        fill: s.color, class: 'chart-bar-seg',
+        stroke: isSelected ? '#2C2416' : 'none', 'stroke-width': isSelected ? 1.5 : 0
+      });
+      rect.addEventListener('mouseenter', (e) => showGarageTooltip(e, item, s, value));
+      rect.addEventListener('mousemove', (e) => positionGarageTooltip(e));
+      rect.addEventListener('mouseleave', () => hideGarageTooltip());
+      rect.addEventListener('click', () => selectGarageCategory(item.key));
+      svg.appendChild(rect);
+    });
+
+    const hit = elNS('rect', {
+      x: (marginLeft + i * band).toFixed(2), y: marginTop, width: band.toFixed(2), height: plotH,
+      fill: 'transparent'
+    });
+    hit.style.cursor = 'pointer';
+    hit.addEventListener('click', () => selectGarageCategory(item.key));
+    svg.appendChild(hit);
+
+    const label = elNS('text', {
+      x: (marginLeft + i * band + band / 2).toFixed(2), y: H - marginBottom + 22, 'text-anchor': 'middle',
+      class: 'chart-year-label' + (isSelected ? ' active-year' : '')
+    });
+    label.textContent = item.category;
+    svg.appendChild(label);
+  });
+}
+
+function initGarageChart() {
+  if (!document.getElementById('garageCategorySvg')) return;
+  buildGarageLegend();
+  renderGarageChart();
+}
+
+initGarageChart();

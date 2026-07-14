@@ -18,6 +18,7 @@
     <a href="#/" data-link data-route="/">Home</a>
     <a href="#/data" data-link data-route="/data">Data</a>
     <a href="#/analytics" data-link data-route="/analytics">Analytics</a>
+    <a href="#/garage" data-link data-route="/garage">Garage</a>
     <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
     <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
     <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
@@ -31,6 +32,7 @@
   <a href="#/" data-link data-route="/">Home</a>
   <a href="#/data" data-link data-route="/data">Data</a>
   <a href="#/analytics" data-link data-route="/analytics">Analytics</a>
+  <a href="#/garage" data-link data-route="/garage">Garage</a>
   <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
   <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
   <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
@@ -307,6 +309,145 @@
           <div class="transform-box">
             <h2>The National Pivot, Quantified</h2>
             <p>Records with a national/Russian component rose from <strong>45 of 202 (22.3%)</strong> before 2022 to <strong>71 of 198 (35.9%)</strong> after &mdash; more than a 1.5&times; increase in share. A jump of 13.6 percentage points across a corpus of nearly 400 documents isn't noise; it's a systemic shift in curatorial agenda. Together with the keyword shift above, this supports our central claim: the post-2022 pivot is a pivot toward <strong>nationalization</strong> &mdash; institutions doubling down on their own history and significance rather than global exchange.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- GARAGE -->
+  <div class="page" id="page-garage">
+    <section class="hero">
+      <div class="hero-bg"><img src="images/garage.jpg" alt="Garage Museum of Contemporary Art" /></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal">CASE STUDY &middot; CONTEMPORARY ART</p>
+        <h1 class="hero-title reveal reveal-delay-1">The Contemporary Vector</h1>
+        <div class="hero-rule reveal reveal-delay-2"></div>
+        <p class="hero-subtitle reveal reveal-delay-3">Reading the national pivot through the Garage Museum of Contemporary Art</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="section-stack" style="gap:64px;">
+        <section class="reveal">
+          <p class="lead" style="max-width:720px;">Garage has no historical exhibition calendar to fall back on: unlike the Tretyakov Gallery and Pushkin Museum, it does not stage a steady programme of new exhibitions, which would make an exhibition-by-exhibition analysis unreliable. Instead, we analyzed the museum's own <span class="tag">news publications</span> &mdash; 369 in total &mdash; as the clearest record of what the institution chooses to say about itself, year by year.</p>
+        </section>
+
+        <section class="stat-grid reveal">
+          <div class="stat-card">
+            <div class="num">369</div>
+            <div class="label">News publications analyzed &middot; garagemca.org</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">66.6%</div>
+            <div class="label">Automatic classification accuracy, 81% coverage</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">100%</div>
+            <div class="label">Accuracy after expert manual review</div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Classifying a Contemporary Institution</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">Publications don't carry a ready-made theme label the way exhibition titles do, so each entry had to be categorized into the same three idea blocks used for Tretyakov and Pushkin &mdash; National Russian, Western, and Eastern art.</p>
+
+          <div class="timeline" style="margin-top:48px;">
+            <div class="timeline-item">
+              <span class="timeline-num">1</span>
+              <h3>Zero-Shot Classification</h3>
+              <p>Every publication was categorized with a <strong>zero-shot classification</strong> model, <code>mDeBERTa-v3</code>, assigning each entry to National, Western or Eastern art without any task-specific training on this corpus.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-num">2</span>
+              <h3>Verification on a Control Sample</h3>
+              <p>Results were checked against a manually-labeled control sample of <strong>21 entries</strong>. Automatic classification reached <strong>66.6% accuracy</strong> at an <strong>81% coverage rate</strong>; the errors traced mainly to short text fragments that lacked enough context for the model to work with.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-num">3</span>
+              <h3>Expert Manual Review <span style="font-weight:400;color:var(--secondary);font-size:14px;">(adopted)</span></h3>
+              <p>The final database was supplemented by <strong>expert manual review</strong> across the full corpus, raising categorization accuracy to <strong>100%</strong> &mdash; the results plotted below are drawn from this reviewed dataset.</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">Category Balance: Before vs. After 2022</h2>
+            <p class="chart-sub">Click a legend swatch to isolate a period &middot; hover or click a bar for its exact share</p>
+          </div>
+
+          <div class="chart-legend" id="garageLegend"></div>
+
+          <div class="chart-svg-wrap">
+            <svg id="garageCategorySvg" viewBox="0 0 720 420" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="chart-tooltip" id="garageCategoryTooltip"></div>
+          </div>
+
+          <div class="chart-detail" id="garageCategoryDetail">Hover or click a bar to see the exact share behind it.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>Institutional Transformation: A Data-Driven Conclusion</h2>
+            <p style="margin-bottom:20px;">The statistical shift between the periods before and after 2022 reveals a profound transformation in the museum's institutional strategy:</p>
+            <ul class="home-list" style="margin-bottom:20px;">
+              <li><span><strong>Consolidation of the National Focus</strong> &mdash; the increase in the share of National Russian Art from 79.4% to 96.6% indicates a near-total alignment with domestic cultural production, positioning the museum as the primary platform for Russian contemporary art in the absence of international exchange.</span></li>
+              <li><span><strong>Complete Erosion of the Western Vector</strong> &mdash; the decline of Western Art representation from 15.6% to 0.0% is a quantitative indicator of the abrupt cessation of international collaborations, marking the formal end of the museum's previous role as a bridge between the global Western art market and the Russian scene.</span></li>
+              <li><span><strong>Marginalization of the &ldquo;Pivot to the East&rdquo;</strong> &mdash; despite broader geopolitical discourse around a shift toward Asian markets, Eastern Art actually decreased from 5.0% to 3.4%, suggesting that within Garage's own programming, the &ldquo;Pivot to the East&rdquo; remains an aspirational concept rather than an implemented institutional reality.</span></li>
+            </ul>
+            <p>The data quantifies Garage's transition from a globally integrated cultural institution to a localized entity, characterized by a near-exclusive focus on national artistic production.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Reading the Shift: Selected Publications</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">Three publications from each period, translated to English, illustrate the pivot in the museum's own words.</p>
+
+          <div class="pub-columns">
+            <div class="pub-column">
+              <h3>Before 2022 <span class="count-pill">Global engagement</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2014</span>
+                <a href="https://garagemca.org/news/2014-10-07-tate-s-international-learning-program-bp-art-exchange-will-unite-three-art-museums-in-moscow" target="_blank" rel="noopener">Tate's international learning programme BP Art Exchange unites three art museums in Moscow</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2015</span>
+                <a href="https://garagemca.org/news/2015-03-17-kate-fowle-garage-chief-curator-moderates-strangers-welcome-new-invisible-publics-international-forum-in-dubai" target="_blank" rel="noopener">Kate Fowle, Garage Chief Curator, moderates an international forum in Dubai</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2017</span>
+                <a href="https://garagemca.org/news/garage-museum-of-contemporary-art-and-uniqlo-announce-partnership" target="_blank" rel="noopener">Garage Museum of Contemporary Art and UNIQLO announce partnership</a>
+              </div>
+            </div>
+            <div class="pub-column">
+              <h3>After 2022 <span class="count-pill post">Domestic focus</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2023</span>
+                <a href="https://garagemca.org/news/2023-03-06-the-first-part-of-afrah-shafiq-s-video-game-nobody-knows-for-certain-has-been-presented-at-dhaka-art-summit-2023" target="_blank" rel="noopener">The first part of Afrah Shafiq's video game &ldquo;Nobody Knows for Certain&rdquo; is presented at Dhaka Art Summit 2023, supported by Garage</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2024</span>
+                <a href="https://garagemca.org/news/2024-06-24-garage-is-launching-a-collection-of-russian-art" target="_blank" rel="noopener">Garage is launching a collection of Russian art</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2025</span>
+                <a href="https://garagemca.org/news/garage-museum-of-contemporary-art-and-rocketbank-announce-partnership" target="_blank" rel="noopener">Garage Museum of Contemporary Art and Rocketbank announce partnership</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>From Global Bridge to National Platform</h2>
+            <p>The data indicates a fundamental institutional pivot: the Garage Museum has transitioned from a globally integrated platform for international cultural exchange into a localized entity focused almost exclusively on the consolidation of national art. The complete cessation of Western-oriented programming, paired with the new strategic emphasis on forming a domestic collection, underscores a survival strategy centered on internal cultural preservation. Ultimately, the museum's current activities reflect a shift from being a bridge to the global art world to becoming a primary site for the institutionalization of the Russian contemporary scene.</p>
           </div>
         </section>
       </div>

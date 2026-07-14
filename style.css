@@ -976,6 +976,62 @@ footer p {
   font-weight: 600;
 }
 
+.pub-columns {
+  display: grid;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .pub-columns { grid-template-columns: 1fr 1fr; }
+}
+
+.pub-column h3 {
+  font-size: 16px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pub-card {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(221,212,199,0.5);
+}
+
+.pub-column .pub-card:last-child {
+  border-bottom: none;
+}
+
+.pub-year {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+.pub-card a {
+  color: var(--muted-foreground);
+  text-decoration: none;
+  line-height: 1.5;
+  font-size: 15px;
+  transition: color 0.2s ease;
+}
+
+.pub-card a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
 /* ===== Ontology page ===== */
 .schema-box {
   background: #fff;
