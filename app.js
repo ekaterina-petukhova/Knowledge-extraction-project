@@ -45,7 +45,9 @@ const routes = {
   '/data': 'page-data',
   '/analytics': 'page-analytics',
   '/garage': 'page-garage',
+  '/mamm': 'page-mamm',
   '/russian-museum': 'page-russian-museum',
+  '/hermitage': 'page-hermitage',
   '/ontology': 'page-ontology',
   '/knowledge-graph': 'page-knowledge-graph',
   '/methodology': 'page-methodology',
@@ -915,3 +917,166 @@ createGroupedCompareChart({
     return `<strong>${item.label}</strong>: ${item.before} mention${item.before === 1 ? '' : 's'} before 2022 &rarr; ${item.after} after (${delta >= 0 ? '+' : ''}${delta}).`;
   }
 }).init();
+
+// ===== MAMM (Multimedia Art Museum, Moscow): trends, national share, keywords =====
+// Values verified against category_by_year.csv, mamm_national_share.csv and
+// mamm_tfidf_keywords.csv (Knowledge-extraction-data/mamm).
+const mammTrendsData = [
+  { year: 2014, eastern: 2, western: 7,  national: 70 },
+  { year: 2015, eastern: 0, western: 5,  national: 72 },
+  { year: 2016, eastern: 3, western: 9,  national: 71 },
+  { year: 2017, eastern: 0, western: 3,  national: 62 },
+  { year: 2018, eastern: 3, western: 3,  national: 53 },
+  { year: 2019, eastern: 0, western: 10, national: 57 },
+  { year: 2020, eastern: 0, western: 0,  national: 28 },
+  { year: 2021, eastern: 1, western: 6,  national: 33 },
+  { year: 2022, eastern: 0, western: 1,  national: 66 },
+  { year: 2023, eastern: 0, western: 1,  national: 5 },
+  { year: 2024, eastern: 0, western: 0,  national: 20 },
+  { year: 2025, eastern: 0, western: 0,  national: 35 },
+  { year: 2026, eastern: 0, western: 0,  national: 35 }
+];
+
+const mammTrendsCategories = [
+  { key: 'eastern', label: 'Eastern Art', color: '#A06060' },
+  { key: 'western', label: 'Western Art', color: '#2F6663' },
+  { key: 'national', label: 'National Russian Art', color: '#C9A84C' }
+];
+
+createYearTrendChart({
+  svgId: 'mammTrendsSvg', legendId: 'mammChartLegend', tooltipId: 'mammChartTooltip',
+  periodsId: 'mammChartPeriods', detailId: 'mammChartDetail',
+  data: mammTrendsData, categories: mammTrendsCategories
+}).init();
+
+const mammShareData = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663', count: 446, total: 498, pct: 89.6 },
+  { key: 'after',  label: 'After 2022',  color: '#A06060', count: 161, total: 163, pct: 98.8 }
+];
+
+createShareChart({
+  svgId: 'mammShareSvg', tooltipId: 'mammShareTooltip', detailId: 'mammKeywordDetail',
+  items: mammShareData, yMax: 100, yTicks: [0, 25, 50, 75, 100], W: 380, H: 320,
+  onSelect: () => `Records classified as National Russian Art: <strong>446 of 498 (89.6%)</strong> before 2022 &rarr; <strong>161 of 163 (98.8%)</strong> after &mdash; up 9.2 percentage points, the smallest rise of the four institutions studied, because MAMM started closest to the ceiling.`
+}).init();
+
+// MAMM's own site content is already in English, so no translation or RU tag is needed.
+const mammKeywordCompareData = [
+  { key: 'art',      label: 'art',      before: 0.0483, after: 0.0704 },
+  { key: 'courtesy', label: 'courtesy', before: 0.0367, after: 0.0147 },
+  { key: 'artist',   label: 'artist',   before: 0.0296, after: 0.0192 },
+  { key: 'russian',  label: 'russian',  before: 0.0234, after: 0.0224 },
+  { key: 'print',    label: 'print',    before: 0.0274, after: 0.0164 },
+  { key: 'project',  label: 'project',  before: 0.0265, after: 0.0172 },
+  { key: 'new',      label: 'new',      before: 0.0187, after: 0.0232 },
+  { key: 'house',    label: 'house',    before: 0.0233, after: 0.0162 },
+  { key: 'series',   label: 'series',   before: 0.0273, after: 0.0109 },
+  { key: 'world',    label: 'world',    before: 0.0137, after: 0.0201 }
+];
+
+const mammKeywordSeries = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663' },
+  { key: 'after',  label: 'After 2022',  color: '#A06060' }
+];
+
+createGroupedCompareChart({
+  svgId: 'mammKeywordSvg', legendId: 'mammKeywordLegend', tooltipId: 'mammKeywordTooltip', detailId: 'mammKeywordDetail',
+  items: mammKeywordCompareData, itemKey: d => d.key, itemLabel: d => d.label,
+  series: mammKeywordSeries, W: 560, H: 320, marginLeft: 40,
+  yMax: 0.08, yTicks: [0, 0.02, 0.04, 0.06, 0.08], yTickLabel: t => t.toFixed(2),
+  tooltipValue: v => `Mean TF-IDF: ${v.toFixed(4)}`,
+  onSelect: item => {
+    const delta = item.after - item.before;
+    return `<strong>"${item.label}"</strong>: ${item.before.toFixed(4)} before 2022 &rarr; ${item.after.toFixed(4)} after (${delta >= 0 ? '+' : ''}${delta.toFixed(4)}).`;
+  }
+}).init();
+
+const mammKeywordFullBefore = mammKeywordCompareData.map(d => ({ word: d.label, weight: d.before }));
+const mammKeywordFullAfter = mammKeywordCompareData.map(d => ({ word: d.label, weight: d.after }));
+
+buildKeywordTable('mammKeywordTableBefore', mammKeywordFullBefore);
+buildKeywordTable('mammKeywordTableAfter', mammKeywordFullAfter);
+
+// ===== State Hermitage Museum: trends, national share, keywords =====
+// Values verified against category_by_year.csv, hermitage_national_share.csv
+// and hermitage_tfidf_keywords_normalized.csv (Knowledge-extraction-data/hermitage).
+const hermitageTrendsData = [
+  { year: 2014, eastern: 7,  western: 17, national: 4 },
+  { year: 2015, eastern: 15, western: 15, national: 9 },
+  { year: 2016, eastern: 15, western: 22, national: 7 },
+  { year: 2017, eastern: 15, western: 14, national: 13 },
+  { year: 2018, eastern: 13, western: 26, national: 4 },
+  { year: 2019, eastern: 16, western: 22, national: 10 },
+  { year: 2020, eastern: 13, western: 10, national: 7 },
+  { year: 2021, eastern: 9,  western: 14, national: 9 },
+  { year: 2022, eastern: 8,  western: 9,  national: 14 },
+  { year: 2023, eastern: 10, western: 9,  national: 10 },
+  { year: 2024, eastern: 10, western: 17, national: 17 },
+  { year: 2025, eastern: 8,  western: 9,  national: 15 },
+  { year: 2026, eastern: 5,  western: 4,  national: 2 }
+];
+
+const hermitageTrendsCategories = [
+  { key: 'eastern', label: 'Eastern Art', color: '#A06060' },
+  { key: 'western', label: 'Western Art', color: '#2F6663' },
+  { key: 'national', label: 'National Russian Art', color: '#C9A84C' }
+];
+
+createYearTrendChart({
+  svgId: 'hermitageTrendsSvg', legendId: 'hermitageChartLegend', tooltipId: 'hermitageChartTooltip',
+  periodsId: 'hermitageChartPeriods', detailId: 'hermitageChartDetail',
+  data: hermitageTrendsData, categories: hermitageTrendsCategories
+}).init();
+
+const hermitageShareData = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663', count: 63, total: 291, pct: 21.6 },
+  { key: 'after',  label: 'After 2022',  color: '#A06060', count: 58, total: 147, pct: 39.5 }
+];
+
+createShareChart({
+  svgId: 'hermitageShareSvg', tooltipId: 'hermitageShareTooltip', detailId: 'hermitageKeywordDetail',
+  items: hermitageShareData, yMax: 45, yTicks: [0, 15, 30, 45], W: 380, H: 320,
+  onSelect: () => `Records classified as National Russian Art: <strong>63 of 291 (21.6%)</strong> before 2022 &rarr; <strong>58 of 147 (39.5%)</strong> after &mdash; up 17.9 percentage points, the largest rise of any institution studied, yet still the lowest post-2022 ceiling of the four.`
+}).init();
+
+// Full 10-word TF-IDF list, Russian-language, translated to English and RU-flagged.
+// "art" appears twice (искусства/искусство, two grammatical forms with distinct
+// weights); only one is used in the interactive chart to avoid a duplicate label,
+// both are kept in the full table below.
+const hermitageKeywordFullData = [
+  { key: 'art',      label: 'art',     before: 0.0340, after: 0.0268 },
+  { key: 'among',    label: 'among',   before: 0.0170, after: 0.0174 },
+  { key: 'palace',   label: 'palace',  before: 0.0155, after: 0.0180 },
+  { key: 'saint',    label: 'Saint',   before: 0.0160, after: 0.0170 },
+  { key: 'books',    label: 'books',   before: 0.0187, after: 0.0139 },
+  { key: 'russia',   label: 'Russia',  before: 0.0151, after: 0.0176 },
+  { key: 'art2',     label: 'art',     before: 0.0178, after: 0.0129 },
+  { key: 'masters',  label: 'masters', before: 0.0161, after: 0.0142 },
+  { key: 'culture',  label: 'culture', before: 0.0147, after: 0.0153 },
+  { key: 'winter',   label: 'winter',  before: 0.0135, after: 0.0165 }
+];
+
+const hermitageKeywordCompareData = hermitageKeywordFullData.filter(d => d.key !== 'art2');
+
+const hermitageKeywordSeries = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663' },
+  { key: 'after',  label: 'After 2022',  color: '#A06060' }
+];
+
+createGroupedCompareChart({
+  svgId: 'hermitageKeywordSvg', legendId: 'hermitageKeywordLegend', tooltipId: 'hermitageKeywordTooltip', detailId: 'hermitageKeywordDetail',
+  items: hermitageKeywordCompareData, itemKey: d => d.key, itemLabel: d => d.label,
+  series: hermitageKeywordSeries, W: 560, H: 320, marginLeft: 40,
+  yMax: 0.04, yTicks: [0, 0.01, 0.02, 0.03, 0.04], yTickLabel: t => t.toFixed(2),
+  tooltipValue: v => `Mean TF-IDF: ${v.toFixed(4)}`,
+  onSelect: item => {
+    const delta = item.after - item.before;
+    return `<strong>"${item.label}"</strong> (RU): ${item.before.toFixed(4)} before 2022 &rarr; ${item.after.toFixed(4)} after (${delta >= 0 ? '+' : ''}${delta.toFixed(4)}).`;
+  }
+}).init();
+
+const hermitageKeywordFullBefore = hermitageKeywordFullData.map(d => ({ word: d.label, weight: d.before, ru: true }));
+const hermitageKeywordFullAfter = hermitageKeywordFullData.map(d => ({ word: d.label, weight: d.after, ru: true }));
+
+buildKeywordTable('hermitageKeywordTableBefore', hermitageKeywordFullBefore);
+buildKeywordTable('hermitageKeywordTableAfter', hermitageKeywordFullAfter);

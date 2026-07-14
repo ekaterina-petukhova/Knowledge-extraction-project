@@ -24,6 +24,7 @@
       <div class="nav-dropdown-menu">
         <a href="#/analytics" data-link data-route="/analytics">Pushkin &amp; Tretyakov</a>
         <a href="#/garage" data-link data-route="/garage">Garage</a>
+        <a href="#/mamm" data-link data-route="/mamm">MAMM</a>
       </div>
     </div>
     <div class="nav-dropdown" id="navDropdownPetersburg">
@@ -32,6 +33,7 @@
       </button>
       <div class="nav-dropdown-menu">
         <a href="#/russian-museum" data-link data-route="/russian-museum">Russian Museum</a>
+        <a href="#/hermitage" data-link data-route="/hermitage">Hermitage</a>
       </div>
     </div>
     <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
@@ -50,10 +52,12 @@
     <span class="mobile-menu-label">Art of Moscow</span>
     <a href="#/analytics" data-link data-route="/analytics">Pushkin &amp; Tretyakov</a>
     <a href="#/garage" data-link data-route="/garage">Garage</a>
+    <a href="#/mamm" data-link data-route="/mamm">MAMM</a>
   </div>
   <div class="mobile-menu-group">
     <span class="mobile-menu-label">Art of Petersburg</span>
     <a href="#/russian-museum" data-link data-route="/russian-museum">Russian Museum</a>
+    <a href="#/hermitage" data-link data-route="/hermitage">Hermitage</a>
   </div>
   <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
   <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
@@ -485,6 +489,138 @@
     </div>
   </div>
 
+  <!-- MAMM -->
+  <div class="page" id="page-mamm">
+    <section class="hero">
+      <div class="hero-bg"><img src="images/momma.jpeg" alt="Multimedia Art Museum, Moscow" /></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal">CASE STUDY &middot; ART OF MOSCOW</p>
+        <h1 class="hero-title reveal reveal-delay-1">The Saturation Point</h1>
+        <div class="hero-rule reveal reveal-delay-2"></div>
+        <p class="hero-subtitle reveal reveal-delay-3">Multimedia Art Museum, Moscow &mdash; already near the ceiling before 2022 even began</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="section-stack" style="gap:64px;">
+        <section class="reveal">
+          <p class="lead" style="max-width:720px;">MAMM is the largest corpus in this study &mdash; 661 exhibitions, more than any of the other three institutions. But the split is uneven: 498 records before 2022 against just 163 after, and post-2022 activity thins out sharply in the data (2023 alone has only 5 listed exhibitions). Read the scale of the shift with that caveat in mind &mdash; what MAMM adds isn't a bigger swing, it's a look at where the swing ends up.</p>
+        </section>
+
+        <section class="stat-grid reveal">
+          <div class="stat-card">
+            <div class="num">661</div>
+            <div class="label">Exhibitions analyzed &middot; largest corpus in this study</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">498 / 163</div>
+            <div class="label">Exhibitions before vs. after 2022</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">89.6% &rarr; 98.8%</div>
+            <div class="label">National Russian Art share, pre- vs. post-2022</div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">Dynamics of Exhibition Cultural Focus</h2>
+            <p class="chart-sub">Click a legend item to isolate a theme &middot; hover or tap a bar for the year's breakdown &middot; click a period below to compare eras</p>
+          </div>
+
+          <div class="chart-legend" id="mammChartLegend"></div>
+
+          <div class="chart-svg-wrap">
+            <svg id="mammTrendsSvg" viewBox="0 0 960 480" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="chart-tooltip" id="mammChartTooltip"></div>
+          </div>
+
+          <div class="chart-periods" id="mammChartPeriods">
+            <button type="button" class="period-btn" data-period="pre"><span class="period-swatch pre"></span>Pre-2022 &middot; Global engagement</button>
+            <button type="button" class="period-btn" data-period="transition"><span class="period-swatch transition"></span>2022 &middot; Transition year</button>
+            <button type="button" class="period-btn" data-period="post"><span class="period-swatch post"></span>Post-2022 &middot; Domestic &amp; Eastern focus</button>
+          </div>
+
+          <div class="chart-detail" id="mammChartDetail">Click or tap a bar for a year's breakdown, or a period above for that era's totals.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>Reading the Ceiling</h2>
+            <p>Unlike the other three institutions, MAMM doesn't start from a balanced or even Western-leaning position. Even before 2022, National Russian Art already accounted for 89.6% of its programme, with Western Art at a thin 8.6% and Eastern Art almost absent (1.8%). After 2022, Western Art nearly vanishes (1.2%) and National Russian Art closes in on total saturation (98.8%). There's no dramatic reversal here because there was barely anywhere left to move &mdash; MAMM shows what the other institutions' curves are converging toward.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">National Share &amp; Keyword Shift: Before vs. After 2022</h2>
+            <p class="chart-sub">Hover a bar for its exact value &middot; click a keyword or the share chart to see the numbers behind it</p>
+          </div>
+
+          <div class="keyword-chart-grid">
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">National Component Share</h3>
+              <div class="chart-svg-wrap">
+                <svg id="mammShareSvg" viewBox="0 0 380 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="mammShareTooltip"></div>
+              </div>
+            </div>
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">Top Keywords (Mean TF-IDF per Document)</h3>
+              <div class="chart-legend" id="mammKeywordLegend"></div>
+              <div class="chart-svg-wrap">
+                <svg id="mammKeywordSvg" viewBox="0 0 560 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="mammKeywordTooltip"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-detail" id="mammKeywordDetail">Hover or click either chart to see the numbers behind it.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>Four Institutions, One Ceiling</h2>
+            <p>Line up all four national-share jumps and MAMM stands out for having the <em>smallest</em> point increase, not the largest: Garage climbs 79.4% &rarr; 96.6% (+17.2 pp), the Pushkin/Tretyakov corpus 22.3% &rarr; 35.9% (+13.6 pp), the Russian Museum 54.5% &rarr; 68.3% (+13.8 pp) &mdash; and MAMM just 89.6% &rarr; 98.8% (+9.2 pp). That's not a weaker pivot; it's a ceiling effect. MAMM entered 2022 already close to where the others are heading, which makes it less a fourth data point on the same slope and more a preview of where that slope runs out.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Full Keyword Extraction (TF-IDF)</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">MAMM's own site is bilingual and its exhibition text was already scraped in English, so unlike the other case studies, no translation or <span class="tag">RU</span> tagging is needed here &mdash; every term below is native to the source text.</p>
+
+          <div class="keyword-tables-grid">
+            <div class="keyword-table-card">
+              <h3>Before 2022 <span class="count-pill">498 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="mammKeywordTableBefore"></tbody>
+              </table>
+            </div>
+            <div class="keyword-table-card">
+              <h3>After 2022 <span class="count-pill post">163 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="mammKeywordTableAfter"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Methodology, in Brief</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">Classification again used <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code> zero-shot, this time with an English label set to match the source language, plus a keyword safety net: text containing terms like &ldquo;soviet&rdquo;, &ldquo;lenin&rdquo;, &ldquo;ogoniok&rdquo; or &ldquo;russian avant-garde&rdquo; is routed straight to National Russian Art without a model call. About 45% of scraped records had site boilerplate &mdash; contact details, a cookie banner, &ldquo;Buy a ticket&rdquo;, &ldquo;Share with friends&rdquo; &mdash; spliced directly into the exhibition text; this was stripped with anchor-pattern regexes before TF-IDF was run, so keyword weights reflect exhibition content rather than site furniture.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
   <!-- RUSSIAN MUSEUM -->
   <div class="page" id="page-russian-museum">
     <section class="hero">
@@ -642,6 +778,138 @@
         <section class="reveal">
           <h2 class="section-heading">Methodology, in Brief</h2>
           <p class="lead" style="max-width:720px;margin-top:16px;">Exhibitions were classified with the same zero-shot model as before, <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code>, refined with an explicit hypothesis template ("this art belongs to the category: &hellip;") for sharper category boundaries. TF-IDF keywords are scored as a <strong>mean weight per document</strong> rather than a raw corpus sum, so the before/after comparison isn't skewed by the pre-2022 sub-corpus simply containing more records.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERMITAGE -->
+  <div class="page" id="page-hermitage">
+    <section class="hero">
+      <div class="hero-bg"><img src="images/hermitage.webp" alt="State Hermitage Museum" /></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal">CASE STUDY &middot; ART OF PETERSBURG</p>
+        <h1 class="hero-title reveal reveal-delay-1">The Encyclopedic Exception</h1>
+        <div class="hero-rule reveal reveal-delay-2"></div>
+        <p class="hero-subtitle reveal reveal-delay-3">The State Hermitage Museum: the one institution that doesn't fully converge</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="section-stack" style="gap:64px;">
+        <section class="reveal">
+          <p class="lead" style="max-width:720px;">Garage, MAMM and the Russian Museum all end up dominated by National Russian Art after 2022. The Hermitage is different: it holds one of the world's great encyclopedic collections, with a genuinely strong Eastern department of its own, and that changes the shape of the story. 453 exhibitions were analyzed (306 before 2022, 147 after); 15 records that were only site boilerplate, with no real exhibition text, were excluded from the national-share and keyword calculations below, leaving 291 usable pre-2022 records.</p>
+        </section>
+
+        <section class="stat-grid reveal">
+          <div class="stat-card">
+            <div class="num">453</div>
+            <div class="label">Exhibitions analyzed &middot; 306 before / 147 after 2022</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">21.6% &rarr; 39.5%</div>
+            <div class="label">National Russian Art share, pre- vs. post-2022</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">32.7%</div>
+            <div class="label">Western Art share, still second only to National, after 2022</div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">Dynamics of Exhibition Cultural Focus</h2>
+            <p class="chart-sub">Click a legend item to isolate a theme &middot; hover or tap a bar for the year's breakdown &middot; click a period below to compare eras</p>
+          </div>
+
+          <div class="chart-legend" id="hermitageChartLegend"></div>
+
+          <div class="chart-svg-wrap">
+            <svg id="hermitageTrendsSvg" viewBox="0 0 960 480" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="chart-tooltip" id="hermitageChartTooltip"></div>
+          </div>
+
+          <div class="chart-periods" id="hermitageChartPeriods">
+            <button type="button" class="period-btn" data-period="pre"><span class="period-swatch pre"></span>Pre-2022 &middot; Global engagement</button>
+            <button type="button" class="period-btn" data-period="transition"><span class="period-swatch transition"></span>2022 &middot; Transition year</button>
+            <button type="button" class="period-btn" data-period="post"><span class="period-swatch post"></span>Post-2022 &middot; Domestic &amp; Eastern focus</button>
+          </div>
+
+          <div class="chart-detail" id="hermitageChartDetail">Click or tap a bar for a year's breakdown, or a period above for that era's totals.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>Reading the Divide</h2>
+            <p>Before 2022, Western Art led (45.8%), with Eastern Art a strong second (33.7%) and National Russian Art the smallest share by far (20.6%). After 2022, National Russian Art nearly doubles to 39.5% and does become the single largest category &mdash; but Western Art is still close behind at 32.7%, and Eastern Art remains a substantial 27.9%. Nothing here collapses to near-zero the way Western Art did at Garage. The Hermitage's encyclopedic identity &mdash; genuine depth in Eastern and Western collections alike &mdash; means the pivot registers as a change in emphasis, not a change in kind.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">National Share &amp; Keyword Shift: Before vs. After 2022</h2>
+            <p class="chart-sub">Hover a bar for its exact value &middot; click a keyword or the share chart to see the numbers behind it</p>
+          </div>
+
+          <div class="keyword-chart-grid">
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">National Component Share</h3>
+              <div class="chart-svg-wrap">
+                <svg id="hermitageShareSvg" viewBox="0 0 380 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="hermitageShareTooltip"></div>
+              </div>
+            </div>
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">Top Keywords (Mean TF-IDF per Document)</h3>
+              <div class="chart-legend" id="hermitageKeywordLegend"></div>
+              <div class="chart-svg-wrap">
+                <svg id="hermitageKeywordSvg" viewBox="0 0 560 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="hermitageKeywordTooltip"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-detail" id="hermitageKeywordDetail">Hover or click either chart to see the numbers behind it.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>The Outlier</h2>
+            <p>By percentage points, the Hermitage's national-share rise &mdash; <strong>21.6% &rarr; 39.5%</strong>, up 17.9 pp &mdash; is the largest of any institution in this study, edging out even Garage (+17.2 pp), ahead of the Russian Museum (+13.8 pp) and MAMM (+9.2 pp). But it lands at the <em>lowest</em> post-2022 ceiling of any of them: 39.5% is well short of Garage's 96.6%, MAMM's 98.8%, or the Russian Museum's 68.3%. The keyword shift tells a matching story &mdash; it isn't a change of vocabulary so much as a change of emphasis. Generic terms like &ldquo;art&rdquo; and &ldquo;books&rdquo; lose weight, while self-referential, institutional terms &mdash; &ldquo;palace&rdquo;, &ldquo;winter&rdquo; (as in the Winter Palace), &ldquo;Russia&rdquo; &mdash; gain it. The same institutional self-reference seen at Tretyakov and Pushkin, just without the wholesale category collapse seen at Garage or MAMM.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Full Keyword Extraction (TF-IDF)</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">All ten keywords are Russian-language terms from the source corpus, translated to English and marked <span class="tag">RU</span>. Weights are the mean TF-IDF score per document, the same normalized method used for the Russian Museum.</p>
+
+          <div class="keyword-tables-grid">
+            <div class="keyword-table-card">
+              <h3>Before 2022 <span class="count-pill">291 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="hermitageKeywordTableBefore"></tbody>
+              </table>
+            </div>
+            <div class="keyword-table-card">
+              <h3>After 2022 <span class="count-pill post">147 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="hermitageKeywordTableAfter"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Methodology, in Brief</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">Classification used the same zero-shot model, <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code>, with a keyword safety net: text mentioning &ldquo;Pushkin&rdquo; or the illustrator &ldquo;Mitrokhin&rdquo; is routed straight to National Russian Art. Before computing the national-share and TF-IDF figures, 15 records whose entire text was site boilerplate (a rights-and-credits footer with no exhibition content) were excluded, leaving 291 usable pre-2022 records; TF-IDF weights are a mean per document, matching the Russian Museum's normalized method.</p>
         </section>
       </div>
     </div>
