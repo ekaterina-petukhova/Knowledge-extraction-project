@@ -1069,6 +1069,75 @@ footer p {
   font-weight: 600;
 }
 
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.results-table th {
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.results-table th.rt-num {
+  text-align: right;
+}
+
+.results-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(221,212,199,0.4);
+  font-size: 15px;
+}
+
+.results-table tr:last-child td {
+  border-bottom: none;
+}
+
+.results-table tr:hover td {
+  background: var(--faf);
+}
+
+.results-table td.rt-institution {
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.results-table td.rt-institution a {
+  color: inherit;
+}
+
+.results-table td.rt-institution a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.results-table td.rt-num {
+  text-align: right;
+  font-family: var(--font-mono);
+  color: var(--muted-foreground);
+}
+
+.results-table td.rt-delta {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.results-table td.rt-delta.up {
+  color: var(--primary);
+}
+
+.results-table td.rt-delta.down {
+  color: #A06060;
+}
+
 .pub-columns {
   display: grid;
   gap: 32px;

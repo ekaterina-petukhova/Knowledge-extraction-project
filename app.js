@@ -43,11 +43,14 @@ stepsWrap.innerHTML = steps.map((step, i) => `
 const routes = {
   '/': 'page-home',
   '/data': 'page-data',
-  '/analytics': 'page-analytics',
+  '/pushkin': 'page-pushkin',
+  '/tretyakov': 'page-tretyakov',
   '/garage': 'page-garage',
   '/mamm': 'page-mamm',
   '/russian-museum': 'page-russian-museum',
   '/hermitage': 'page-hermitage',
+  '/art-newspaper': 'page-art-newspaper',
+  '/results': 'page-results',
   '/ontology': 'page-ontology',
   '/knowledge-graph': 'page-knowledge-graph',
   '/methodology': 'page-methodology',
@@ -392,33 +395,62 @@ function createYearTrendChart(cfg) {
   return { init };
 }
 
-// Data verified against final_analysis_fixed.csv (counts by year x category).
-const trendsData = [
-  { year: 2014, eastern: 1,  western: 1,  national: 0 },
-  { year: 2015, eastern: 8,  western: 12, national: 9 },
-  { year: 2016, eastern: 12, western: 14, national: 12 },
-  { year: 2017, eastern: 9,  western: 13, national: 7 },
-  { year: 2018, eastern: 7,  western: 9,  national: 2 },
-  { year: 2019, eastern: 6,  western: 6,  national: 16 },
-  { year: 2020, eastern: 5,  western: 7,  national: 16 },
-  { year: 2021, eastern: 7,  western: 9,  national: 14 },
-  { year: 2022, eastern: 11, western: 9,  national: 20 },
-  { year: 2023, eastern: 16, western: 15, national: 24 },
-  { year: 2024, eastern: 12, western: 6,  national: 31 },
-  { year: 2025, eastern: 13, western: 12, national: 16 },
-  { year: 2026, eastern: 3,  western: 3,  national: 7 }
+// ===== Pushkin Museum: trends, national share, keywords =====
+// Values verified against pushkin_category_by_year.csv, pushkin_national_share.csv
+// and pushkin_tfidf_keywords.csv (Knowledge-extraction-data/pushk-tretyak/третьяк).
+const pushkinTrendsData = [
+  { year: 2014, eastern: 1, western: 0,  national: 1 },
+  { year: 2015, eastern: 6, western: 15, national: 8 },
+  { year: 2016, eastern: 7, western: 21, national: 10 },
+  { year: 2017, eastern: 9, western: 14, national: 5 },
+  { year: 2018, eastern: 5, western: 10, national: 3 },
+  { year: 2019, eastern: 5, western: 7,  national: 2 },
+  { year: 2020, eastern: 1, western: 4,  national: 3 },
+  { year: 2021, eastern: 4, western: 5,  national: 4 },
+  { year: 2022, eastern: 3, western: 7,  national: 5 },
+  { year: 2023, eastern: 3, western: 9,  national: 6 },
+  { year: 2024, eastern: 3, western: 4,  national: 9 },
+  { year: 2025, eastern: 3, western: 8,  national: 5 },
+  { year: 2026, eastern: 2, western: 4,  national: 4 }
 ];
 
-const trendsCategories = [
+const pushkinTrendsCategories = [
   { key: 'eastern', label: 'Eastern Art', color: '#A06060' },
   { key: 'western', label: 'Western Art', color: '#2F6663' },
   { key: 'national', label: 'National Russian Art', color: '#C9A84C' }
 ];
 
 createYearTrendChart({
-  svgId: 'trendsSvg', legendId: 'chartLegend', tooltipId: 'chartTooltip',
-  periodsId: 'chartPeriods', detailId: 'chartDetail',
-  data: trendsData, categories: trendsCategories
+  svgId: 'pushkinTrendsSvg', legendId: 'pushkinChartLegend', tooltipId: 'pushkinChartTooltip',
+  periodsId: 'pushkinChartPeriods', detailId: 'pushkinChartDetail',
+  data: pushkinTrendsData, categories: pushkinTrendsCategories
+}).init();
+
+// ===== Tretyakov Gallery: trends, national share, keywords =====
+// Values verified against tretyakov_category_by_year.csv and tretyakov_national_share.csv.
+// Archive gaps (2014-2016, 2018) are real, not backfilled with zeroes.
+const tretyakovTrendsData = [
+  { year: 2017, eastern: 0, western: 0,  national: 1 },
+  { year: 2019, eastern: 0, western: 5,  national: 9 },
+  { year: 2020, eastern: 1, western: 5,  national: 14 },
+  { year: 2021, eastern: 2, western: 3,  national: 12 },
+  { year: 2022, eastern: 4, western: 4,  national: 17 },
+  { year: 2023, eastern: 6, western: 10, national: 21 },
+  { year: 2024, eastern: 5, western: 9,  national: 19 },
+  { year: 2025, eastern: 5, western: 7,  national: 13 },
+  { year: 2026, eastern: 1, western: 0,  national: 2 }
+];
+
+const tretyakovTrendsCategories = [
+  { key: 'eastern', label: 'Eastern Art', color: '#A06060' },
+  { key: 'western', label: 'Western Art', color: '#2F6663' },
+  { key: 'national', label: 'National Russian Art', color: '#C9A84C' }
+];
+
+createYearTrendChart({
+  svgId: 'tretyakovTrendsSvg', legendId: 'tretyakovChartLegend', tooltipId: 'tretyakovChartTooltip',
+  periodsId: 'tretyakovChartPeriods', detailId: 'tretyakovChartDetail',
+  data: tretyakovTrendsData, categories: tretyakovTrendsCategories
 }).init();
 
 // Data verified against category_by_year.csv (Knowledge-extraction-data/russkiy muzei).
@@ -703,95 +735,113 @@ function buildKeywordTable(id, rows) {
   `).join('');
 }
 
-// ===== Pushkin / Tretyakov: keyword shift & national component share =====
-// Values verified against the TF-IDF extraction output (before/after 2022).
-const nationalShareData = [
-  { key: 'before', label: 'Before 2022', color: '#2F6663', count: 45, total: 202, pct: 22.3 },
-  { key: 'after',  label: 'After 2022',  color: '#A06060', count: 71, total: 198, pct: 35.9 }
+// ===== Pushkin Museum: national share & keyword shift =====
+// Values verified against pushkin_national_share.csv and pushkin_tfidf_keywords.csv.
+const pushkinShareData = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663', count: 36, total: 150, pct: 24.0 },
+  { key: 'after',  label: 'After 2022',  color: '#A06060', count: 29, total: 75,  pct: 38.7 }
 ];
 
-const keywordCompareData = [
-  { word: 'art',        before: 7.5455, after: 7.3371 },
-  { word: 'works',      before: 7.7288, after: 7.0628 },
-  { word: 'russian',    before: 4.5246, after: 6.2481 },
-  { word: 'collection', before: 5.8772, after: 4.7494 },
-  { word: 'unique',     before: 4.6174, after: 0 },
-  { word: 'museum',     before: 4.2727, after: 3.5332 },
-  { word: 'century',    before: 0,      after: 7.8787 },
-  { word: 'tretyakov',  before: 0,      after: 3.5966 }
+createShareChart({
+  svgId: 'pushkinShareSvg', tooltipId: 'pushkinShareTooltip', detailId: 'pushkinKeywordDetail',
+  items: pushkinShareData, yMax: 45, yTicks: [0, 15, 30, 45], W: 380, H: 320,
+  onSelect: () => `Records classified as National Russian Art: <strong>36 of 150 (24.0%)</strong> before 2022 &rarr; <strong>29 of 75 (38.7%)</strong> after &mdash; a rise of 14.7 percentage points.`
+}).init();
+
+// All ten keywords are distinct concepts, no near-duplicate word forms here.
+const pushkinKeywordCompareData = [
+  { key: 'art',        label: 'art',                 before: 0.0419, after: 0.0456 },
+  { key: 'project',    label: 'project',              before: 0.0162, after: 0.0319 },
+  { key: 'xix',        label: 'XIX',                  before: 0.0202, after: 0.0239 },
+  { key: 'centuries',  label: 'centuries',             before: 0.0167, after: 0.0238 },
+  { key: 'firsttime',  label: 'for the first time',    before: 0.0183, after: 0.0214 },
+  { key: 'russia',     label: 'Russia',                before: 0.0226, after: 0.0151 },
+  { key: 'willbe',     label: 'will be',               before: 0.0149, after: 0.0204 },
+  { key: 'engravings', label: 'engravings',            before: 0.0342, after: 0 },
+  { key: 'painting',   label: 'painting',              before: 0.0161, after: 0.0181 },
+  { key: 'masters',    label: 'masters',               before: 0.0172, after: 0.0167 }
 ];
 
-const keywordSeries = [
+const pushkinKeywordSeries = [
   { key: 'before', label: 'Before 2022', color: '#2F6663' },
   { key: 'after',  label: 'After 2022',  color: '#A06060' }
 ];
 
-// Full TF-IDF term lists. Russian-language terms from the bilingual corpus
-// are flagged `ru: true` and rendered with an RU tag rather than merged
-// into their English near-equivalents, since they carry a distinct weight.
-const keywordFullBefore = [
-  { word: 'works', weight: 7.7288 },
-  { word: 'art', weight: 7.5455 },
-  { word: 'collection', weight: 5.8772 },
-  { word: 'unique', weight: 4.6174 },
-  { word: 'russian', weight: 4.5246 },
-  { word: 'artists', weight: 4.4484 },
-  { word: 'museum', weight: 4.2727 },
-  { word: 'artist', weight: 4.2098 },
-  { word: 'exhibition', weight: 4.1491, ru: true },
-  { word: 'works', weight: 4.1419, ru: true },
-  { word: 'showcases', weight: 3.9867 },
-  { word: 'artists', weight: 3.8178, ru: true },
-  { word: 'selection', weight: 3.6328 }
-];
-
-const keywordFullAfter = [
-  { word: 'art', weight: 7.3371 },
-  { word: 'works', weight: 7.0628 },
-  { word: 'russian', weight: 6.2481 },
-  { word: 'collection', weight: 4.7494 },
-  { word: 'artists', weight: 4.3856 },
-  { word: 'exhibition', weight: 4.2424, ru: true },
-  { word: 'century', weight: 7.8787 },
-  { word: 'gallery', weight: 3.9971 },
-  { word: 'features', weight: 3.7497 },
-  { word: 'works', weight: 3.6335, ru: true },
-  { word: 'tretyakov', weight: 3.5966 },
-  { word: 'museum', weight: 3.5332 }
-];
-
 createGroupedCompareChart({
-  svgId: 'keywordSvg', legendId: 'keywordLegend', tooltipId: 'keywordTooltip', detailId: 'keywordDetail',
-  items: keywordCompareData, itemKey: d => d.word, itemLabel: d => d.word,
-  series: keywordSeries, W: 560, H: 320, marginLeft: 34,
-  yMax: Math.ceil(Math.max(...keywordCompareData.map(d => Math.max(d.before, d.after)))) + 1,
-  yTicks: (() => {
-    const max = Math.ceil(Math.max(...keywordCompareData.map(d => Math.max(d.before, d.after)))) + 1;
-    const ticks = [];
-    for (let t = 0; t <= max; t += 2) ticks.push(t);
-    return ticks;
-  })(),
-  tooltipValue: v => `TF-IDF weight: ${v.toFixed(4)}`,
+  svgId: 'pushkinKeywordSvg', legendId: 'pushkinKeywordLegend', tooltipId: 'pushkinKeywordTooltip', detailId: 'pushkinKeywordDetail',
+  items: pushkinKeywordCompareData, itemKey: d => d.key, itemLabel: d => d.label,
+  series: pushkinKeywordSeries, W: 560, H: 320, marginLeft: 40,
+  yMax: 0.05, yTicks: [0, 0.01, 0.02, 0.03, 0.04, 0.05], yTickLabel: t => t.toFixed(2),
+  tooltipValue: v => `Mean TF-IDF: ${v.toFixed(4)}`,
   onSelect: item => {
-    if (item.before === 0 && item.after > 0) {
-      return `<strong>"${item.word}"</strong> is absent before 2022 and emerges afterward with a weight of <strong>${item.after.toFixed(2)}</strong> &mdash; a genuinely new term in the vocabulary.`;
-    }
     if (item.after === 0 && item.before > 0) {
-      return `<strong>"${item.word}"</strong> carried a weight of <strong>${item.before.toFixed(2)}</strong> before 2022 and disappears entirely from the post-2022 top terms.`;
+      return `<strong>"${item.label}"</strong> (RU) carried a weight of <strong>${item.before.toFixed(4)}</strong> before 2022 &mdash; its single highest-weighted term &mdash; and disappears entirely afterward.`;
     }
     const delta = item.after - item.before;
-    return `<strong>"${item.word}"</strong>: ${item.before.toFixed(2)} before 2022 &rarr; ${item.after.toFixed(2)} after (${delta >= 0 ? '+' : ''}${delta.toFixed(2)}).`;
+    return `<strong>"${item.label}"</strong> (RU): ${item.before.toFixed(4)} before 2022 &rarr; ${item.after.toFixed(4)} after (${delta >= 0 ? '+' : ''}${delta.toFixed(4)}).`;
   }
 }).init();
 
+const pushkinKeywordFullBefore = pushkinKeywordCompareData.map(d => ({ word: d.label, weight: d.before, ru: true }));
+const pushkinKeywordFullAfter = pushkinKeywordCompareData.map(d => ({ word: d.label, weight: d.after, ru: true }));
+
+buildKeywordTable('pushkinKeywordTableBefore', pushkinKeywordFullBefore);
+buildKeywordTable('pushkinKeywordTableAfter', pushkinKeywordFullAfter);
+
+// ===== Tretyakov Gallery: national share & keyword shift =====
+// Values verified against tretyakov_national_share.csv and tretyakov_tfidf_keywords.csv.
+// Note the national share FALLS after 2022, unlike every other institution studied.
+const tretyakovShareData = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663', count: 36, total: 52,  pct: 69.2 },
+  { key: 'after',  label: 'After 2022',  color: '#A06060', count: 72, total: 123, pct: 58.5 }
+];
+
 createShareChart({
-  svgId: 'nationalShareSvg', tooltipId: 'nationalShareTooltip', detailId: 'keywordDetail',
-  items: nationalShareData, yMax: 45, yTicks: [0, 15, 30, 45], W: 380, H: 320,
-  onSelect: () => `Records with a national/Russian component: <strong>45 of 202 (22.3%)</strong> before 2022 &rarr; <strong>71 of 198 (35.9%)</strong> after &mdash; a rise of 13.6 percentage points.`
+  svgId: 'tretyakovShareSvg', tooltipId: 'tretyakovShareTooltip', detailId: 'tretyakovKeywordDetail',
+  items: tretyakovShareData, yMax: 80, yTicks: [0, 20, 40, 60, 80], W: 380, H: 320,
+  onSelect: () => `Records classified as National Russian Art: <strong>36 of 52 (69.2%)</strong> before 2022 &rarr; <strong>72 of 123 (58.5%)</strong> after &mdash; a fall of 10.7 percentage points, the only decrease among the institutions in this study.`
 }).init();
 
-buildKeywordTable('keywordTableBefore', keywordFullBefore);
-buildKeywordTable('keywordTableAfter', keywordFullAfter);
+// Full 10-word TF-IDF list has two grammatical duplicates ("art" and "project"
+// each appear in two case forms). Only one form of each is used in the
+// interactive chart to avoid a duplicate label; both forms are kept below.
+const tretyakovKeywordFullData = [
+  { key: 'art',       label: 'art',      before: 0.0385, after: 0.0354 },
+  { key: 'painting',  label: 'painting', before: 0.0263, after: 0.0221 },
+  { key: 'project2',  label: 'project',  before: 0.0247, after: 0.0211 },
+  { key: 'russianadj',label: 'Russian',  before: 0.0195, after: 0.0213 },
+  { key: 'project',   label: 'project',  before: 0.0220, after: 0.0167 },
+  { key: 'masters',   label: 'masters',  before: 0.0148, after: 0.0207 },
+  { key: 'russia',    label: 'Russia',   before: 0.0204, after: 0.0143 },
+  { key: 'beginning', label: 'beginning',before: 0.0194, after: 0.0144 },
+  { key: 'years',     label: 'years',    before: 0.0122, after: 0.0193 },
+  { key: 'art2',      label: 'art',      before: 0.0199, after: 0.0089 }
+];
+
+const tretyakovKeywordCompareData = tretyakovKeywordFullData.filter(d => d.key !== 'project2' && d.key !== 'art2');
+
+const tretyakovKeywordSeries = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663' },
+  { key: 'after',  label: 'After 2022',  color: '#A06060' }
+];
+
+createGroupedCompareChart({
+  svgId: 'tretyakovKeywordSvg', legendId: 'tretyakovKeywordLegend', tooltipId: 'tretyakovKeywordTooltip', detailId: 'tretyakovKeywordDetail',
+  items: tretyakovKeywordCompareData, itemKey: d => d.key, itemLabel: d => d.label,
+  series: tretyakovKeywordSeries, W: 560, H: 320, marginLeft: 40,
+  yMax: 0.04, yTicks: [0, 0.01, 0.02, 0.03, 0.04], yTickLabel: t => t.toFixed(2),
+  tooltipValue: v => `Mean TF-IDF: ${v.toFixed(4)}`,
+  onSelect: item => {
+    const delta = item.after - item.before;
+    return `<strong>"${item.label}"</strong> (RU): ${item.before.toFixed(4)} before 2022 &rarr; ${item.after.toFixed(4)} after (${delta >= 0 ? '+' : ''}${delta.toFixed(4)}).`;
+  }
+}).init();
+
+const tretyakovKeywordFullBefore = tretyakovKeywordFullData.map(d => ({ word: d.label, weight: d.before, ru: true }));
+const tretyakovKeywordFullAfter = tretyakovKeywordFullData.map(d => ({ word: d.label, weight: d.after, ru: true }));
+
+buildKeywordTable('tretyakovKeywordTableBefore', tretyakovKeywordFullBefore);
+buildKeywordTable('tretyakovKeywordTableAfter', tretyakovKeywordFullAfter);
 
 // ===== Garage Museum: category balance, before vs. after 2022 =====
 const garageCategoryData = [
@@ -1080,3 +1130,137 @@ const hermitageKeywordFullAfter = hermitageKeywordFullData.map(d => ({ word: d.l
 
 buildKeywordTable('hermitageKeywordTableBefore', hermitageKeywordFullBefore);
 buildKeywordTable('hermitageKeywordTableAfter', hermitageKeywordFullAfter);
+
+// ===== The Art Newspaper Russia: trends, national share, keywords =====
+// Independent press coverage, not a single institution's own record. Values
+// verified against category_by_year.csv and the national-share/tfidf CSVs
+// (Knowledge-extraction-data/art_newspaper).
+const artNewspaperTrendsData = [
+  { year: 2014, eastern: 2,  western: 16,  national: 18 },
+  { year: 2015, eastern: 12, western: 18,  national: 24 },
+  { year: 2016, eastern: 11, western: 32,  national: 30 },
+  { year: 2017, eastern: 33, western: 163, national: 98 },
+  { year: 2018, eastern: 39, western: 203, national: 105 },
+  { year: 2019, eastern: 46, western: 276, national: 89 },
+  { year: 2020, eastern: 21, western: 97,  national: 48 },
+  { year: 2021, eastern: 21, western: 110, national: 79 },
+  { year: 2022, eastern: 46, western: 107, national: 68 },
+  { year: 2023, eastern: 32, western: 104, national: 75 },
+  { year: 2024, eastern: 39, western: 136, national: 85 },
+  { year: 2025, eastern: 25, western: 109, national: 78 },
+  { year: 2026, eastern: 26, western: 55,  national: 45 }
+];
+
+const artNewspaperTrendsCategories = [
+  { key: 'eastern', label: 'Eastern Art', color: '#A06060' },
+  { key: 'western', label: 'Western Art', color: '#2F6663' },
+  { key: 'national', label: 'National Russian Art', color: '#C9A84C' }
+];
+
+createYearTrendChart({
+  svgId: 'artNewspaperTrendsSvg', legendId: 'artNewspaperChartLegend', tooltipId: 'artNewspaperChartTooltip',
+  periodsId: 'artNewspaperChartPeriods', detailId: 'artNewspaperChartDetail',
+  data: artNewspaperTrendsData, categories: artNewspaperTrendsCategories
+}).init();
+
+const artNewspaperShareData = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663', count: 491, total: 1591, pct: 30.9 },
+  { key: 'after',  label: 'After 2022',  color: '#A06060', count: 351, total: 1030, pct: 34.1 }
+];
+
+createShareChart({
+  svgId: 'artNewspaperShareSvg', tooltipId: 'artNewspaperShareTooltip', detailId: 'artNewspaperKeywordDetail',
+  items: artNewspaperShareData, yMax: 45, yTicks: [0, 15, 30, 45], W: 380, H: 320,
+  onSelect: () => `Coverage classified as National Russian Art: <strong>491 of 1,591 (30.9%)</strong> before 2022 &rarr; <strong>351 of 1,030 (34.1%)</strong> after &mdash; a rise of 3.2 percentage points, the smallest of any dataset in this study.`
+}).init();
+
+// Full 10-word list has two near-duplicate "art" forms (искусство, the native
+// loanword арт) beyond the primary искусства entry; only one is charted.
+const artNewspaperKeywordFullData = [
+  { key: 'art',          label: 'art',          before: 0.0308, after: 0.0266 },
+  { key: 'contemporary',  label: 'contemporary',  before: 0.0209, after: 0.0136 },
+  { key: 'exhibition',    label: 'exhibition',    before: 0.0137, after: 0.0167 },
+  { key: 'project',       label: 'project',       before: 0.0140, after: 0.0146 },
+  { key: 'gallery',       label: 'gallery',       before: 0.0159, after: 0.0111 },
+  { key: 'art2',          label: 'art',           before: 0.0146, after: 0.0103 },
+  { key: 'center',        label: 'center',        before: 0.0084, after: 0.0148 },
+  { key: 'takesplace',    label: 'takes place',   before: 0.0114, after: 0.0117 },
+  { key: 'art3',          label: 'art',           before: 0.0130, after: 0.0094 },
+  { key: 'anniversary',   label: 'anniversary',   before: 0.0114, after: 0.0094 }
+];
+
+const artNewspaperKeywordCompareData = artNewspaperKeywordFullData.filter(d => d.key !== 'art2' && d.key !== 'art3');
+
+const artNewspaperKeywordSeries = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663' },
+  { key: 'after',  label: 'After 2022',  color: '#A06060' }
+];
+
+createGroupedCompareChart({
+  svgId: 'artNewspaperKeywordSvg', legendId: 'artNewspaperKeywordLegend', tooltipId: 'artNewspaperKeywordTooltip', detailId: 'artNewspaperKeywordDetail',
+  items: artNewspaperKeywordCompareData, itemKey: d => d.key, itemLabel: d => d.label,
+  series: artNewspaperKeywordSeries, W: 560, H: 320, marginLeft: 40,
+  yMax: 0.04, yTicks: [0, 0.01, 0.02, 0.03, 0.04], yTickLabel: t => t.toFixed(2),
+  tooltipValue: v => `Mean TF-IDF: ${v.toFixed(4)}`,
+  onSelect: item => {
+    const delta = item.after - item.before;
+    return `<strong>"${item.label}"</strong> (RU): ${item.before.toFixed(4)} before 2022 &rarr; ${item.after.toFixed(4)} after (${delta >= 0 ? '+' : ''}${delta.toFixed(4)}).`;
+  }
+}).init();
+
+const artNewspaperKeywordFullBefore = artNewspaperKeywordFullData.map(d => ({ word: d.label, weight: d.before, ru: true }));
+const artNewspaperKeywordFullAfter = artNewspaperKeywordFullData.map(d => ({ word: d.label, weight: d.after, ru: true }));
+
+buildKeywordTable('artNewspaperKeywordTableBefore', artNewspaperKeywordFullBefore);
+buildKeywordTable('artNewspaperKeywordTableAfter', artNewspaperKeywordFullAfter);
+
+// ===== Results: national share across every institution and media outlet =====
+// Consolidates the national-share figures already verified on each individual page.
+const resultsData = [
+  { key: 'pushkin',        label: 'Pushkin',         route: '/pushkin',         before: 24.0, after: 38.7 },
+  { key: 'tretyakov',      label: 'Tretyakov',       route: '/tretyakov',       before: 69.2, after: 58.5 },
+  { key: 'garage',         label: 'Garage',          route: '/garage',          before: 79.4, after: 96.6 },
+  { key: 'mamm',           label: 'MAMM',            route: '/mamm',            before: 89.6, after: 98.8 },
+  { key: 'russianmuseum',  label: 'Russian Museum',  route: '/russian-museum',  before: 54.5, after: 68.3 },
+  { key: 'hermitage',      label: 'Hermitage',       route: '/hermitage',       before: 21.6, after: 39.5 },
+  { key: 'artnewspaper',   label: 'Art Newspaper',   route: '/art-newspaper',   before: 30.9, after: 34.1 }
+];
+
+const resultsSeries = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663' },
+  { key: 'after',  label: 'After 2022',  color: '#A06060' }
+];
+
+createGroupedCompareChart({
+  svgId: 'resultsSvg', legendId: 'resultsChartLegend', tooltipId: 'resultsTooltip', detailId: 'resultsDetail',
+  items: resultsData, itemKey: d => d.key, itemLabel: d => d.label,
+  series: resultsSeries, W: 960, H: 460, marginLeft: 40, marginBottom: 76,
+  groupWidthRatio: 0.72, rotateLabels: true,
+  yMax: 100, yTicks: [0, 20, 40, 60, 80, 100],
+  tooltipValue: v => `${v.toFixed(1)}%`,
+  onSelect: item => {
+    const delta = item.after - item.before;
+    return `<strong>${item.label}</strong>: ${item.before.toFixed(1)}% before 2022 &rarr; ${item.after.toFixed(1)}% after (${delta >= 0 ? '+' : ''}${delta.toFixed(1)} pp).`;
+  }
+}).init();
+
+function buildResultsTable(id, rows) {
+  const tbody = document.getElementById(id);
+  if (!tbody) return;
+  const sorted = [...rows].sort((a, b) => (b.after - b.before) - (a.after - a.before));
+  tbody.innerHTML = sorted.map(r => {
+    const delta = r.after - r.before;
+    const dir = delta >= 0 ? 'up' : 'down';
+    const arrow = delta >= 0 ? '&#9650;' : '&#9660;';
+    return `
+      <tr>
+        <td class="rt-institution"><a href="#${r.route}" data-link>${r.label}</a></td>
+        <td class="rt-num">${r.before.toFixed(1)}%</td>
+        <td class="rt-num">${r.after.toFixed(1)}%</td>
+        <td class="rt-delta ${dir}">${arrow} ${Math.abs(delta).toFixed(1)} pp</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+buildResultsTable('resultsTableBody', resultsData);

@@ -22,7 +22,8 @@
         <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div class="nav-dropdown-menu">
-        <a href="#/analytics" data-link data-route="/analytics">Pushkin &amp; Tretyakov</a>
+        <a href="#/pushkin" data-link data-route="/pushkin">Pushkin Museum</a>
+        <a href="#/tretyakov" data-link data-route="/tretyakov">Tretyakov Gallery</a>
         <a href="#/garage" data-link data-route="/garage">Garage</a>
         <a href="#/mamm" data-link data-route="/mamm">MAMM</a>
       </div>
@@ -36,6 +37,15 @@
         <a href="#/hermitage" data-link data-route="/hermitage">Hermitage</a>
       </div>
     </div>
+    <div class="nav-dropdown" id="navDropdownMedia">
+      <button type="button" class="nav-dropdown-toggle">Independent Media
+        <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="nav-dropdown-menu">
+        <a href="#/art-newspaper" data-link data-route="/art-newspaper">The Art Newspaper Russia</a>
+      </div>
+    </div>
+    <a href="#/results" data-link data-route="/results">Results</a>
     <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
     <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
     <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
@@ -50,7 +60,8 @@
   <a href="#/data" data-link data-route="/data">Data</a>
   <div class="mobile-menu-group">
     <span class="mobile-menu-label">Art of Moscow</span>
-    <a href="#/analytics" data-link data-route="/analytics">Pushkin &amp; Tretyakov</a>
+    <a href="#/pushkin" data-link data-route="/pushkin">Pushkin Museum</a>
+    <a href="#/tretyakov" data-link data-route="/tretyakov">Tretyakov Gallery</a>
     <a href="#/garage" data-link data-route="/garage">Garage</a>
     <a href="#/mamm" data-link data-route="/mamm">MAMM</a>
   </div>
@@ -59,6 +70,11 @@
     <a href="#/russian-museum" data-link data-route="/russian-museum">Russian Museum</a>
     <a href="#/hermitage" data-link data-route="/hermitage">Hermitage</a>
   </div>
+  <div class="mobile-menu-group">
+    <span class="mobile-menu-label">Independent Media</span>
+    <a href="#/art-newspaper" data-link data-route="/art-newspaper">The Art Newspaper Russia</a>
+  </div>
+  <a href="#/results" data-link data-route="/results">Results</a>
   <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
   <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
   <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
@@ -172,32 +188,36 @@
     </div>
   </div>
 
-  <!-- ANALYTICS -->
-  <div class="page" id="page-analytics">
-    <div class="container">
-      <div class="reveal">
-        <h1 class="page-title">Exhibition Analytics</h1>
-        <p class="page-subtitle">Quantifying the thematic pivot across 400 exhibitions, 2014&ndash;2026</p>
-        <div class="title-rule"></div>
+  <!-- PUSHKIN -->
+  <div class="page" id="page-pushkin">
+    <section class="hero">
+      <div class="hero-bg"><img src="images/pushkinskiy.jpeg" alt="Pushkin State Museum of Fine Arts" /></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal">CASE STUDY &middot; ART OF MOSCOW</p>
+        <h1 class="hero-title reveal reveal-delay-1">The Missing Print</h1>
+        <div class="hero-rule reveal reveal-delay-2"></div>
+        <p class="hero-subtitle reveal reveal-delay-3">Pushkin State Museum of Fine Arts: the pivot in its purest form</p>
       </div>
+    </section>
 
+    <div class="container">
       <div class="section-stack" style="gap:64px;">
         <section class="reveal">
-          <p class="lead" style="max-width:720px;">Every exhibition record from the Tretyakov Gallery and Pushkin Museum was classified into one of three idea blocks &mdash; <span class="tag">Western Art</span>, <span class="tag">Eastern Art</span> and <span class="tag">National Russian Art</span>. Plotted year by year, the corpus shows a clear structural break: after 2022, national and eastern themes come to dominate the programme where Western art once led.</p>
+          <p class="lead" style="max-width:720px;">Pushkin and Tretyakov used to be analyzed as a single combined corpus. Split apart, Pushkin turns out to be the institution that tracks the site's central thesis most cleanly: Western engagement contracts, National Russian Art grows, and one keyword vanishes outright.</p>
         </section>
 
         <section class="stat-grid reveal">
           <div class="stat-card">
-            <div class="num">400</div>
-            <div class="label">Exhibitions analyzed &middot; 2 institutions</div>
+            <div class="num">225</div>
+            <div class="label">Exhibitions analyzed &middot; 150 before / 75 after 2022</div>
           </div>
           <div class="stat-card">
-            <div class="num">35% &rarr; 23%</div>
-            <div class="label">Western art share, pre- vs. post-2022</div>
+            <div class="num">50.7% &rarr; 42.7%</div>
+            <div class="label">Western Art share, pre- vs. post-2022</div>
           </div>
           <div class="stat-card">
-            <div class="num">65% &rarr; 77%</div>
-            <div class="label">National + Eastern share, pre- vs. post-2022</div>
+            <div class="num">24.0% &rarr; 38.7%</div>
+            <div class="label">National Russian Art share, pre- vs. post-2022</div>
           </div>
         </section>
 
@@ -209,142 +229,288 @@
             <p class="chart-sub">Click a legend item to isolate a theme &middot; hover or tap a bar for the year's breakdown &middot; click a period below to compare eras</p>
           </div>
 
-          <div class="chart-legend" id="chartLegend"></div>
+          <div class="chart-legend" id="pushkinChartLegend"></div>
 
           <div class="chart-svg-wrap">
-            <svg id="trendsSvg" viewBox="0 0 960 480" preserveAspectRatio="xMidYMid meet"></svg>
-            <div class="chart-tooltip" id="chartTooltip"></div>
+            <svg id="pushkinTrendsSvg" viewBox="0 0 960 480" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="chart-tooltip" id="pushkinChartTooltip"></div>
           </div>
 
-          <div class="chart-periods" id="chartPeriods">
+          <div class="chart-periods" id="pushkinChartPeriods">
             <button type="button" class="period-btn" data-period="pre"><span class="period-swatch pre"></span>Pre-2022 &middot; Global engagement</button>
             <button type="button" class="period-btn" data-period="transition"><span class="period-swatch transition"></span>2022 &middot; Transition year</button>
             <button type="button" class="period-btn" data-period="post"><span class="period-swatch post"></span>Post-2022 &middot; Domestic &amp; Eastern focus</button>
           </div>
 
-          <div class="chart-detail" id="chartDetail">Click or tap a bar for a year's breakdown, or a period above for that era's totals.</div>
+          <div class="chart-detail" id="pushkinChartDetail">Click or tap a bar for a year's breakdown, or a period above for that era's totals.</div>
         </section>
-         <!-- ↓↓↓ ВСТАВЬ СЮДА БЛОК ИЗ insert_into_index_html.html ↓↓↓ -->
-        <div class="divider"></div>
 
-        <section class="chart-box reveal">
-          <div class="chart-header">
-            <h2 class="section-heading" style="margin-bottom:4px;">Hermitage Museum — Exhibition Focus</h2>
-            ... (весь остальной код из файла)
-          </div>
-        </section>
-        <!-- ↑↑↑ КОНЕЦ ВСТАВКИ ↑↑↑ -->
         <section class="reveal">
           <div class="transform-box">
             <h2>Reading the Pivot</h2>
-            <p>Before 2022, Western art anchored roughly a third of every year's programme, on par with national and eastern themes combined. From 2023 onward, that balance inverts: National Russian Art becomes the single largest block in every post-2022 year, and Eastern Art holds steady or grows, while Western Art's share shrinks by more than a third. 2022 itself sits as a transition year in the dataset &mdash; already tilted toward national themes, but not yet at the post-2022 peak.</p>
+            <p>Before 2022, Western Art led Pushkin's programme at 50.7%, with Eastern Art (25.3%) ahead of National Russian Art (24.0%). After 2022, Western Art falls to 42.7% &mdash; still the largest single category, but National Russian Art overtakes Eastern Art to become a close second (38.7% vs. 18.7%). Of the four institutions studied outside the Hermitage, Pushkin is the one where Western Art never fully cedes the lead &mdash; the pivot here is a redistribution, not yet a reversal.</p>
           </div>
         </section>
 
         <div class="divider"></div>
-
-        <section class="reveal">
-          <div class="dataset-card">
-            <div class="dataset-icon" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
-            </div>
-            <div class="dataset-info">
-              <h3>final_analysis_fixed.csv</h3>
-              <p>400 exhibition records &middot; Tretyakov Gallery &amp; Pushkin Museum &middot; 2014&ndash;2026 &middot; title, dates, source URL and thematic category for every entry.</p>
-            </div>
-            <a href="data/final_analysis_fixed.csv" download class="btn dataset-btn">Download CSV</a>
-          </div>
-        </section>
-
-        <div class="divider"></div>
-
-        <section class="reveal">
-          <h2 class="section-heading">From Corpus to Concepts: Extracting Themes</h2>
-          <p class="lead" style="max-width:720px;margin-top:16px;">Classifying exhibitions by idea block is only half the picture. To see <em>which words</em> defined museum discourse before and after 2022, we needed a second pipeline &mdash; one that took four attempts to get right.</p>
-
-          <div class="timeline" style="margin-top:48px;">
-            <div class="timeline-item">
-              <span class="timeline-num">1</span>
-              <h3>Ollama Summarization</h3>
-              <p>Each scraped exhibition page was passed through <strong>Ollama</strong> to produce a short, clean description &mdash; compressing noisy scraped HTML down to its curatorial essence, so later steps could work with clean text rather than raw web clutter.</p>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-num">2</span>
-              <h3>BERTopic <span style="font-weight:400;color:var(--muted-foreground);font-size:14px;">(attempted)</span></h3>
-              <p>Topic modeling with <strong>BERTopic</strong> came next, but the output was dominated by noise: articles, stopwords and other low-signal tokens crowded out the actual themes.</p>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-num">3</span>
-              <h3>Ollama Tag Extraction <span style="font-weight:400;color:var(--muted-foreground);font-size:14px;">(attempted)</span></h3>
-              <p>We returned to Ollama to extract tags directly, but hit a different wall: the volume of text per record was too heavy for the model to summarize reliably at full corpus scale.</p>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-num">4</span>
-              <h3>TF-IDF Vector Analysis <span style="font-weight:400;color:var(--secondary);font-size:14px;">(adopted)</span></h3>
-              <p>The method that held up: a <strong>TF-IDF</strong> vector analysis across the pre- and post-2022 sub-corpora, yielding a frequency-weighted score for every term &mdash; the results plotted below.</p>
-            </div>
-          </div>
-        </section>
 
         <section class="chart-box reveal">
           <div class="chart-header">
-            <h2 class="section-heading" style="margin-bottom:4px;">Keyword Shift: Before vs. After 2022</h2>
-            <p class="chart-sub">Hover a bar for its exact weight &middot; click a keyword to compare it across periods &middot; click the share chart to see the underlying record counts</p>
+            <h2 class="section-heading" style="margin-bottom:4px;">National Share &amp; Keyword Shift: Before vs. After 2022</h2>
+            <p class="chart-sub">Hover a bar for its exact value &middot; click a keyword or the share chart to see the numbers behind it</p>
           </div>
 
           <div class="keyword-chart-grid">
             <div class="keyword-panel">
               <h3 class="keyword-panel-title">National Component Share</h3>
               <div class="chart-svg-wrap">
-                <svg id="nationalShareSvg" viewBox="0 0 380 320" preserveAspectRatio="xMidYMid meet"></svg>
-                <div class="chart-tooltip" id="nationalShareTooltip"></div>
+                <svg id="pushkinShareSvg" viewBox="0 0 380 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="pushkinShareTooltip"></div>
               </div>
             </div>
             <div class="keyword-panel">
-              <h3 class="keyword-panel-title">Top Keywords (TF-IDF Weight)</h3>
-              <div class="chart-legend" id="keywordLegend"></div>
+              <h3 class="keyword-panel-title">Top Keywords (Mean TF-IDF per Document)</h3>
+              <div class="chart-legend" id="pushkinKeywordLegend"></div>
               <div class="chart-svg-wrap">
-                <svg id="keywordSvg" viewBox="0 0 560 320" preserveAspectRatio="xMidYMid meet"></svg>
-                <div class="chart-tooltip" id="keywordTooltip"></div>
+                <svg id="pushkinKeywordSvg" viewBox="0 0 560 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="pushkinKeywordTooltip"></div>
               </div>
             </div>
           </div>
 
-          <div class="chart-detail" id="keywordDetail">Hover or click either chart to see the numbers behind it.</div>
+          <div class="chart-detail" id="pushkinKeywordDetail">Hover or click either chart to see the numbers behind it.</div>
         </section>
 
         <section class="reveal">
           <div class="transform-box">
-            <h2>What the Keywords Tell Us</h2>
-            <p>"Unique" &mdash; the top discriminating word in pre-2022 discourse &mdash; disappears entirely from the post-2022 vocabulary. In its place: institutional and historical markers like <code>century</code> (the single highest-weighted term after 2022) and named institutions such as <code>tretyakov</code>. The vocabulary shifts from claims of individuality toward claims of institutional history and heritage.</p>
+            <h2>The Word That Disappeared</h2>
+            <p><code>гравюры</code> (engravings) was Pushkin's single highest-weighted keyword before 2022 (0.0342) &mdash; and it drops to exactly zero afterward, vanishing from the top terms entirely. In its place, the same institutional-history markers seen across the rest of the site rise: <code>xix</code> and <code>веков</code> (centuries) both climb, and <code>проект</code> (project) very nearly doubles. The specific medium falls away; the historical frame around it grows.</p>
           </div>
         </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Reading the Shift: Selected Exhibitions</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">Two exhibitions from each period, in the museum's own words, illustrate the pivot the numbers describe.</p>
+
+          <div class="pub-columns">
+            <div class="pub-column">
+              <h3>Before 2022 <span class="count-pill">Western focus</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2020</span>
+                <a href="https://pushkinmuseum.art/events/archive/2019/exhibitions/gainsborough/index.php?lang=ru" target="_blank" rel="noopener">Thomas Gainsborough</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2021</span>
+                <a href="https://pushkinmuseum.art/events/archive/2020/exhibitions/viola/index.php?lang=ru" target="_blank" rel="noopener">Bill Viola: Journey of the Soul</a>
+              </div>
+            </div>
+            <div class="pub-column">
+              <h3>After 2022 <span class="count-pill post">National focus</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2022</span>
+                <a href="https://pushkinmuseum.art/events/archive/2022/exhibitions/tsvetaev/index.php?lang=ru" target="_blank" rel="noopener">Ivan Tsvetaev and His Museum: On the 175th Anniversary of the Founder of the Museum of Fine Arts</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2025</span>
+                <a href="https://pushkinmuseum.art/events/archive/2025/exhibitions/museum_act_of_bravery/index.php?lang=ru" target="_blank" rel="noopener">The Museum's Feat: On the 80th Anniversary of Victory in the Great Patriotic War</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
 
         <section class="reveal">
           <h2 class="section-heading">Full Keyword Extraction (TF-IDF)</h2>
-          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">The complete term list behind the chart above. Russian-language terms from the bilingual corpus are marked <span class="tag">RU</span> and kept as separate entries, since they carry their own weight in the source text.</p>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">All ten keywords are Russian-language terms from the source corpus, translated to English and marked <span class="tag">RU</span>. Weights are the mean TF-IDF score per document.</p>
 
           <div class="keyword-tables-grid">
             <div class="keyword-table-card">
-              <h3>Before 2022 <span class="count-pill">202 exhibitions</span></h3>
+              <h3>Before 2022 <span class="count-pill">150 exhibitions</span></h3>
               <table class="keyword-table">
-                <tbody id="keywordTableBefore"></tbody>
+                <tbody id="pushkinKeywordTableBefore"></tbody>
               </table>
             </div>
             <div class="keyword-table-card">
-              <h3>After 2022 <span class="count-pill post">198 exhibitions</span></h3>
+              <h3>After 2022 <span class="count-pill post">75 exhibitions</span></h3>
               <table class="keyword-table">
-                <tbody id="keywordTableAfter"></tbody>
+                <tbody id="pushkinKeywordTableAfter"></tbody>
               </table>
             </div>
           </div>
         </section>
 
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Methodology, in Brief</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">Classification used <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code> zero-shot, run separately on Pushkin's own cleaned corpus rather than a combined Pushkin+Tretyakov file. TF-IDF weights are a mean per document; the stopword list was refined further here to strip out institution self-references (&ldquo;pushkinskogo&rdquo;, &ldquo;gmii&rdquo;) and cookie-consent boilerplate that had been slipping into earlier keyword extractions.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRETYAKOV -->
+  <div class="page" id="page-tretyakov">
+    <section class="hero">
+      <div class="hero-bg"><img src="images/tretyakovskaya.jpeg" alt="State Tretyakov Gallery" /></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal">CASE STUDY &middot; ART OF MOSCOW</p>
+        <h1 class="hero-title reveal reveal-delay-1">The Counter-Pivot</h1>
+        <div class="hero-rule reveal reveal-delay-2"></div>
+        <p class="hero-subtitle reveal reveal-delay-3">The State Tretyakov Gallery breaks the pattern &mdash; and turns east, not home</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="section-stack" style="gap:64px;">
+        <section class="reveal">
+          <p class="lead" style="max-width:720px;">Every other institution in this study grows more national after 2022. Tretyakov, separated from the combined Pushkin+Tretyakov corpus for the first time, does the opposite. Its data also only runs from 2017 onward, so treat the year-by-year shape with that gap in mind.</p>
+        </section>
+
+        <section class="stat-grid reveal">
+          <div class="stat-card">
+            <div class="num">175</div>
+            <div class="label">Exhibitions analyzed &middot; 52 before / 123 after 2022 (data from 2017)</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">69.2% &rarr; 58.5%</div>
+            <div class="label">National Russian Art share, pre- vs. post-2022 &mdash; a fall</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">5.8% &rarr; 17.1%</div>
+            <div class="label">Eastern Art share, pre- vs. post-2022 &mdash; nearly &times;3</div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">Dynamics of Exhibition Cultural Focus</h2>
+            <p class="chart-sub">Click a legend item to isolate a theme &middot; hover or tap a bar for the year's breakdown &middot; click a period below to compare eras</p>
+          </div>
+
+          <div class="chart-legend" id="tretyakovChartLegend"></div>
+
+          <div class="chart-svg-wrap">
+            <svg id="tretyakovTrendsSvg" viewBox="0 0 960 480" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="chart-tooltip" id="tretyakovChartTooltip"></div>
+          </div>
+
+          <div class="chart-periods" id="tretyakovChartPeriods">
+            <button type="button" class="period-btn" data-period="pre"><span class="period-swatch pre"></span>Pre-2022 &middot; Global engagement</button>
+            <button type="button" class="period-btn" data-period="transition"><span class="period-swatch transition"></span>2022 &middot; Transition year</button>
+            <button type="button" class="period-btn" data-period="post"><span class="period-swatch post"></span>Post-2022 &middot; Domestic &amp; Eastern focus</button>
+          </div>
+
+          <div class="chart-detail" id="tretyakovChartDetail">Click or tap a bar for a year's breakdown, or a period above for that era's totals.</div>
+        </section>
+
         <section class="reveal">
           <div class="transform-box">
-            <h2>The National Pivot, Quantified</h2>
-            <p>Records with a national/Russian component rose from <strong>45 of 202 (22.3%)</strong> before 2022 to <strong>71 of 198 (35.9%)</strong> after &mdash; more than a 1.5&times; increase in share. A jump of 13.6 percentage points across a corpus of nearly 400 documents isn't noise; it's a systemic shift in curatorial agenda. Together with the keyword shift above, this supports our central claim: the post-2022 pivot is a pivot toward <strong>nationalization</strong> &mdash; institutions doubling down on their own history and significance rather than global exchange.</p>
+            <h2>Reading the Reversal</h2>
+            <p>Before 2022, Tretyakov was already overwhelmingly national (69.2%) &mdash; unsurprising for a gallery built on the Russian canon. What changes after 2022 isn't a further tilt toward &ldquo;national&rdquo;: National Russian Art's share actually falls to 58.5%, while Western Art holds almost steady (25.0% &rarr; 24.4%) and Eastern Art nearly triples (5.8% &rarr; 17.1%). If there's a &ldquo;pivot to the East&rdquo; anywhere in this whole study, this is the one place it's actually happening in the numbers, not just the discourse.</p>
           </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">National Share &amp; Keyword Shift: Before vs. After 2022</h2>
+            <p class="chart-sub">Hover a bar for its exact value &middot; click a keyword or the share chart to see the numbers behind it</p>
+          </div>
+
+          <div class="keyword-chart-grid">
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">National Component Share</h3>
+              <div class="chart-svg-wrap">
+                <svg id="tretyakovShareSvg" viewBox="0 0 380 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="tretyakovShareTooltip"></div>
+              </div>
+            </div>
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">Top Keywords (Mean TF-IDF per Document)</h3>
+              <div class="chart-legend" id="tretyakovKeywordLegend"></div>
+              <div class="chart-svg-wrap">
+                <svg id="tretyakovKeywordSvg" viewBox="0 0 560 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="tretyakovKeywordTooltip"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-detail" id="tretyakovKeywordDetail">Hover or click either chart to see the numbers behind it.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>Why the Average Was Misleading</h2>
+            <p>The site's original combined analysis reported a national-component rise of 22.3% &rarr; 35.9% for &ldquo;Pushkin and Tretyakov&rdquo; together. That number was real, but it averaged two institutions moving in opposite directions: Pushkin's rise pulled the average up, Tretyakov's fall pulled it down, and the blend looked like a single consistent trend. Separated, Tretyakov's own keyword shift is subtler than a vocabulary swap &mdash; <code>искусстве</code> (art, prepositional case) loses the most weight, while <code>мастера</code> (masters) and <code>годов</code> (years) gain the most &mdash; a shift toward craft and chronology rather than a single dramatic word disappearing.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Reading the Shift: Selected Exhibitions</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">Tretyakov's own titles make the eastward turn concrete &mdash; before 2022, international collaboration; after, exhibitions that name the East directly.</p>
+
+          <div class="pub-columns">
+            <div class="pub-column">
+              <h3>Before 2022 <span class="count-pill">Western / international focus</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2020</span>
+                <a href="https://www.tretyakovgallery.ru/exhibitions/o/moskovskaya-mezhdunarodnaya-biennale-graficheskogo-dizayna-zolotaya-pchela/" target="_blank" rel="noopener">Moscow International Biennale of Graphic Design &ldquo;Golden Bee&rdquo;</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2021</span>
+                <a href="https://www.tretyakovgallery.ru/exhibitions/o/impressionizm-v-rossii-rassvet-avangarda/" target="_blank" rel="noopener">Impressionism in Russia: Dawn of the Avant-Garde (Potsdam)</a>
+              </div>
+            </div>
+            <div class="pub-column">
+              <h3>After 2022 <span class="count-pill post">Eastern focus</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2025</span>
+                <a href="https://www.tretyakovgallery.ru/exhibitions/o/put-na-vostok-russkie-khudozhniki-v-tsentralnoy-azii/" target="_blank" rel="noopener">Path to the East: Russian Artists in Central Asia</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2025</span>
+                <a href="https://www.tretyakovgallery.ru/exhibitions/o/iz-pekina-v-moskvu-dialog-kultur/" target="_blank" rel="noopener">From Beijing to Moscow: A Dialogue of Cultures</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Full Keyword Extraction (TF-IDF)</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">All ten keywords are Russian-language terms from the source corpus, translated to English and marked <span class="tag">RU</span>. Weights are the mean TF-IDF score per document.</p>
+
+          <div class="keyword-tables-grid">
+            <div class="keyword-table-card">
+              <h3>Before 2022 <span class="count-pill">52 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="tretyakovKeywordTableBefore"></tbody>
+              </table>
+            </div>
+            <div class="keyword-table-card">
+              <h3>After 2022 <span class="count-pill post">123 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="tretyakovKeywordTableAfter"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Methodology, in Brief</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">Classification used the same <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code> zero-shot model, run on Tretyakov's own cleaned corpus in isolation. The 2014&ndash;2016 and 2018 gaps in the underlying archive were not backfilled &mdash; the year-by-year chart above simply has no bars for those years, rather than showing a false zero.</p>
         </section>
       </div>
     </div>
@@ -585,7 +751,7 @@
         <section class="reveal">
           <div class="transform-box">
             <h2>Four Institutions, One Ceiling</h2>
-            <p>Line up all four national-share jumps and MAMM stands out for having the <em>smallest</em> point increase, not the largest: Garage climbs 79.4% &rarr; 96.6% (+17.2 pp), the Pushkin/Tretyakov corpus 22.3% &rarr; 35.9% (+13.6 pp), the Russian Museum 54.5% &rarr; 68.3% (+13.8 pp) &mdash; and MAMM just 89.6% &rarr; 98.8% (+9.2 pp). That's not a weaker pivot; it's a ceiling effect. MAMM entered 2022 already close to where the others are heading, which makes it less a fourth data point on the same slope and more a preview of where that slope runs out.</p>
+            <p>Line up the national-share jumps across every institution studied and MAMM stands out for having one of the <em>smallest</em> point increases, not the largest: Hermitage leads at +17.9 pp (21.6% &rarr; 39.5%), Garage follows at +17.2 pp (79.4% &rarr; 96.6%), Pushkin at +14.7 pp (24.0% &rarr; 38.7%), the Russian Museum at +13.8 pp (54.5% &rarr; 68.3%) &mdash; and MAMM just +9.2 pp (89.6% &rarr; 98.8%). That's not a weaker pivot; it's a ceiling effect. MAMM entered 2022 already close to where the others are heading, which makes it less another data point on the same slope and more a preview of where that slope runs out. (Tretyakov, examined on its own page, is the one institution that moves the other way entirely &mdash; see the <a href="#/results" data-link>Results</a> page for the full comparison.)</p>
           </div>
         </section>
 
@@ -717,7 +883,7 @@
         <section class="reveal">
           <div class="transform-box">
             <h2>A Pattern That Holds</h2>
-            <p>The Russian Museum's national-share jump &mdash; <strong>54.5% &rarr; 68.3%</strong>, up 13.8 percentage points &mdash; lands almost exactly where Garage (<strong>79.4% &rarr; 96.6%</strong>) and the combined Pushkin/Tretyakov corpus (<strong>22.3% &rarr; 35.9%</strong>) landed too. Three institutions, two cities, two different eras of art (historical and contemporary), and three independent analyses all converge on the same direction and a similar magnitude of change &mdash; that convergence is what turns a single museum's numbers into a systemic finding.</p>
+            <p>The Russian Museum's national-share jump &mdash; <strong>54.5% &rarr; 68.3%</strong>, up 13.8 percentage points &mdash; sits alongside Garage (<strong>79.4% &rarr; 96.6%</strong>), Pushkin (<strong>24.0% &rarr; 38.7%</strong>) and the Hermitage (<strong>21.6% &rarr; 39.5%</strong>): four institutions, two cities, several different eras of art, all moving the same direction. Tretyakov, examined separately, is the one exception &mdash; its national share falls rather than rises, which is precisely why averaging it together with Pushkin in the original combined analysis was misleading. See the <a href="#/results" data-link>Results</a> page for the full six-way comparison.</p>
           </div>
         </section>
 
@@ -910,6 +1076,246 @@
         <section class="reveal">
           <h2 class="section-heading">Methodology, in Brief</h2>
           <p class="lead" style="max-width:720px;margin-top:16px;">Classification used the same zero-shot model, <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code>, with a keyword safety net: text mentioning &ldquo;Pushkin&rdquo; or the illustrator &ldquo;Mitrokhin&rdquo; is routed straight to National Russian Art. Before computing the national-share and TF-IDF figures, 15 records whose entire text was site boilerplate (a rights-and-credits footer with no exhibition content) were excluded, leaving 291 usable pre-2022 records; TF-IDF weights are a mean per document, matching the Russian Museum's normalized method.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- ART NEWSPAPER -->
+  <div class="page" id="page-art-newspaper">
+    <section class="hero">
+      <div class="hero-bg"><img src="images/artnewspaper.jpeg" alt="The Art Newspaper Russia" /></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal">INDEPENDENT MEDIA</p>
+        <h1 class="hero-title reveal reveal-delay-1">The View From Outside</h1>
+        <div class="hero-rule reveal reveal-delay-2"></div>
+        <p class="hero-subtitle reveal reveal-delay-3">The Art Newspaper Russia: an independent read on 2,621 exhibitions across the whole scene</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="section-stack" style="gap:64px;">
+        <section class="reveal">
+          <p class="lead" style="max-width:720px;">Every other page in this study analyzes one museum's own account of itself. <span class="tag">theartnewspaper.ru</span> is different: an independent art publication reporting on exhibitions across dozens of institutions at once. It's the largest corpus in the whole project &mdash; 2,621 exhibition mentions, 2014&ndash;2026 &mdash; and a useful check on whether the pivot is an institutional talking point or a scene-wide fact.</p>
+        </section>
+
+        <section class="stat-grid reveal">
+          <div class="stat-card">
+            <div class="num">2,621</div>
+            <div class="label">Exhibitions covered &middot; 1,591 before / 1,030 after 2022</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">57.5% &rarr; 49.6%</div>
+            <div class="label">Western Art share, pre- vs. post-2022</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">30.9% &rarr; 34.1%</div>
+            <div class="label">National Russian Art share, pre- vs. post-2022</div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">Dynamics of Exhibition Coverage</h2>
+            <p class="chart-sub">Click a legend item to isolate a theme &middot; hover or tap a bar for the year's breakdown &middot; click a period below to compare eras</p>
+          </div>
+
+          <div class="chart-legend" id="artNewspaperChartLegend"></div>
+
+          <div class="chart-svg-wrap">
+            <svg id="artNewspaperTrendsSvg" viewBox="0 0 960 480" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="chart-tooltip" id="artNewspaperChartTooltip"></div>
+          </div>
+
+          <div class="chart-periods" id="artNewspaperChartPeriods">
+            <button type="button" class="period-btn" data-period="pre"><span class="period-swatch pre"></span>Pre-2022 &middot; Global engagement</button>
+            <button type="button" class="period-btn" data-period="transition"><span class="period-swatch transition"></span>2022 &middot; Transition year</button>
+            <button type="button" class="period-btn" data-period="post"><span class="period-swatch post"></span>Post-2022 &middot; Domestic &amp; Eastern focus</button>
+          </div>
+
+          <div class="chart-detail" id="artNewspaperChartDetail">Click or tap a bar for a year's breakdown, or a period above for that era's totals.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>A Muted Signal</h2>
+            <p>Western Art still leads independent press coverage even after 2022 (49.6%), down from a dominant 57.5% before. National Russian Art rises only modestly, from 30.9% to 34.1% &mdash; a fraction of the swing seen at any single museum in this study. That's expected: this corpus aggregates coverage of dozens of institutions, most of which never adopted the pivot as sharply as Garage or MAMM did. The scene-wide signal is real and points the same direction, but it's diluted by everything that didn't change.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">National Share &amp; Keyword Shift: Before vs. After 2022</h2>
+            <p class="chart-sub">Hover a bar for its exact value &middot; click a keyword or the share chart to see the numbers behind it</p>
+          </div>
+
+          <div class="keyword-chart-grid">
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">National Component Share</h3>
+              <div class="chart-svg-wrap">
+                <svg id="artNewspaperShareSvg" viewBox="0 0 380 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="artNewspaperShareTooltip"></div>
+              </div>
+            </div>
+            <div class="keyword-panel">
+              <h3 class="keyword-panel-title">Top Keywords (Mean TF-IDF per Document)</h3>
+              <div class="chart-legend" id="artNewspaperKeywordLegend"></div>
+              <div class="chart-svg-wrap">
+                <svg id="artNewspaperKeywordSvg" viewBox="0 0 560 320" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="chart-tooltip" id="artNewspaperKeywordTooltip"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-detail" id="artNewspaperKeywordDetail">Hover or click either chart to see the numbers behind it.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>What the Press Stopped Saying</h2>
+            <p><code>современного</code> (contemporary) falls further than any other term (0.0209 &rarr; 0.0136) &mdash; independent coverage of contemporary art specifically contracts, consistent with what MAMM and Garage show from the inside. <code>центре</code> (center, as in art center or venue) rises the most, suggesting coverage leans more on naming the institution or venue itself. It's the same institutional-self-reference pattern seen everywhere else in this study, just visible from outside the museums rather than from within them.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Full Keyword Extraction (TF-IDF)</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">All ten keywords are Russian-language terms from the source corpus, translated to English and marked <span class="tag">RU</span>. Weights are the mean TF-IDF score per document.</p>
+
+          <div class="keyword-tables-grid">
+            <div class="keyword-table-card">
+              <h3>Before 2022 <span class="count-pill">1,591 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="artNewspaperKeywordTableBefore"></tbody>
+              </table>
+            </div>
+            <div class="keyword-table-card">
+              <h3>After 2022 <span class="count-pill post">1,030 exhibitions</span></h3>
+              <table class="keyword-table">
+                <tbody id="artNewspaperKeywordTableAfter"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Methodology, in Brief</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">Exhibition mentions were scraped from <span class="tag">theartnewspaper.ru</span> and classified with the same zero-shot model as the Russian Museum, <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code>, refined with an explicit hypothesis template for sharper category boundaries. Because this corpus spans many institutions rather than one, it functions as an external check on the museum-level findings elsewhere in this study, not a replacement for them.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="page" id="page-results">
+    <div class="container">
+      <div class="reveal">
+        <h1 class="page-title">Results</h1>
+        <p class="page-subtitle">Six independent institutions, one converging story &mdash; and one exception</p>
+        <div class="title-rule"></div>
+      </div>
+
+      <div class="section-stack" style="gap:64px;">
+        <section class="reveal">
+          <p class="lead" style="max-width:720px;">Every other page in this study analyzes one institution (or one media outlet) in isolation, using its own dataset and its own classifier run. This page puts all seven side by side. The point of doing that separately, rather than pooling everything into one corpus from the start, is exactly what the old combined Pushkin+Tretyakov page got wrong: an average can look like a trend even when it's hiding two institutions moving in opposite directions.</p>
+        </section>
+
+        <section class="stat-grid reveal">
+          <div class="stat-card">
+            <div class="num">5,155</div>
+            <div class="label">Exhibition &amp; coverage records analyzed across all 7 datasets</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">6 of 7</div>
+            <div class="label">Datasets where National Russian Art's share rises after 2022</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">1</div>
+            <div class="label">Genuine exception &mdash; the Tretyakov Gallery, which turns East instead</div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">National Share, Before vs. After 2022 &mdash; Every Dataset</h2>
+            <p class="chart-sub">Click a legend item to isolate a period &middot; hover or click a bar for its exact value</p>
+          </div>
+
+          <div class="chart-legend" id="resultsChartLegend"></div>
+
+          <div class="chart-svg-wrap">
+            <svg id="resultsSvg" viewBox="0 0 960 460" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="chart-tooltip" id="resultsTooltip"></div>
+          </div>
+
+          <div class="chart-detail" id="resultsDetail">Hover or click a bar to see the exact share behind it.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="keyword-table-card">
+            <h3>Full comparison<span class="count-pill">sorted by percentage-point change</span></h3>
+            <div style="overflow-x:auto;">
+              <table class="results-table">
+                <thead>
+                  <tr>
+                    <th>Institution</th>
+                    <th class="rt-num">Before 2022</th>
+                    <th class="rt-num">After 2022</th>
+                    <th class="rt-num">Change</th>
+                  </tr>
+                </thead>
+                <tbody id="resultsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>What Replicates</h2>
+            <p>Five of the six museums studied here &mdash; Pushkin, Garage, MAMM, the Russian Museum and the Hermitage &mdash; show National Russian Art's share rising after 2022, using five independent classifier runs across two cities, two eras of art (historical collections and contemporary art), and datasets ranging from 175 to 661 records. Garage and MAMM show what the pivot looks like when it runs all the way to a ceiling (96.6% and 98.8%). The Hermitage shows the same direction with the least room to move, thanks to a genuinely deep Eastern collection of its own. Independent press coverage (The Art Newspaper Russia) confirms the same direction at scene level &mdash; +3.2 percentage points across 2,621 exhibition mentions &mdash; muted exactly as you'd expect from an aggregate that also covers everyone who didn't pivot.</p>
+          </div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>What Doesn't</h2>
+            <p>The Tretyakov Gallery's national share <em>falls</em>, 69.2% &rarr; 58.5%, while its Eastern Art share nearly triples (5.8% &rarr; 17.1%). This is the one place in the whole study where a literal &ldquo;pivot to the East&rdquo; shows up in the numbers rather than just the discourse. It's also the reason the original combined Pushkin+Tretyakov page reported 22.3% &rarr; 35.9%: that number averaged Pushkin's real rise against Tretyakov's real fall, and the blend obscured both stories. Splitting the corpus didn't just fix a number &mdash; it surfaced a genuine counter-example, which makes the pattern found everywhere else more credible, not less.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">The Keyword-Level Pattern</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">Underneath the category numbers, almost every TF-IDF keyword analysis in this study finds the same kind of shift, independent of which words actually move:</p>
+          <ul class="home-list" style="margin-top:24px;max-width:720px;">
+            <li><span>Pushkin: <code>гравюры</code> (engravings) &mdash; the top pre-2022 term &mdash; disappears entirely; <code>xix</code> and <code>веков</code> (centuries) rise.</span></li>
+            <li><span>Hermitage: generic <code>искусства</code> (art) and <code>книги</code> (books) lose weight; <code>дворца</code> and <code>зимнего</code> (Winter Palace) gain it.</span></li>
+            <li><span>Tretyakov: <code>искусстве</code> (art) falls; <code>мастера</code> (masters) and <code>годов</code> (years) rise &mdash; craft and chronology over general claims.</span></li>
+            <li><span>The Art Newspaper: <code>современного</code> (contemporary) falls furthest of any term; <code>центре</code> (center/venue) rises most.</span></li>
+          </ul>
+          <p class="lead" style="max-width:720px;margin-top:24px;">The specific words differ by institution, but the direction doesn't: generic or medium-specific vocabulary loses weight, and terms tied to the institution's own history, architecture or chronology gain it. That's the same finding as the original &ldquo;unique &rarr; century&rdquo; result that started this project, replicated independently across five more datasets with five different vocabularies.</p>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>The Institutional Pivot, Confirmed</h2>
+            <p>Six independently collected, independently classified datasets converge on the same finding: after 2022, Russian museums' own accounts of themselves shift toward national framing and institutional self-reference, at the expense of Western engagement and generic art vocabulary. The one exception (Tretyakov's turn East) and the one dilution (independent press coverage) don't undermine that finding &mdash; they sharpen it, by showing exactly where the pattern is strongest, where it saturates, and where it doesn't hold at all.</p>
+          </div>
         </section>
       </div>
     </div>
