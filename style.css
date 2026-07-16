@@ -1725,3 +1725,17 @@ footer p {
   .methodology-intro { margin-bottom: 42px; }
   .methodology-on-page { margin-bottom: 52px; }
 }
+/* Remove the accidental vertical line on the Methodology page */
+.methodology-section-body {
+  border-left: none !important;
+}
+
+.methodology-content::before,
+.methodology-content::after,
+.methodology-section::before,
+.methodology-section::after,
+.methodology-section-body::before,
+.methodology-section-body::after {
+  content: none !important;
+  display: none !important;
+}
