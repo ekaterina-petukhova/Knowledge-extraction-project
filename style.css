@@ -961,6 +961,75 @@ footer p {
   padding: 12px 24px;
 }
 
+/* ===== Knowledge graph ===== */
+.kg-legend {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  .kg-legend { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .kg-legend { grid-template-columns: repeat(4, 1fr); }
+}
+
+.kg-legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.kg-legend-dot {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-top: 3px;
+}
+
+.kg-legend-item .label {
+  display: block;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.kg-legend-item .desc {
+  color: var(--muted-foreground);
+}
+
+.kg-node-circle {
+  cursor: grab;
+  transition: opacity 0.2s ease, stroke-width 0.15s ease;
+}
+
+.kg-node-circle:active {
+  cursor: grabbing;
+}
+
+.kg-node-label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  fill: var(--foreground);
+  pointer-events: none;
+  user-select: none;
+}
+
+.kg-edge-label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  fill: var(--muted-foreground);
+  pointer-events: none;
+  user-select: none;
+}
+
+.kg-dimmed {
+  opacity: 0.15;
+}
+
 .keyword-chart-grid {
   display: grid;
   gap: 40px;
@@ -1380,6 +1449,7 @@ footer p {
 
 @media (min-width: 768px) {
   .stat-grid { grid-template-columns: repeat(3, 1fr); }
+  .stat-grid.stat-grid-4 { grid-template-columns: repeat(4, 1fr); }
 }
 
 .stat-card {

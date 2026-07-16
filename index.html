@@ -112,7 +112,11 @@
             <ul class="home-list">
               <li>Pushkin Museum Archive</li>
               <li>Tretyakov Gallery Archive</li>
-              <li>Open news and critical sources</li>
+              <li>Garage Museum of Contemporary Art</li>
+              <li>Multimedia Art Museum, Moscow (MAMM)</li>
+              <li>State Russian Museum Archive</li>
+              <li>State Hermitage Museum Archive</li>
+              <li>The Art Newspaper Russia (independent media)</li>
             </ul>
           </div>
           <div class="home-block">
@@ -342,12 +346,6 @@
           </div>
         </section>
 
-        <div class="divider"></div>
-
-        <section class="reveal">
-          <h2 class="section-heading">Methodology, in Brief</h2>
-          <p class="lead" style="max-width:720px;margin-top:16px;">Classification used <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code> zero-shot, run separately on Pushkin's own cleaned corpus rather than a combined Pushkin+Tretyakov file. TF-IDF weights are a mean per document; the stopword list was refined further here to strip out institution self-references (&ldquo;pushkinskogo&rdquo;, &ldquo;gmii&rdquo;) and cookie-consent boilerplate that had been slipping into earlier keyword extractions.</p>
-        </section>
       </div>
     </div>
   </div>
@@ -506,12 +504,6 @@
           </div>
         </section>
 
-        <div class="divider"></div>
-
-        <section class="reveal">
-          <h2 class="section-heading">Methodology, in Brief</h2>
-          <p class="lead" style="max-width:720px;margin-top:16px;">Classification used the same <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code> zero-shot model, run on Tretyakov's own cleaned corpus in isolation. The 2014&ndash;2016 and 2018 gaps in the underlying archive were not backfilled &mdash; the year-by-year chart above simply has no bars for those years, rather than showing a false zero.</p>
-        </section>
       </div>
     </div>
   </div>
@@ -546,31 +538,6 @@
           <div class="stat-card">
             <div class="num">100%</div>
             <div class="label">Accuracy after expert manual review</div>
-          </div>
-        </section>
-
-        <div class="divider"></div>
-
-        <section class="reveal">
-          <h2 class="section-heading">Classifying a Contemporary Institution</h2>
-          <p class="lead" style="max-width:720px;margin-top:16px;">Publications don't carry a ready-made theme label the way exhibition titles do, so each entry had to be categorized into the same three idea blocks used for Tretyakov and Pushkin &mdash; National Russian, Western, and Eastern art.</p>
-
-          <div class="timeline" style="margin-top:48px;">
-            <div class="timeline-item">
-              <span class="timeline-num">1</span>
-              <h3>Zero-Shot Classification</h3>
-              <p>Every publication was categorized with a <strong>zero-shot classification</strong> model, <code>mDeBERTa-v3</code>, assigning each entry to National, Western or Eastern art without any task-specific training on this corpus.</p>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-num">2</span>
-              <h3>Verification on a Control Sample</h3>
-              <p>Results were checked against a manually-labeled control sample of <strong>21 entries</strong>. Automatic classification reached <strong>66.6% accuracy</strong> at an <strong>81% coverage rate</strong>; the errors traced mainly to short text fragments that lacked enough context for the model to work with.</p>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-num">3</span>
-              <h3>Expert Manual Review <span style="font-weight:400;color:var(--secondary);font-size:14px;">(adopted)</span></h3>
-              <p>The final database was supplemented by <strong>expert manual review</strong> across the full corpus, raising categorization accuracy to <strong>100%</strong> &mdash; the results plotted below are drawn from this reviewed dataset.</p>
-            </div>
           </div>
         </section>
 
@@ -758,6 +725,38 @@
         <div class="divider"></div>
 
         <section class="reveal">
+          <h2 class="section-heading">Reading the Shift: Selected Exhibitions</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">Two exhibitions from each period, from MAMM's own listings, show what little room was left for the pivot to move into.</p>
+
+          <div class="pub-columns">
+            <div class="pub-column">
+              <h3>Before 2022 <span class="count-pill">Western focus</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2019</span>
+                <a href="https://mamm-mdf.ru/en/exhibitions/genius-in-the-studio-and-behind-the-paris-art-scene" target="_blank" rel="noopener">Michel Sima: Genius in the Studio and Behind the Paris Art Scene</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2021</span>
+                <a href="https://mamm-mdf.ru/en/exhibitions/shanghai--palm-springs" target="_blank" rel="noopener">Erwin Olaf: Shanghai &ndash; Palm Springs</a>
+              </div>
+            </div>
+            <div class="pub-column">
+              <h3>After 2022 <span class="count-pill post">National focus</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2024</span>
+                <a href="https://mamm-mdf.ru/en/exhibitions/ogoniok" target="_blank" rel="noopener">Ogoniok: Life as a Holiday</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2025</span>
+                <a href="https://mamm-mdf.ru/en/exhibitions/revolution-in-photography" target="_blank" rel="noopener">Alexander Rodchenko: Revolution in Photography</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
           <h2 class="section-heading">Full Keyword Extraction (TF-IDF)</h2>
           <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">MAMM's own site is bilingual and its exhibition text was already scraped in English, so unlike the other case studies, no translation or <span class="tag">RU</span> tagging is needed here &mdash; every term below is native to the source text.</p>
 
@@ -777,12 +776,6 @@
           </div>
         </section>
 
-        <div class="divider"></div>
-
-        <section class="reveal">
-          <h2 class="section-heading">Methodology, in Brief</h2>
-          <p class="lead" style="max-width:720px;margin-top:16px;">Classification again used <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code> zero-shot, this time with an English label set to match the source language, plus a keyword safety net: text containing terms like &ldquo;soviet&rdquo;, &ldquo;lenin&rdquo;, &ldquo;ogoniok&rdquo; or &ldquo;russian avant-garde&rdquo; is routed straight to National Russian Art without a model call. About 45% of scraped records had site boilerplate &mdash; contact details, a cookie banner, &ldquo;Buy a ticket&rdquo;, &ldquo;Share with friends&rdquo; &mdash; spliced directly into the exhibition text; this was stripped with anchor-pattern regexes before TF-IDF was run, so keyword weights reflect exhibition content rather than site furniture.</p>
-        </section>
       </div>
     </div>
   </div>
@@ -920,6 +913,38 @@
         <div class="divider"></div>
 
         <section class="reveal">
+          <h2 class="section-heading">Reading the Shift: Selected Exhibitions</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">Two exhibitions from each period, from the museum's own archive, put faces and titles to the numbers above.</p>
+
+          <div class="pub-columns">
+            <div class="pub-column">
+              <h3>Before 2022 <span class="count-pill">Western focus</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2019</span>
+                <a href="https://rusmuseum.ru/exhibitions/archive/pierre-coulibeuf-demon" target="_blank" rel="noopener">Pierre Coulibeuf: &ldquo;Demon&rdquo;</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2019</span>
+                <a href="https://rusmuseum.ru/exhibitions/archive/boris-lurie" target="_blank" rel="noopener">Boris Lurie: American Nonconformist</a>
+              </div>
+            </div>
+            <div class="pub-column">
+              <h3>After 2022 <span class="count-pill post">National focus</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2024</span>
+                <a href="https://rusmuseum.ru/exhibitions/archive/veroy-i-pravdoy-kazaki-i-kazachestvo-v-russkom-iskusstve-xviii-khkh-vekov" target="_blank" rel="noopener">The Cossacks: Pillar of the Russian State</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2025</span>
+                <a href="https://rusmuseum.ru/exhibitions/archive/strana-pobed-k-80-y-godovshchine-pobedy-v-velikoy-otechestvennoy-voyne" target="_blank" rel="noopener">Land of Victories: On the 80th Anniversary of Victory in the Great Patriotic War</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
           <h2 class="section-heading">Full Keyword Extraction (TF-IDF)</h2>
           <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">All ten keywords are Russian-language terms from the source corpus, translated to English and marked <span class="tag">RU</span>. Weights are the mean TF-IDF score per document, not a raw sum &mdash; this keeps the two periods comparable even though the post-2022 sub-corpus (271 records) is smaller than the pre-2022 one (380 records).</p>
 
@@ -939,12 +964,6 @@
           </div>
         </section>
 
-        <div class="divider"></div>
-
-        <section class="reveal">
-          <h2 class="section-heading">Methodology, in Brief</h2>
-          <p class="lead" style="max-width:720px;margin-top:16px;">Exhibitions were classified with the same zero-shot model as before, <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code>, refined with an explicit hypothesis template ("this art belongs to the category: &hellip;") for sharper category boundaries. TF-IDF keywords are scored as a <strong>mean weight per document</strong> rather than a raw corpus sum, so the before/after comparison isn't skewed by the pre-2022 sub-corpus simply containing more records.</p>
-        </section>
       </div>
     </div>
   </div>
@@ -1052,6 +1071,38 @@
         <div class="divider"></div>
 
         <section class="reveal">
+          <h2 class="section-heading">Still Western, Still Eastern</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">Unlike every other page in this study, this isn't a before/after contrast &mdash; it's proof of continuity. All four exhibitions below opened <strong>after</strong> 2022, straight from the Hermitage's own listings.</p>
+
+          <div class="pub-columns">
+            <div class="pub-column">
+              <h3>Western Art <span class="count-pill">still running</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2024</span>
+                <a href="https://www.hermitagemuseum.org/what-s-on/83fadc78c2fc8af99d165637e3041bf8" target="_blank" rel="noopener">Landscape of the Soul: Caspar David Friedrich and Russia</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2025</span>
+                <a href="https://www.hermitagemuseum.org/what-s-on/threemadonnas" target="_blank" rel="noopener">Three Dutch Madonnas: On the Completion of Restoration</a>
+              </div>
+            </div>
+            <div class="pub-column">
+              <h3>Eastern Art <span class="count-pill post">still running</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2025</span>
+                <a href="https://www.hermitagemuseum.org/what-s-on/j7kfy23dch52f38i92349yfgh24g872og2" target="_blank" rel="noopener">Lamps of the Muslim East</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2025</span>
+                <a href="https://www.hermitagemuseum.org/what-s-on/bachrein" target="_blank" rel="noopener">From the Heritage of Bahrain: The Art of Sword and Dagger Making</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
           <h2 class="section-heading">Full Keyword Extraction (TF-IDF)</h2>
           <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">All ten keywords are Russian-language terms from the source corpus, translated to English and marked <span class="tag">RU</span>. Weights are the mean TF-IDF score per document, the same normalized method used for the Russian Museum.</p>
 
@@ -1071,12 +1122,6 @@
           </div>
         </section>
 
-        <div class="divider"></div>
-
-        <section class="reveal">
-          <h2 class="section-heading">Methodology, in Brief</h2>
-          <p class="lead" style="max-width:720px;margin-top:16px;">Classification used the same zero-shot model, <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code>, with a keyword safety net: text mentioning &ldquo;Pushkin&rdquo; or the illustrator &ldquo;Mitrokhin&rdquo; is routed straight to National Russian Art. Before computing the national-share and TF-IDF figures, 15 records whose entire text was site boilerplate (a rights-and-credits footer with no exhibition content) were excluded, leaving 291 usable pre-2022 records; TF-IDF weights are a mean per document, matching the Russian Museum's normalized method.</p>
-        </section>
       </div>
     </div>
   </div>
@@ -1184,6 +1229,38 @@
         <div class="divider"></div>
 
         <section class="reveal">
+          <h2 class="section-heading">Reading the Shift: Selected Coverage</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">Two headlines from each period, straight from theartnewspaper.ru, show the same shift a reader would have noticed just by following the coverage.</p>
+
+          <div class="pub-columns">
+            <div class="pub-column">
+              <h3>Before 2022 <span class="count-pill">International coverage</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2021</span>
+                <a href="https://www.theartnewspaper.ru/posts/20211001-lree" target="_blank" rel="noopener">A Renaissance Journey with Albrecht D&uuml;rer Takes Place in Aachen</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2021</span>
+                <a href="https://www.theartnewspaper.ru/posts/20211008-ggco" target="_blank" rel="noopener">Russian Romantics Return to Dresden</a>
+              </div>
+            </div>
+            <div class="pub-column">
+              <h3>After 2022 <span class="count-pill post">National coverage</span></h3>
+              <div class="pub-card">
+                <span class="pub-year">2026</span>
+                <a href="https://www.theartnewspaper.ru/posts/20260429-txkh" target="_blank" rel="noopener">The Russian Museum Shows Shishkin</a>
+              </div>
+              <div class="pub-card">
+                <span class="pub-year">2026</span>
+                <a href="https://www.theartnewspaper.ru/posts/20260525-hpzx" target="_blank" rel="noopener">&ldquo;Katerinushka, Dear Friend&rdquo;: The Hermitage Honors the First Russian Empress</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
           <h2 class="section-heading">Full Keyword Extraction (TF-IDF)</h2>
           <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">All ten keywords are Russian-language terms from the source corpus, translated to English and marked <span class="tag">RU</span>. Weights are the mean TF-IDF score per document.</p>
 
@@ -1203,12 +1280,6 @@
           </div>
         </section>
 
-        <div class="divider"></div>
-
-        <section class="reveal">
-          <h2 class="section-heading">Methodology, in Brief</h2>
-          <p class="lead" style="max-width:720px;margin-top:16px;">Exhibition mentions were scraped from <span class="tag">theartnewspaper.ru</span> and classified with the same zero-shot model as the Russian Museum, <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">mDeBERTa-v3-base-mnli-xnli</code>, refined with an explicit hypothesis template for sharper category boundaries. Because this corpus spans many institutions rather than one, it functions as an external check on the museum-level findings elsewhere in this study, not a replacement for them.</p>
-        </section>
       </div>
     </div>
   </div>
@@ -1403,104 +1474,123 @@
     <div class="container">
       <div class="reveal">
         <h1 class="page-title">Knowledge Graph</h1>
-        <p class="page-subtitle">A graph representation of the institutional pivot in Russian museum exhibition policy</p>
+        <p class="page-subtitle">The formal model behind six museums, one media outlet, and the institutional pivot</p>
         <div class="title-rule"></div>
       </div>
 
       <div class="section-stack" style="gap:64px;">
         <section class="reveal">
-          <h2 class="section-heading">About this graph</h2>
-          <p class="lead" style="max-width:720px;margin-top:16px;">This knowledge graph encodes exhibition events from the Pushkin Museum and Tretyakov Gallery as nodes, connected by semantic relationships. The critical axis is temporal: pre-2022 nodes cluster around international loan relationships; post-2022 nodes shift toward internal archive provenance.</p>
+          <p class="lead" style="max-width:720px;">Every other page on this site reports one source's own results. This page describes the model underneath all of them &mdash; the classes and relationships that every exhibition record, whether scraped from a museum's own archive or from independent press coverage, is reduced to before it can be compared across six institutions and one media outlet at once.</p>
         </section>
 
-        <section class="graph-box reveal">
-          <svg width="100%" viewBox="0 0 900 520">
-            <path d="M 450 260 L 160 150" stroke="#C9A84C" stroke-width="1.5" fill="none" opacity="0.6" />
-            <text x="300" y="195" fill="#C9A84C" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(20 300 195)">organized</text>
-
-            <path d="M 160 150 L 80 280" stroke="#C9A84C" stroke-width="1.5" fill="none" opacity="0.6" />
-            <text x="110" y="215" fill="#C9A84C" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(-58 110 215)">borrowedFrom</text>
-
-            <path d="M 160 150 L 220 310" stroke="#C9A84C" stroke-width="1.5" fill="none" opacity="0.6" />
-            <text x="200" y="230" fill="#C9A84C" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(69 200 230)">hasOrigin</text>
-
-            <path d="M 450 260 L 120 420" stroke="#C9A84C" stroke-width="1.5" fill="none" opacity="0.6" />
-            <text x="280" y="350" fill="#C9A84C" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(26 280 350)">partOf</text>
-
-            <path d="M 450 260 L 740 150" stroke="#A06060" stroke-width="1.5" fill="none" opacity="0.6" />
-            <text x="600" y="195" fill="#A06060" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(-20 600 195)">organized</text>
-
-            <path d="M 740 150 L 680 310" stroke="#A06060" stroke-width="1.5" fill="none" opacity="0.6" />
-            <text x="700" y="235" fill="#A06060" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(69 700 235)">hasOrigin</text>
-
-            <path d="M 740 150 L 780 380" stroke="#A06060" stroke-width="1.5" fill="none" opacity="0.6" />
-            <text x="770" y="260" fill="#A06060" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(80 770 260)">belongsTo</text>
-
-            <path d="M 450 420 L 700 460" stroke="#A06060" stroke-width="1.5" fill="none" opacity="0.6" />
-            <text x="580" y="435" fill="#A06060" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(9 580 435)">organized</text>
-
-            <path d="M 700 460 L 680 310" stroke="#A06060" stroke-width="1.5" fill="none" opacity="0.6" />
-            <text x="680" y="390" fill="#A06060" font-size="12" font-family="sans-serif" text-anchor="middle" transform="rotate(-82 680 390)">hasOrigin</text>
-
-            <circle cx="160" cy="150" r="28" fill="#C9A84C" />
-            <text x="160" y="195" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">The Morozov Collection</text>
-
-            <circle cx="80" cy="280" r="24" fill="#C9A84C" />
-            <text x="80" y="320" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">Louis Vuitton Foundation</text>
-
-            <rect x="160" y="295" width="120" height="30" rx="4" fill="#C9A84C" />
-            <text x="220" y="315" fill="#fff" font-size="12" font-family="sans-serif" text-anchor="middle">International Loan</text>
-
-            <circle cx="120" cy="420" r="22" fill="#C9A84C" />
-            <text x="120" y="460" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">Global Exchange Network</text>
-
-            <circle cx="740" cy="150" r="28" fill="#A06060" />
-            <text x="740" y="195" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">After Impressionism 2023</text>
-
-            <rect x="620" y="295" width="120" height="30" rx="4" fill="#A06060" />
-            <text x="680" y="315" fill="#fff" font-size="12" font-family="sans-serif" text-anchor="middle">Internal Reserve</text>
-
-            <circle cx="780" cy="380" r="22" fill="#A06060" />
-            <text x="780" y="420" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">Domestic Provenance</text>
-
-            <circle cx="700" cy="460" r="24" fill="#A06060" />
-            <text x="700" y="500" fill="#555" font-size="12" font-family="sans-serif" text-anchor="middle">Eastern Pivot Exhibition</text>
-
-            <circle cx="450" cy="260" r="36" fill="#3D7A76" />
-            <text x="450" y="315" fill="#222" font-size="14" font-weight="bold" font-family="sans-serif" text-anchor="middle">Pushkin Museum</text>
-
-            <circle cx="450" cy="420" r="30" fill="#3D7A76" />
-            <text x="450" y="465" fill="#222" font-size="14" font-weight="bold" font-family="sans-serif" text-anchor="middle">Tretyakov Gallery</text>
-          </svg>
-
-          <div class="graph-legend">
-            <div class="item"><span class="legend-dot" style="background:#C9A84C;"></span>Pre-2022 exhibitions (International focus)</div>
-            <div class="item"><span class="legend-dot" style="background:#A06060;"></span>Post-2022 exhibitions (Domestic focus)</div>
-            <div class="item"><span class="legend-dot" style="background:#3D7A76;"></span>Institutions</div>
+        <section class="stat-grid stat-grid-4 reveal">
+          <div class="stat-card">
+            <div class="num">10</div>
+            <div class="label">Classes</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">8</div>
+            <div class="label">Object properties</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">12</div>
+            <div class="label">Data properties</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">22</div>
+            <div class="label">Individuals</div>
           </div>
         </section>
 
-        <section>
-          <div class="stat-grid">
-            <div class="stat-card reveal">
-              <div class="num">2 Institutions</div>
-              <div class="label">Pushkin Museum, Tretyakov Gallery</div>
-            </div>
-            <div class="stat-card reveal reveal-delay-1">
-              <div class="num">Pre / Post 2022</div>
-              <div class="label">Temporal pivot axis</div>
-            </div>
-            <div class="stat-card reveal reveal-delay-2">
-              <div class="num">6 Semantic Relations</div>
-              <div class="label">hasOrigin, borrowedFrom, organizes, partOf, linkedTo, exhibits</div>
-            </div>
+        <div class="divider"></div>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">Ontology Graph</h2>
+            <p class="chart-sub">Classes connected by object properties (solid arrows) and is-a links (dashed). Drag a node to explore, click for details.</p>
+          </div>
+
+          <div class="kg-legend" id="kgLegend"></div>
+
+          <div class="chart-svg-wrap">
+            <svg id="kgSvg" viewBox="0 0 900 560" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+
+          <div class="chart-detail" id="kgDetail">Click or drag a node to see its role in the model.</div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Classes</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">Ten classes, grouped the same way as the graph above: the central event, its sources, its context, and the discourse layer where the keyword analysis lives.</p>
+          <div class="entity-grid" style="margin-top:32px;" id="kgClassGrid"></div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Object Properties</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:24px;">&#9911; marks a functional property &mdash; one where a given subject can have at most one value (an exhibition has exactly one source, one category, one period).</p>
+          <div class="keyword-table-card">
+            <table class="results-table">
+              <thead>
+                <tr><th>Property</th><th>Domain</th><th>Range</th></tr>
+              </thead>
+              <tbody id="kgObjPropsBody"></tbody>
+            </table>
           </div>
         </section>
 
-        <section>
-          <div class="transform-box reveal">
-            <h2>Graph Transformation</h2>
-            <p>The structural pivot is measurable as a graph transformation: the ratio of edges typed <code>borrowedFrom:ForeignInstitution</code> to <code>hasOrigin:InternalReserve</code> inverts after 2022. This graph property encodes what we call the Institutional Pivot — a shift from a transnational network identity to an archival, provenance-centered one.</p>
+        <section class="reveal">
+          <h2 class="section-heading">Data Properties</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:24px;">Twelve properties attaching literal values &mdash; strings, years, counts, percentages &mdash; to the classes above.</p>
+          <div class="keyword-table-card">
+            <table class="results-table">
+              <thead>
+                <tr><th>Property</th><th>Domain</th><th>Range</th></tr>
+              </thead>
+              <tbody id="kgDataPropsBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Example Individuals (A-Box)</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:24px;">A handful of real instances asserted in the model, shown as subject &middot; property &middot; value &mdash; the same two exhibitions used as examples on the Pushkin and Tretyakov pages.</p>
+          <div class="keyword-table-card">
+            <table class="results-table">
+              <thead>
+                <tr><th>Subject</th><th>Property</th><th>Value</th></tr>
+              </thead>
+              <tbody id="kgIndividualsBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <div class="dataset-card">
+            <div class="dataset-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
+            </div>
+            <div class="dataset-info">
+              <h3>institutional-pivot-ontology.ttl</h3>
+              <p>The full OWL/RDFS ontology in Turtle syntax &mdash; all 10 classes, 8 object properties, 12 data properties and 22 individuals shown on this page, hand-authored to match every verified figure elsewhere on the site.</p>
+            </div>
+            <a href="data/institutional-pivot-ontology.ttl" download class="btn dataset-btn">Download .ttl</a>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>The Pivot as a Graph Property</h2>
+            <p>The institutional pivot traced across this whole site is, underneath, a shift in two edges out of every <code>Exhibition</code> node: its <code>hasOrigin</code> edge moves from <code>International_Loan</code> toward <code>Internal_Reserve</code>, and its <code>hasCategory</code> edge moves from <code>Western_Art</code> toward <code>National_Russian_Art</code>. Six independent instances of that same shift, plus one exception (Tretyakov's edges move toward <code>Eastern_Art</code> instead) and one diluted echo in the independent press, are what the rest of this site measures one institution at a time. This page is the schema all of it was measured against.</p>
           </div>
         </section>
       </div>

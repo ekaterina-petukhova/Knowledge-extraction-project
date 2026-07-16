@@ -1526,3 +1526,260 @@ function buildResultsTable(id, rows) {
 }
 
 buildResultsTable('resultsTableBody', resultsData);
+
+// ===== Knowledge Graph =====
+// Classes, properties and individuals mirror institutional-pivot-ontology.ttl
+// (data/institutional-pivot-ontology.ttl) exactly - counts and figures here
+// must match that file and the per-institution pages.
+function initKnowledgeGraph() {
+  const svg = document.getElementById('kgSvg');
+  if (!svg) return;
+
+  const kgGroups = {
+    core:      { label: 'Core event', color: '#A06060', desc: 'The exhibition record itself' },
+    agents:    { label: 'Sources',    color: '#C9A84C', desc: 'Who organized or published it' },
+    context:   { label: 'Context',    color: '#2F6663', desc: 'Category, period, origin, city' },
+    discourse: { label: 'Discourse',  color: '#7D6B91', desc: 'Themes and TF-IDF keywords' }
+  };
+
+  const kgClasses = [
+    { key: 'exhibition',  label: 'Exhibition',        group: 'core',
+      desc: 'A single exhibition record, or an independent press mention of one — the unit every chart on this site counts.' },
+    { key: 'source',      label: 'Source',             group: 'agents',
+      desc: 'Whatever organized or published the record: a museum or a media outlet.' },
+    { key: 'institution', label: 'Institution',        group: 'agents',
+      desc: 'One of the six museums whose own archive was scraped and classified.' },
+    { key: 'mediaoutlet', label: 'Media Outlet',       group: 'agents',
+      desc: 'An independent publication reporting on exhibitions across many institutions at once — currently just The Art Newspaper Russia.' },
+    { key: 'category',    label: 'Category',           group: 'context',
+      desc: 'Western, Eastern, or National Russian art — the three-way classification every record gets.' },
+    { key: 'period',      label: 'Period',             group: 'context',
+      desc: 'Pre-2022, the 2022 transition year, or post-2022 — the temporal axis of the whole study.' },
+    { key: 'origin',      label: 'Origin of Artworks', group: 'context',
+      desc: 'Whether the exhibited works were an international loan or drawn from the institution’s own reserve.' },
+    { key: 'city',        label: 'City',               group: 'context',
+      desc: 'A Russian city — either an institution’s home city, or one named inside exhibition text.' },
+    { key: 'theme',       label: 'Theme',               group: 'discourse',
+      desc: 'A named curatorial theme or artistic movement, where one was identified.' },
+    { key: 'keyword',     label: 'Keyword',             group: 'discourse',
+      desc: 'A TF-IDF term extracted from a source’s exhibition text, with a weight before and after 2022.' }
+  ];
+
+  const nodeState = {};
+  [
+    { key: 'exhibition',  x: 450, y: 300, r: 40 },
+    { key: 'source',      x: 620, y: 160, r: 30 },
+    { key: 'institution', x: 750, y: 90,  r: 26 },
+    { key: 'mediaoutlet', x: 770, y: 240, r: 24 },
+    { key: 'category',    x: 260, y: 140, r: 26 },
+    { key: 'period',      x: 140, y: 240, r: 24 },
+    { key: 'origin',      x: 630, y: 440, r: 26 },
+    { key: 'city',        x: 430, y: 480, r: 24 },
+    { key: 'theme',       x: 150, y: 400, r: 24 },
+    { key: 'keyword',     x: 740, y: 400, r: 26 }
+  ].forEach(n => { nodeState[n.key] = { x: n.x, y: n.y, r: n.r }; });
+
+  const kgEdges = [
+    { from: 'exhibition', to: 'source',      label: 'hasSource',    dashed: false },
+    { from: 'exhibition', to: 'category',    label: 'hasCategory',  dashed: false },
+    { from: 'exhibition', to: 'period',      label: 'hasPeriod',    dashed: false },
+    { from: 'exhibition', to: 'origin',      label: 'hasOrigin',    dashed: false },
+    { from: 'exhibition', to: 'theme',       label: 'hasTheme',     dashed: false },
+    { from: 'exhibition', to: 'city',        label: 'mentionsCity', dashed: false },
+    { from: 'keyword',    to: 'source',      label: 'keywordOf',    dashed: false },
+    { from: 'institution',to: 'city',        label: 'locatedIn',    dashed: false },
+    { from: 'institution',to: 'source',      label: 'is-a',         dashed: true },
+    { from: 'mediaoutlet',to: 'source',      label: 'is-a',         dashed: true }
+  ];
+
+  const classByKey = key => kgClasses.find(c => c.key === key);
+  let selectedKey = null;
+  let dragKey = null;
+
+  function buildLegend() {
+    const legend = document.getElementById('kgLegend');
+    if (!legend) return;
+    legend.innerHTML = Object.values(kgGroups).map(g => `
+      <div class="kg-legend-item">
+        <span class="kg-legend-dot" style="background:${g.color}"></span>
+        <span><span class="label">${g.label}</span><br><span class="desc">${g.desc}</span></span>
+      </div>
+    `).join('');
+  }
+
+  function pointFromEvent(e) {
+    const rect = svg.getBoundingClientRect();
+    const vb = svg.viewBox.baseVal;
+    return {
+      x: ((e.clientX - rect.left) / rect.width) * vb.width + vb.x,
+      y: ((e.clientY - rect.top) / rect.height) * vb.height + vb.y
+    };
+  }
+
+  function isConnected(key) {
+    return kgEdges.some(e => (e.from === selectedKey && e.to === key) || (e.to === selectedKey && e.from === key));
+  }
+
+  function selectClass(key) {
+    selectedKey = key;
+    render();
+    const cls = classByKey(key);
+    const detail = document.getElementById('kgDetail');
+    if (!cls || !detail) return;
+    const connections = kgEdges
+      .filter(e => e.from === key || e.to === key)
+      .map(e => {
+        const other = classByKey(e.from === key ? e.to : e.from).label;
+        const arrow = e.from === key ? '&rarr;' : '&larr;';
+        return `<code>${e.label}</code> ${arrow} ${other}`;
+      });
+    detail.innerHTML = `<strong>${cls.label}</strong>: ${cls.desc}` +
+      (connections.length ? `<br>${connections.join(' &middot; ')}` : '');
+  }
+
+  function render() {
+    svg.innerHTML = '';
+
+    kgEdges.forEach(edge => {
+      const a = nodeState[edge.from], b = nodeState[edge.to];
+      const isHighlighted = selectedKey && (edge.from === selectedKey || edge.to === selectedKey);
+      const dimmed = selectedKey && !isHighlighted;
+      svg.appendChild(elNS('line', {
+        x1: a.x.toFixed(1), y1: a.y.toFixed(1), x2: b.x.toFixed(1), y2: b.y.toFixed(1),
+        stroke: '#B8AA94', 'stroke-width': isHighlighted ? 2 : 1.2,
+        'stroke-dasharray': edge.dashed ? '5 4' : 'none',
+        opacity: dimmed ? 0.2 : 0.8
+      }));
+      if (!edge.dashed) {
+        const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+        const label = elNS('text', {
+          x: mx.toFixed(1), y: (my - 5).toFixed(1), 'text-anchor': 'middle',
+          class: 'kg-edge-label', opacity: dimmed ? 0.2 : 1
+        });
+        label.textContent = edge.label;
+        svg.appendChild(label);
+      }
+    });
+
+    kgClasses.forEach(cls => {
+      const n = nodeState[cls.key];
+      const group = kgGroups[cls.group];
+      const isSelected = selectedKey === cls.key;
+      const dimmed = selectedKey && !isSelected && !isConnected(cls.key);
+
+      const circle = elNS('circle', {
+        cx: n.x.toFixed(1), cy: n.y.toFixed(1), r: n.r,
+        fill: group.color, class: 'kg-node-circle',
+        stroke: isSelected ? '#2C2416' : 'none', 'stroke-width': isSelected ? 2 : 0,
+        opacity: dimmed ? 0.25 : 1
+      });
+      circle.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        dragKey = cls.key;
+        svg.setPointerCapture(e.pointerId);
+      });
+      circle.addEventListener('click', () => selectClass(cls.key));
+      svg.appendChild(circle);
+
+      const label = elNS('text', {
+        x: n.x.toFixed(1), y: (n.y + n.r + 16).toFixed(1), 'text-anchor': 'middle',
+        class: 'kg-node-label', opacity: dimmed ? 0.3 : 1
+      });
+      label.textContent = cls.label;
+      svg.appendChild(label);
+    });
+  }
+
+  svg.addEventListener('pointermove', (e) => {
+    if (!dragKey) return;
+    const p = pointFromEvent(e);
+    nodeState[dragKey].x = p.x;
+    nodeState[dragKey].y = p.y;
+    render();
+  });
+  svg.addEventListener('pointerup', () => { dragKey = null; });
+  svg.addEventListener('pointerleave', () => { dragKey = null; });
+
+  buildLegend();
+  render();
+
+  const grid = document.getElementById('kgClassGrid');
+  if (grid) {
+    grid.innerHTML = kgClasses.map(c => `<div class="entity-card"><h3>${c.label}</h3><div class="note">${c.desc}</div></div>`).join('');
+  }
+}
+
+function kgPropCode(text) {
+  return `<code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">${text}</code>`;
+}
+
+function buildKgPropsTable(id, rows, showFunctional) {
+  const tbody = document.getElementById(id);
+  if (!tbody) return;
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td class="rt-institution">${kgPropCode(r.prop)}${showFunctional && r.functional ? ' &#9911;' : ''}</td>
+      <td>${r.domain}</td>
+      <td>${r.range}</td>
+    </tr>
+  `).join('');
+}
+
+const kgObjectProperties = [
+  { prop: 'hasSource',    domain: 'Exhibition', range: 'Source',              functional: true },
+  { prop: 'hasCategory',  domain: 'Exhibition', range: 'Category',            functional: true },
+  { prop: 'hasPeriod',    domain: 'Exhibition', range: 'Period',              functional: true },
+  { prop: 'hasOrigin',    domain: 'Exhibition', range: 'Origin of Artworks',  functional: false },
+  { prop: 'hasTheme',     domain: 'Exhibition', range: 'Theme',               functional: false },
+  { prop: 'mentionsCity', domain: 'Exhibition', range: 'City',                functional: false },
+  { prop: 'keywordOf',    domain: 'Keyword',    range: 'Source',              functional: true },
+  { prop: 'locatedIn',    domain: 'Institution', range: 'City',               functional: true }
+];
+
+const kgDataProperties = [
+  { prop: 'title',               domain: 'Exhibition', range: 'string' },
+  { prop: 'year',                domain: 'Exhibition', range: 'gYear' },
+  { prop: 'url',                 domain: 'Exhibition', range: 'string' },
+  { prop: 'name',                domain: 'Source',     range: 'string' },
+  { prop: 'exhibitionCount',     domain: 'Source',     range: 'integer' },
+  { prop: 'nationalShareBefore', domain: 'Source',     range: 'decimal (%)' },
+  { prop: 'nationalShareAfter',  domain: 'Source',     range: 'decimal (%)' },
+  { prop: 'term',                domain: 'Keyword',    range: 'string' },
+  { prop: 'weightBefore',        domain: 'Keyword',    range: 'decimal' },
+  { prop: 'weightAfter',         domain: 'Keyword',    range: 'decimal' },
+  { prop: 'cityName',            domain: 'City',       range: 'string' },
+  { prop: 'mentionCount',        domain: 'City',       range: 'integer' }
+];
+
+buildKgPropsTable('kgObjPropsBody', kgObjectProperties, true);
+buildKgPropsTable('kgDataPropsBody', kgDataProperties, false);
+
+const kgIndividualRows = [
+  ['Pushkin State Museum of Fine Arts', 'exhibitionCount', '225'],
+  ['Pushkin State Museum of Fine Arts', 'nationalShareAfter', '38.7%'],
+  ['The Museum’s Feat (2025)', 'hasSource', 'Pushkin State Museum of Fine Arts'],
+  ['The Museum’s Feat (2025)', 'hasCategory', 'National Russian Art'],
+  ['The Museum’s Feat (2025)', 'hasPeriod', 'Post-2022'],
+  ['State Tretyakov Gallery', 'nationalShareBefore', '69.2%'],
+  ['State Tretyakov Gallery', 'nationalShareAfter', '58.5%'],
+  ['Path to the East (2025)', 'hasSource', 'State Tretyakov Gallery'],
+  ['Path to the East (2025)', 'hasCategory', 'Eastern Art'],
+  ['гравюры (engravings)', 'weightBefore', '0.0342'],
+  ['гравюры (engravings)', 'weightAfter', '0.0'],
+  ['гравюры (engravings)', 'keywordOf', 'Pushkin State Museum of Fine Arts']
+];
+
+function buildKgIndividualsTable(id, rows) {
+  const tbody = document.getElementById(id);
+  if (!tbody) return;
+  tbody.innerHTML = rows.map(([s, p, v]) => `
+    <tr>
+      <td class="rt-institution">${s}</td>
+      <td>${kgPropCode(p)}</td>
+      <td>${v}</td>
+    </tr>
+  `).join('');
+}
+
+buildKgIndividualsTable('kgIndividualsBody', kgIndividualRows);
+initKnowledgeGraph();

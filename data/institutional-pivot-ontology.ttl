@@ -1,0 +1,188 @@
+@prefix : <https://institutional-pivot.example/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://institutional-pivot.example/ontology> a owl:Ontology ;
+    rdfs:label "Institutional Pivot in Russian Museum Discourse" ;
+    rdfs:comment "A schema for exhibition and press records analyzed across six Russian museums and one independent art publication, 2014-2026." .
+
+#################################################################
+#  Classes
+#################################################################
+
+:Exhibition a owl:Class ;
+    rdfs:label "Exhibition" ;
+    rdfs:comment "A single exhibition record, or an independent press mention of one, analyzed in the study." .
+
+:Source a owl:Class ;
+    rdfs:label "Source" ;
+    rdfs:comment "Anything that organizes or publishes exhibition records: a museum or a media outlet." .
+
+:Institution a owl:Class ;
+    rdfs:subClassOf :Source ;
+    rdfs:label "Institution" ;
+    rdfs:comment "One of the six museums whose own exhibition archive was scraped and classified." .
+
+:MediaOutlet a owl:Class ;
+    rdfs:subClassOf :Source ;
+    rdfs:label "Media Outlet" ;
+    rdfs:comment "An independent publication reporting on exhibitions across many institutions at once." .
+
+:Category a owl:Class ;
+    rdfs:label "Category" ;
+    rdfs:comment "The thematic idea block an exhibition was classified into: Western, Eastern, or National Russian art." .
+
+:Period a owl:Class ;
+    rdfs:label "Period" ;
+    rdfs:comment "The temporal bucket an exhibition falls into relative to 2022: pre, transition, or post." .
+
+:OriginOfArtworks a owl:Class ;
+    rdfs:label "Origin of Artworks" ;
+    rdfs:comment "Whether the exhibited works were an international loan or drawn from the institution's own internal reserve." .
+
+:Theme a owl:Class ;
+    rdfs:label "Theme" ;
+    rdfs:comment "A named curatorial theme or artistic movement associated with an exhibition, where identified." .
+
+:Keyword a owl:Class ;
+    rdfs:label "Keyword" ;
+    rdfs:comment "A term surfaced by TF-IDF analysis of a source's exhibition text, with weights before and after 2022." .
+
+:City a owl:Class ;
+    rdfs:label "City" ;
+    rdfs:comment "A Russian city, either an institution's home city or one mentioned within exhibition text." .
+
+#################################################################
+#  Object properties
+#################################################################
+
+:hasSource a owl:ObjectProperty, owl:FunctionalProperty ;
+    rdfs:domain :Exhibition ; rdfs:range :Source ;
+    rdfs:label "has source" .
+
+:hasCategory a owl:ObjectProperty, owl:FunctionalProperty ;
+    rdfs:domain :Exhibition ; rdfs:range :Category ;
+    rdfs:label "has category" .
+
+:hasPeriod a owl:ObjectProperty, owl:FunctionalProperty ;
+    rdfs:domain :Exhibition ; rdfs:range :Period ;
+    rdfs:label "has period" .
+
+:hasOrigin a owl:ObjectProperty ;
+    rdfs:domain :Exhibition ; rdfs:range :OriginOfArtworks ;
+    rdfs:label "has origin" .
+
+:hasTheme a owl:ObjectProperty ;
+    rdfs:domain :Exhibition ; rdfs:range :Theme ;
+    rdfs:label "has theme" .
+
+:mentionsCity a owl:ObjectProperty ;
+    rdfs:domain :Exhibition ; rdfs:range :City ;
+    rdfs:label "mentions city" .
+
+:keywordOf a owl:ObjectProperty, owl:FunctionalProperty ;
+    rdfs:domain :Keyword ; rdfs:range :Source ;
+    rdfs:label "keyword of" .
+
+:locatedIn a owl:ObjectProperty, owl:FunctionalProperty ;
+    rdfs:domain :Institution ; rdfs:range :City ;
+    rdfs:label "located in" .
+
+#################################################################
+#  Data properties
+#################################################################
+
+:title a owl:DatatypeProperty ; rdfs:domain :Exhibition ; rdfs:range xsd:string ; rdfs:label "title" .
+:year a owl:DatatypeProperty ; rdfs:domain :Exhibition ; rdfs:range xsd:gYear ; rdfs:label "year" .
+:url a owl:DatatypeProperty ; rdfs:domain :Exhibition ; rdfs:range xsd:string ; rdfs:label "url" .
+:name a owl:DatatypeProperty ; rdfs:domain :Source ; rdfs:range xsd:string ; rdfs:label "name" .
+:exhibitionCount a owl:DatatypeProperty ; rdfs:domain :Source ; rdfs:range xsd:integer ; rdfs:label "exhibition count" .
+:nationalShareBefore a owl:DatatypeProperty ; rdfs:domain :Source ; rdfs:range xsd:decimal ; rdfs:label "national share before 2022" .
+:nationalShareAfter a owl:DatatypeProperty ; rdfs:domain :Source ; rdfs:range xsd:decimal ; rdfs:label "national share after 2022" .
+:term a owl:DatatypeProperty ; rdfs:domain :Keyword ; rdfs:range xsd:string ; rdfs:label "term" .
+:weightBefore a owl:DatatypeProperty ; rdfs:domain :Keyword ; rdfs:range xsd:decimal ; rdfs:label "TF-IDF weight before 2022" .
+:weightAfter a owl:DatatypeProperty ; rdfs:domain :Keyword ; rdfs:range xsd:decimal ; rdfs:label "TF-IDF weight after 2022" .
+:cityName a owl:DatatypeProperty ; rdfs:domain :City ; rdfs:range xsd:string ; rdfs:label "city name" .
+:mentionCount a owl:DatatypeProperty ; rdfs:domain :City ; rdfs:range xsd:integer ; rdfs:label "mention count" .
+
+#################################################################
+#  Individuals - Institutions & Media (Source subclasses)
+#################################################################
+
+:PushkinMuseum a :Institution ;
+    :name "Pushkin State Museum of Fine Arts" ; :locatedIn :Moscow ;
+    :exhibitionCount 225 ; :nationalShareBefore 24.0 ; :nationalShareAfter 38.7 .
+
+:TretyakovGallery a :Institution ;
+    :name "State Tretyakov Gallery" ; :locatedIn :Moscow ;
+    :exhibitionCount 175 ; :nationalShareBefore 69.2 ; :nationalShareAfter 58.5 .
+
+:Garage a :Institution ;
+    :name "Garage Museum of Contemporary Art" ; :locatedIn :Moscow ;
+    :exhibitionCount 369 ; :nationalShareBefore 79.4 ; :nationalShareAfter 96.6 .
+
+:MAMM a :Institution ;
+    :name "Multimedia Art Museum, Moscow" ; :locatedIn :Moscow ;
+    :exhibitionCount 661 ; :nationalShareBefore 89.6 ; :nationalShareAfter 98.8 .
+
+:RussianMuseum a :Institution ;
+    :name "State Russian Museum" ; :locatedIn :SaintPetersburg ;
+    :exhibitionCount 651 ; :nationalShareBefore 54.5 ; :nationalShareAfter 68.3 .
+
+:Hermitage a :Institution ;
+    :name "State Hermitage Museum" ; :locatedIn :SaintPetersburg ;
+    :exhibitionCount 453 ; :nationalShareBefore 21.6 ; :nationalShareAfter 39.5 .
+
+:TheArtNewspaperRussia a :MediaOutlet ;
+    :name "The Art Newspaper Russia" ;
+    :exhibitionCount 2621 ; :nationalShareBefore 30.9 ; :nationalShareAfter 34.1 .
+
+#################################################################
+#  Individuals - Category, Period, Origin
+#################################################################
+
+:WesternArt a :Category ; rdfs:label "Western Art" .
+:EasternArt a :Category ; rdfs:label "Eastern Art" .
+:NationalRussianArt a :Category ; rdfs:label "National Russian Art" .
+
+:Pre2022 a :Period ; rdfs:label "Pre-2022" .
+:Transition2022 a :Period ; rdfs:label "2022 (Transition)" .
+:Post2022 a :Period ; rdfs:label "Post-2022" .
+
+:InternationalLoan a :OriginOfArtworks ; rdfs:label "International Loan" .
+:InternalReserve a :OriginOfArtworks ; rdfs:label "Internal Reserve" .
+
+#################################################################
+#  Individuals - Example Exhibitions (A-Box)
+#################################################################
+
+:Exhibition_MuseumsFeat a :Exhibition ;
+    :title "The Museum's Feat: On the 80th Anniversary of Victory in the Great Patriotic War" ;
+    :year "2025"^^xsd:gYear ;
+    :url "https://pushkinmuseum.art/events/archive/2025/exhibitions/museum_act_of_bravery/index.php?lang=ru" ;
+    :hasSource :PushkinMuseum ; :hasCategory :NationalRussianArt ; :hasPeriod :Post2022 ; :hasOrigin :InternalReserve .
+
+:Exhibition_PathToTheEast a :Exhibition ;
+    :title "Path to the East: Russian Artists in Central Asia" ;
+    :year "2025"^^xsd:gYear ;
+    :url "https://www.tretyakovgallery.ru/exhibitions/o/put-na-vostok-russkie-khudozhniki-v-tsentralnoy-azii/" ;
+    :hasSource :TretyakovGallery ; :hasCategory :EasternArt ; :hasPeriod :Post2022 .
+
+#################################################################
+#  Individuals - Example Keywords
+#################################################################
+
+:Keyword_Engravings a :Keyword ;
+    :term "гравюры (engravings)" ; :weightBefore 0.0342 ; :weightAfter 0.0 ; :keywordOf :PushkinMuseum .
+
+:Keyword_Century a :Keyword ;
+    :term "century" ; :weightBefore 0.0 ; :weightAfter 7.8787 ; :keywordOf :PushkinMuseum .
+
+#################################################################
+#  Individuals - Example Cities
+#################################################################
+
+:Moscow a :City ; :cityName "Moscow" .
+:SaintPetersburg a :City ; :cityName "Saint Petersburg" ; :mentionCount 21 .
+:Vladimir a :City ; :cityName "Vladimir" ; :mentionCount 22 .
