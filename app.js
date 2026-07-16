@@ -1,43 +1,305 @@
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// ===== Methodology steps data =====
-const steps = [
+// ===== Methodology page =====
+const methodologySections = [
   {
-    title: "Corpus Selection",
-    content: "We selected exhibition archives from two flagship Russian institutions — the Pushkin Museum of Fine Arts and the State Tretyakov Gallery. These were chosen for their public visibility, archival accessibility, and representative role in Russian cultural policy."
+    id: 'method-data-sources',
+    number: '01',
+    title: 'Data sources',
+    html: `
+      <p>The study combines six museum archives and one specialized art-news publication. Each source was collected independently because archive structure, pagination, and page templates differ across institutions.</p>
+
+      <h4>Museum archives</h4>
+      <ul class="method-source-list">
+        <li><a href="https://pushkinmuseum.art/" target="_blank" rel="noopener noreferrer">The Pushkin State Museum of Fine Arts</a></li>
+        <li><a href="https://www.tretyakovgallery.ru/" target="_blank" rel="noopener noreferrer">The State Tretyakov Gallery</a></li>
+        <li><a href="https://mamm-mdf.ru/" target="_blank" rel="noopener noreferrer">Multimedia Art Museum, Moscow — MAMM</a></li>
+        <li><a href="https://www.hermitagemuseum.org/" target="_blank" rel="noopener noreferrer">The State Hermitage Museum</a></li>
+        <li><a href="https://rusmuseum.ru/" target="_blank" rel="noopener noreferrer">The State Russian Museum</a></li>
+        <li><a href="https://garagemca.org/" target="_blank" rel="noopener noreferrer">Garage Museum of Contemporary Art</a></li>
+      </ul>
+
+      <h4>Media source</h4>
+      <ul class="method-source-list">
+        <li><a href="https://www.theartnewspaper.ru/" target="_blank" rel="noopener noreferrer">The Art Newspaper Russia</a></li>
+      </ul>
+
+      <p>The museum datasets primarily represent institutions’ descriptions of their own exhibitions, publications, and activities. <em>The Art Newspaper Russia</em> provides an external media perspective covering multiple institutions and developments in the art world.</p>
+
+      <p>None of the selected sources provides a complete public API for its historical archive. All records were therefore collected through direct web scraping.</p>
+    `
   },
+
   {
-    title: "Temporal Segmentation",
-    content: "Each exhibition record is tagged with a temporal vector: Pre-2022 or Post-2022. The year 2022 marks the critical geopolitical shift that restructured Russia's international cultural partnerships. This binary temporal axis is the backbone of our analytical model."
+    id: 'method-scraping',
+    number: '02',
+    title: 'Scraping',
+    html: `
+      <p>Before a full archive was collected, each scraper was tested on a limited sample of pages. This test-parsing stage verified pagination, selectors, link extraction, date extraction, description boundaries, differences between older and newer templates, and whether content was available in the initial HTML or loaded through JavaScript.</p>
+
+      <h4>Static HTML sources</h4>
+      <p>Sites returning complete HTML on the first request were collected with <code>requests</code> and parsed with <code>BeautifulSoup</code>. This method was used for the Russian Museum, MAMM, the Pushkin Museum, the Tretyakov Gallery, and <em>The Art Newspaper Russia</em>.</p>
+
+      <h4>JavaScript-rendered sources</h4>
+      <p>Garage Museum and the State Hermitage load archive content through client-side JavaScript. These sources were collected with <code>Playwright</code> and a headless browser.</p>
+
+      <h4>Two-stage collection</h4>
+      <ol>
+        <li>Extract every available record link from the archive.</li>
+        <li>Visit each record page separately and collect its title, date, description, and available metadata.</li>
+      </ol>
+
+      <p>The year was read from visible page text rather than inferred from the URL because many older records use numeric identifiers or URL structures without a reliable date.</p>
+
+      <p>Failures were logged at the page or record level instead of terminating the complete run. This allowed collection to continue when individual pages were unavailable, malformed, or structurally different from the rest of the archive.</p>
+
+      <div class="method-output">
+        <strong>Typical fields</strong>
+        <code>title · date · year · description · url</code>
+      </div>
+    `
   },
+
   {
-    title: "Entity Extraction",
-    content: "From each exhibition record, we extract structured entities: Exhibition name, Institution, Curator (where named), Artistic Movement, Origin of Artworks (International Loan vs. Internal Reserve), and Theme. These become the nodes of our knowledge graph."
+    id: 'method-cleaning',
+    number: '03',
+    title: 'Text cleaning',
+    html: `
+      <p>Before classification and keyword analysis, descriptions were cleaned of navigation elements, footers, ticket information, opening hours, cookie notices, contact details, social-sharing prompts, and other repeated website boilerplate.</p>
+
+      <p>The cleaning method depended on the structure of each source. Deterministic methods were preferred whenever the unwanted material could be identified reliably.</p>
+
+      <h4>Marker-based extraction</h4>
+      <p>When a website followed a predictable structure, useful text was extracted between stable beginning and ending markers. If descriptions consistently began or ended with ticket information or visitor instructions, only those repeated blocks were removed. The substantive description was preserved without rewriting or shortening it.</p>
+
+      <h4>Anchor-based removal</h4>
+      <p>Regular expressions were used when boilerplate appeared inside the description but could still be identified through recurring phrases. The unwanted fragment was removed without discarding the surrounding exhibition text.</p>
+
+      <h4>Sentence filtering</h4>
+      <p>Very short fragments and sentences containing known interface markers were removed when navigation and descriptive content appeared as separate text elements.</p>
+
+      <h4>Ollama-assisted cleaning</h4>
+      <p>Ollama was used only when the structure of an extracted description was inconsistent and no reliable marker, regular expression, or sentence-level rule could separate meaningful content from website noise.</p>
+
+      <p>The local model was instructed to remove irrelevant boilerplate while preserving the substantive description. Ollama was therefore a fallback cleaning method, not a universal summarization stage. It was not applied to every page and was not used when deterministic rules were sufficient.</p>
+
+      <p>Records were not silently discarded when a cleaning pattern failed. They were retained for inspection or passed through another cleaning method.</p>
+    `
   },
+
   {
-    title: "Ontology Mapping",
-    content: "Entities and their relationships are mapped onto a formal ontology using RDF/OWL conventions. We define classes (Exhibition, Institution, ArtworkOrigin) and properties (hasOrigin, organizes, borrowedFrom, partOf). The ontology is designed to be extensible to the full 500+ exhibition record dataset."
+    id: 'method-classification',
+    number: '04',
+    title: 'Art classification',
+    html: `
+      <p>Every cleaned corpus was classified with the same multilingual zero-shot model:</p>
+
+      <div class="method-code-line">
+        <code>MoritzLaurer/mDeBERTa-v3-base-mnli-xnli</code>
+      </div>
+
+      <p>The model was accessed through the Hugging Face <code>transformers</code> zero-shot classification pipeline and was not fine-tuned on the museum datasets.</p>
+
+      <div class="method-table-wrap">
+        <table class="method-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Interpretation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>National Russian Art</td>
+              <td>Russian or nationally framed artistic production</td>
+            </tr>
+            <tr>
+              <td>Western Art</td>
+              <td>European, North American, or broadly Western artistic production</td>
+            </tr>
+            <tr>
+              <td>Eastern Art</td>
+              <td>Asian, Middle Eastern, or other Eastern artistic production</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The category describes the primary cultural and geographic focus of a record rather than the nationality of the institution publishing it. Each dataset was classified independently; records from different institutions were not pooled into a single classification run.</p>
+
+      <p>Several pipelines used the hypothesis template <code>This art belongs to the category: {}</code>, producing a more natural proposition for Russian-language descriptions.</p>
+
+      <h4>Rule-based safeguards</h4>
+      <p>Selected pipelines included lexical rules for unambiguous references, including artist names, place names, historical terms, and institution-specific vocabulary. A sufficiently clear trigger could assign a category directly without a model call. These rules reduced obvious errors rather than replacing semantic classification.</p>
+
+      <h4>Garage manual review</h4>
+      <p>Garage records often contain short publication fragments with too little context for reliable automatic classification. The automatic results were checked against a manually labelled control sample, and the final Garage dataset was subjected to expert manual review.</p>
+    `
   },
+
   {
-    title: "Representative Sample",
-    content: "Rather than processing all records upfront, we demonstrate the method on 3–5 representative cases: one pre-2022 international exhibition, one post-2022 domestic exhibition, and one Eastern-pivot exhibition. This sample-first approach validates the schema before full-scale extraction."
+    id: 'method-periodization',
+    number: '05',
+    title: 'Periodization and metrics',
+    html: `
+      <div class="method-table-wrap">
+        <table class="method-table">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>Definition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>pre_2022</code></td>
+              <td>year earlier than 2022</td>
+            </tr>
+            <tr>
+              <td><code>transition_2022</code></td>
+              <td>year equal to 2022</td>
+            </tr>
+            <tr>
+              <td><code>post_2022</code></td>
+              <td>year equal to or later than 2023</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Records outside the study range of 2014–2026 were excluded. The year 2022 is shown separately in annual charts because it represents a transition period. The principal comparison contrasts records before 2022 with records from 2023 onward.</p>
+
+      <h4>Category dynamics</h4>
+      <p>Records were grouped by year and category and displayed as stacked bar charts. Missing archive years were left empty rather than interpreted as zero institutional activity because a missing year may reflect an archive or collection gap.</p>
+
+      <h4>National Component Share</h4>
+      <div class="method-formula">
+        National Russian Art records ÷ all classified records × 100
+      </div>
+
+      <p>The metric was calculated independently for the pre-2022 and post-2022 subsets. Percentages were used for comparison across institutions, while raw counts were retained where period sizes differed substantially.</p>
+    `
   },
+
   {
-    title: "Graph Transformation Analysis",
-    content: "The 'pivot' is quantified as a graph property: the ratio of International_Loan nodes to Internal_Reserve nodes across the temporal axis. A transformation from a globally-connected hub structure to a locally-anchored archival structure constitutes the Institutional Pivot."
+    id: 'method-keywords',
+    number: '06',
+    title: 'Keyword analysis',
+    html: `
+      <h4>BERTopic — attempted</h4>
+      <p>After cleaning, BERTopic was tested to identify recurring themes across the corpora. The resulting topics were frequently dominated by function words, generic museum vocabulary, institutional boilerplate, and other common terms that were not analytically distinctive.</p>
+
+      <p>The clusters were difficult to interpret consistently across institutions and periods, so BERTopic was not adopted for the final comparative analysis.</p>
+
+      <h4>TF-IDF — adopted</h4>
+      <p>Keyword change was measured with term frequency–inverse document frequency using <code>scikit-learn</code>. TF-IDF was calculated separately for the pre-2022 and post-2022 corpora.</p>
+
+      <p>For each term, the final value was calculated as the mean TF-IDF weight per document rather than the raw sum across all documents. This prevents the larger period from receiving higher scores simply because it contains more records.</p>
+
+      <p>The stopword list combines Russian function words, generic museum and exhibition vocabulary, interface boilerplate, the institution’s name in common grammatical forms, and corpus-specific terms without interpretive value.</p>
+
+      <p>For each comparison, the top terms from both periods were pooled and ranked by their combined weight. This preserves terms that are distinctive in only one period. TF-IDF was adopted because its results were more transparent, reproducible, and comparable than the BERTopic output.</p>
+    `
+  },
+
+  {
+    id: 'method-geography',
+    number: '07',
+    title: 'Geographic analysis',
+    html: `
+      <p>The Russian Museum corpus was additionally analyzed for references to Russian cities.</p>
+
+      <p>Descriptions were lemmatized with <code>pymorphy3</code>, allowing different grammatical forms of the same city name to be grouped under one dictionary form. City mentions were then counted and compared across periods to examine whether the institution’s national focus became more geographically concentrated or more regionally distributed.</p>
+
+      <p><code>Natasha</code> and <code>NLTK</code> were not used in this pipeline.</p>
+    `
+  },
+
+  {
+    id: 'method-visualization',
+    number: '08',
+    title: 'Visualization',
+    html: `
+      <p>All static analytical charts were produced with <code>matplotlib</code>.</p>
+
+      <p>Annual category charts use the <code>viridis</code> palette. Before-and-after comparisons use dark green and terracotta to distinguish the two periods consistently across institutional pages.</p>
+
+      <p>The project includes annual stacked category charts, National Component Share comparisons, TF-IDF keyword comparisons, and geographic-mention charts where applicable. Interactive versions allow users to inspect exact values, isolate categories, and compare analytical periods.</p>
+    `
+  },
+
+  {
+    id: 'method-limitations',
+    number: '09',
+    title: 'Comparability and limitations',
+    html: `
+      <p>The seven datasets follow the same analytical framework but differ in source type, archive completeness, page structure, and the amount of text available for each record.</p>
+
+      <p>The zero-shot <code>mDeBERTa-v3-base-mnli-xnli</code> classifier is not error-free. It can misclassify records when descriptions are very short, culturally ambiguous, devoted to several artistic traditions, dominated by generic institutional language, or when a named artist or place is not the primary subject.</p>
+
+      <p>Despite these limitations, the model produced generally coherent and analytically useful results across the seven datasets. At the aggregate level, its classifications were sufficiently consistent to reveal broad institutional patterns and changes over time.</p>
+
+      <p>The model should therefore be understood as a reproducible analytical instrument rather than an infallible expert judgement. Rule-based safeguards, manual inspection, and the manually reviewed Garage corpus were used to identify and reduce obvious errors.</p>
+
+      <p>Occasional record-level errors are less consequential here because the main results concern proportions, yearly dynamics, and period-level change rather than definitive classifications of individual exhibitions.</p>
+
+      <p>Archive gaps were not automatically backfilled. Missing records or years should not be interpreted as proof that an institution organized no relevant exhibitions. Website structures also changed over time, and older records may contain less complete metadata or shorter descriptions than recent ones.</p>
+
+      <p>The results should be read as a comparative analysis of documented institutional programming and discourse, not as a complete inventory of every exhibition or an error-free classification of every record.</p>
+    `
   }
 ];
 
 const stepsWrap = document.getElementById('methodologySteps');
-stepsWrap.innerHTML = steps.map((step, i) => `
-  <div class="step-item reveal">
-    <div class="step-num">${i + 1}</div>
-    <div class="step-card">
-      <h3>${step.title}</h3>
-      <p>${step.content}</p>
+
+if (stepsWrap) {
+  const methodologyNav = methodologySections.map(section => `
+    <a href="#${section.id}" class="methodology-nav-link">
+      <span>${section.number}</span>
+      ${section.title}
+    </a>
+  `).join('');
+
+  const methodologyContent = methodologySections.map(section => `
+    <section class="methodology-section reveal" id="${section.id}">
+      <div class="methodology-section-number">
+        ${section.number}
+      </div>
+
+      <div class="methodology-section-body">
+        <h2>${section.title}</h2>
+        ${section.html}
+      </div>
+    </section>
+  `).join('');
+
+  stepsWrap.innerHTML = `
+    <div class="methodology-intro reveal">
+      <p class="methodology-kicker">METHODOLOGY</p>
+
+      <h1>From museum archives to comparable datasets</h1>
+
+      <p class="methodology-lead">
+        The full extraction and analysis pipeline behind the project:
+        how exhibition and publication records were scraped from seven
+        sources, how descriptions were cleaned, how records were classified
+        by cultural focus, and how changes before and after 2022 were measured.
+      </p>
     </div>
-  </div>
-`).join('');
+
+    <nav class="methodology-on-page reveal" aria-label="Methodology sections">
+      <p>ON THIS PAGE</p>
+
+      <div class="methodology-nav-grid">
+        ${methodologyNav}
+      </div>
+    </nav>
+
+    <div class="methodology-content">
+      ${methodologyContent}
+    </div>
+  `;
+}
 
 // ===== Router =====
 const routes = {

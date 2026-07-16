@@ -1677,3 +1677,51 @@ footer p {
   color: #ef4444;
   flex-shrink: 0;
 }
+
+/* ===== Full methodology page ===== */
+#page-methodology .container { max-width: 1040px; }
+#methodologySteps { padding-bottom: 48px; }
+.methodology-intro { max-width: 860px; margin-bottom: 56px; }
+.methodology-kicker { font: 700 12px/1.2 var(--font-mono); letter-spacing: .16em; color: var(--secondary); margin-bottom: 18px; }
+.methodology-intro h1 { font-size: clamp(38px, 6vw, 68px); line-height: 1.02; letter-spacing: -.035em; color: var(--foreground); max-width: 850px; margin-bottom: 24px; }
+.methodology-lead { font-size: clamp(18px, 2.2vw, 23px); line-height: 1.6; color: var(--muted-foreground); max-width: 850px; }
+.methodology-on-page { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 28px 0 30px; margin-bottom: 70px; }
+.methodology-on-page > p { font: 700 12px/1.2 var(--font-mono); letter-spacing: .14em; color: var(--muted-foreground); margin-bottom: 20px; }
+.methodology-nav-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px 24px; }
+.methodology-nav-link { display: flex; gap: 12px; align-items: baseline; padding: 9px 0; color: var(--foreground); font-size: 15px; border-bottom: 1px solid transparent; transition: color .2s,border-color .2s; }
+.methodology-nav-link span { font: 700 12px/1 var(--font-mono); color: var(--secondary); }
+.methodology-nav-link:hover { color: var(--primary); border-bottom-color: var(--secondary); }
+.methodology-content { display: flex; flex-direction: column; }
+.methodology-section { display: grid; grid-template-columns: 82px minmax(0,1fr); gap: 24px; scroll-margin-top: 96px; padding: 0 0 72px; margin-bottom: 72px; border-bottom: 1px solid var(--border); }
+.methodology-section:last-child { border-bottom: 0; margin-bottom: 0; }
+.methodology-section-number { font: 600 34px/1 var(--font-mono); color: var(--secondary); padding-top: 5px; }
+.methodology-section-body { max-width: 790px; }
+.methodology-section-body h2 { font-size: clamp(28px,4vw,42px); line-height: 1.1; letter-spacing: -.025em; color: var(--foreground); margin-bottom: 30px; }
+.methodology-section-body h4 { font-size: 18px; line-height: 1.35; color: var(--foreground); margin: 30px 0 10px; }
+.methodology-section-body p { color: var(--muted-foreground); line-height: 1.78; margin-bottom: 17px; }
+.methodology-section-body ul,.methodology-section-body ol { color: var(--muted-foreground); padding-left: 22px; margin: 12px 0 22px; }
+.methodology-section-body li { margin-bottom: 9px; line-height: 1.65; }
+.methodology-section-body code { font-family: var(--font-mono); color: var(--primary); background: rgba(47,102,99,.06); padding: 2px 5px; border-radius: 2px; }
+.method-source-list { list-style: none; padding-left: 0 !important; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px 22px; }
+.method-source-list li { margin: 0; }
+.method-source-list a { display: block; padding: 12px 0; color: var(--primary); border-bottom: 1px solid var(--border); }
+.method-source-list a:hover { color: var(--secondary); }
+.method-code-line,.method-formula,.method-output { border: 1px solid var(--border); background: rgba(255,255,255,.45); padding: 18px 20px; margin: 18px 0 24px; }
+.method-code-line code { background: none; padding: 0; overflow-wrap: anywhere; }
+.method-formula { font: 600 15px/1.6 var(--font-mono); color: var(--primary); }
+.method-output { display: flex; flex-direction: column; gap: 8px; }
+.method-output strong { color: var(--foreground); font-size: 13px; text-transform: uppercase; letter-spacing: .08em; }
+.method-output code { background: none; padding: 0; }
+.method-table-wrap { overflow-x: auto; margin: 18px 0 26px; }
+.method-table { width: 100%; border-collapse: collapse; min-width: 580px; }
+.method-table th { text-align: left; font: 700 12px/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted-foreground); border-bottom: 2px solid var(--foreground); padding: 13px 14px; }
+.method-table td { padding: 15px 14px; color: var(--muted-foreground); border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; }
+.method-table td:first-child { color: var(--foreground); font-weight: 600; }
+@media (max-width: 760px) {
+  .methodology-nav-grid { grid-template-columns: 1fr; }
+  .methodology-section { grid-template-columns: 1fr; gap: 12px; padding-bottom: 52px; margin-bottom: 52px; }
+  .methodology-section-number { font-size: 20px; }
+  .method-source-list { grid-template-columns: 1fr; }
+  .methodology-intro { margin-bottom: 42px; }
+  .methodology-on-page { margin-bottom: 52px; }
+}
