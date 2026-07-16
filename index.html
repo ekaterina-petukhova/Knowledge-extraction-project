@@ -16,7 +16,6 @@
   </div>
   <nav class="navbar-links" id="navLinks">
     <a href="#/" data-link data-route="/">Home</a>
-    <a href="#/data" data-link data-route="/data">Data</a>
     <div class="nav-dropdown" id="navDropdownMoscow">
       <button type="button" class="nav-dropdown-toggle">Art of Moscow
         <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
@@ -46,7 +45,6 @@
       </div>
     </div>
     <a href="#/results" data-link data-route="/results">Results</a>
-    <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
     <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
     <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
     <a href="#/team" data-link data-route="/team">Team</a>
@@ -57,7 +55,6 @@
 </header>
 <div class="mobile-menu" id="mobileMenu">
   <a href="#/" data-link data-route="/">Home</a>
-  <a href="#/data" data-link data-route="/data">Data</a>
   <div class="mobile-menu-group">
     <span class="mobile-menu-label">Art of Moscow</span>
     <a href="#/pushkin" data-link data-route="/pushkin">Pushkin Museum</a>
@@ -75,7 +72,6 @@
     <a href="#/art-newspaper" data-link data-route="/art-newspaper">The Art Newspaper Russia</a>
   </div>
   <a href="#/results" data-link data-route="/results">Results</a>
-  <a href="#/ontology" data-link data-route="/ontology">Ontology</a>
   <a href="#/knowledge-graph" data-link data-route="/knowledge-graph">Knowledge Graph</a>
   <a href="#/methodology" data-link data-route="/methodology">Methodology</a>
   <a href="#/team" data-link data-route="/team">Team</a>
@@ -126,70 +122,10 @@
         </div>
 
         <div class="cta-wrap">
-          <a href="#/data" data-link class="btn">Explore the Project</a>
+          <a href="#/pushkin" data-link class="btn">Explore the Project</a>
         </div>
       </div>
     </section>
-  </div>
-
-  <!-- DATA -->
-  <div class="page" id="page-data">
-    <div class="container">
-      <div class="reveal">
-        <h1 class="page-title">Data Map &amp; Conceptual Model</h1>
-        <div class="title-rule"></div>
-      </div>
-
-      <div class="section-stack" style="gap:80px;">
-        <section class="reveal">
-          <div style="display:grid;gap:32px;align-items:start;" class="data-intro-grid">
-            <h2 class="section-heading" style="font-size:24px;">Knowledge Extraction Goal</h2>
-            <p class="lead">By modeling the shift from <span class="tag">Object-Loan-from-Foreign-Museum</span> to <span class="tag">Object-from-Internal-Reserve</span>, we quantify this "Institutional Pivot" as a graph transformation — revealing how museums repositioned their identity from a Global Hub to an Archival Institution.</p>
-          </div>
-        </section>
-
-        <div class="divider"></div>
-
-        <section class="reveal">
-          <h2 class="section-heading">Entities &amp; Relations</h2>
-          <div class="entity-grid" style="margin-top:32px;">
-            <div class="entity-card"><h3>Exhibition</h3></div>
-            <div class="entity-card"><h3>Institution</h3></div>
-            <div class="entity-card"><h3>Curator</h3></div>
-            <div class="entity-card"><h3>Artistic_Movement</h3></div>
-            <div class="entity-card"><h3>Origin_of_Artworks</h3><div class="note">Key vector: International_Loan vs. Internal_Reserve</div></div>
-            <div class="entity-card"><h3>Theme</h3></div>
-          </div>
-        </section>
-
-        <div class="decorative-img-wrap reveal">
-          <img src="images/museum-green.jpeg" alt="Museum detail" />
-        </div>
-        
-
-        <section class="case-study reveal">
-          <h2>Tacit Knowledge Extraction: Pushkin Museum</h2>
-          <div class="timeline">
-            <div class="timeline-item">
-              <span class="timeline-num">1</span>
-              <h3>Pre-2022</h3>
-              <p><strong>"The Morozov Collection"</strong> — Linked to the Louis Vuitton Foundation. Modeled as a node in a Transnational Network representing "Global Cultural Exchange".</p>
-              <div class="triple-line">
-                <span>Exhibition</span><span class="arrow">→</span><span>[hasOrigin]</span><span class="arrow">→</span><span>International_Loan</span>
-              </div>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-num">2</span>
-              <h3>Post-2022</h3>
-              <p><strong>"After Impressionism" (2023)</strong> — Modeled as a node in an Intra-National / Provenance-focused Network, utilizing domestic collections.</p>
-              <div class="triple-line">
-                <span>Exhibition</span><span class="arrow">→</span><span>[hasOrigin]</span><span class="arrow">→</span><span>Internal_Reserve</span>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
   </div>
 
   <!-- PUSHKIN -->
@@ -1392,83 +1328,6 @@
     </div>
   </div>
 
-  <!-- ONTOLOGY -->
-  <div class="page" id="page-ontology">
-    <div class="container">
-      <div class="reveal">
-        <h1 class="page-title">Ontology &amp; Graph Representation</h1>
-        <div class="title-rule"></div>
-      </div>
-
-      <div class="section-stack" style="gap:64px;">
-        <section class="reveal">
-          <h2 class="section-heading">Methodological Approach</h2>
-          <p class="lead" style="max-width:720px;margin-top:16px;">We use a subset of the full dataset (3–5 representative examples) to model the schema before scaling to 500+ exhibition records. The "pivot" is encoded as a measurable graph property: the dramatic shift in the ratio of <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">International_Loan</code> nodes to <code style="color:var(--primary);background:rgba(47,102,99,0.05);padding:0 4px;">Internal_Reserve</code> nodes post-2022.</p>
-        </section>
-
-        <section class="schema-box reveal">
-          <h3>Core Schema</h3>
-          <div class="schema-diagram">
-            <div class="schema-root">Exhibition</div>
-            <div class="schema-children">
-              <div class="schema-child">
-                <div class="rel-label">[hasInstitution]</div>
-                <div class="node">Institution</div>
-              </div>
-              <div class="schema-child">
-                <div class="rel-label">[hasCurator]</div>
-                <div class="node">Curator</div>
-              </div>
-              <div class="schema-child">
-                <div class="rel-label">[hasOrigin]</div>
-                <div class="node highlight">Origin_of_Artworks</div>
-              </div>
-              <div class="schema-child">
-                <div class="rel-label">[hasMovement]</div>
-                <div class="node">Artistic_Movement</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div class="divider"></div>
-
-        <section>
-          <h2 class="section-heading reveal" style="margin-bottom:32px;">Temporal Axis: Network Poles</h2>
-          <div class="pole-grid">
-            <div class="pole-card reveal">
-              <div class="pole-label">Pre-2022</div>
-              <h3>The Morozov Collection</h3>
-              <p class="sub">Pushkin Museum</p>
-              <div class="pole-stats">
-                <div class="pole-stat-row"><span class="k">Origin</span><span class="v">International Loan</span></div>
-                <div class="pole-stat-row"><span class="k">Network</span><span class="v">Global Exchange</span></div>
-              </div>
-            </div>
-            <div class="pole-card post reveal reveal-delay-1">
-              <div class="pole-label">Post-2022</div>
-              <h3>After Impressionism</h3>
-              <p class="sub">Pushkin Museum (2023)</p>
-              <div class="pole-stats">
-                <div class="pole-stat-row"><span class="k">Origin</span><span class="v">Internal Reserve</span></div>
-                <div class="pole-stat-row"><span class="k">Network</span><span class="v">Domestic Provenance</span></div>
-              </div>
-            </div>
-            <div class="pole-card east reveal reveal-delay-2">
-              <div class="pole-label">The Eastern Pivot</div>
-              <h3>Asian Cultural Exchange</h3>
-              <p class="sub">Multiple Institutions</p>
-              <div class="pole-stats">
-                <div class="pole-stat-row"><span class="k">Origin</span><span class="v">Bilateral Loan</span></div>
-                <div class="pole-stat-row"><span class="k">Network</span><span class="v">Non-Western Partnership</span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
-
   <!-- KNOWLEDGE GRAPH -->
   <div class="page" id="page-knowledge-graph">
     <div class="container">
@@ -1607,10 +1466,6 @@
       </div>
 
       <div class="steps-wrap" id="methodologySteps"></div>
-
-      <div class="methodology-footer reveal">
-        <p>This methodology was developed in response to feedback from Prof. Aldo Gangemi, who emphasized the value of demonstrating the extraction schema on representative cases before scaling to the full corpus.</p>
-      </div>
     </div>
   </div>
 

@@ -304,7 +304,6 @@ if (stepsWrap) {
 // ===== Router =====
 const routes = {
   '/': 'page-home',
-  '/data': 'page-data',
   '/pushkin': 'page-pushkin',
   '/tretyakov': 'page-tretyakov',
   '/garage': 'page-garage',
@@ -313,7 +312,6 @@ const routes = {
   '/hermitage': 'page-hermitage',
   '/art-newspaper': 'page-art-newspaper',
   '/results': 'page-results',
-  '/ontology': 'page-ontology',
   '/knowledge-graph': 'page-knowledge-graph',
   '/methodology': 'page-methodology',
   '/team': 'page-team'
