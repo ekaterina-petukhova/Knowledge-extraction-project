@@ -1441,21 +1441,8 @@ footer p {
 }
 
 .steps-wrap::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 34px;
-  width: 2px;
-  background: linear-gradient(to bottom, transparent, var(--border), transparent);
-  transform: translateX(-1px);
-}
-
-@media (min-width: 768px) {
-  .steps-wrap::before {
-    left: 50%;
-    transform: translateX(0);
-  }
+  content: none;
+  display: none;
 }
 
 .step-item {
