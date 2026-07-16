@@ -482,7 +482,109 @@ desc_tag = item.find(
       </div>
 
       <p>The category describes the primary cultural and geographic focus of a record rather than the nationality of the institution publishing it. Each dataset was classified independently; records from different institutions were not pooled into a single classification run.</p>
+      <h4>How the Transformer Actually Works</h4>
 
+      <p>
+        The classification step relies on mDeBERTa, a member of the BERT family
+        of transformer models. Here is what that means in practice.
+      </p>
+
+      <h5>What a transformer does</h5>
+
+      <p>
+        Older text models read a sentence roughly from left to right, with each
+        word affecting the next. A transformer instead considers all words in a
+        passage at once and learns, through a mechanism called
+        <strong>self-attention</strong>, how much each word should pay attention
+        to every other word.
+      </p>
+
+      <p>
+        For example, in the phrase
+        <em>“the museum that closed its Western wing,”</em> the model can connect
+        <em>“closed”</em> directly to <em>“Western wing”</em>, regardless of how
+        many words appear between them.
+      </p>
+
+      <p>
+        BERT-style models—Bidirectional Encoder Representations from
+        Transformers—process context in both directions simultaneously, using
+        information from both before and after each word. This is what
+        <em>bidirectional</em> means.
+      </p>
+
+      <h5>What makes it mDeBERTa specifically</h5>
+
+      <p>
+        DeBERTa is a refinement of BERT that separates a word’s content from its
+        position in the sentence when computing attention, rather than combining
+        both into a single representation. This generally improves how precisely
+        the model captures grammatical and semantic relationships.
+      </p>
+
+      <p>
+        The <strong>m</strong> prefix means that the model is multilingual. It was
+        trained across many languages, including Russian, so it can process
+        Cyrillic text without requiring a separate Russian-specific model.
+      </p>
+
+      <h5>What zero-shot classification means</h5>
+
+      <p>
+        The model was never trained on this project’s museum data or on the three
+        categories used here: Western, Eastern, and National Russian art.
+      </p>
+
+      <p>
+        Instead, this checkpoint was fine-tuned on a general task called
+        <strong>natural language inference</strong>, or NLI. In NLI, the model is
+        given two sentences and asked whether the first entails, contradicts, or
+        is neutral toward the second.
+      </p>
+
+      <p>
+        Zero-shot classification reuses this ability. Each category label is
+        converted into a hypothesis sentence, such as:
+      </p>
+
+      <div class="method-code-line">
+        <code>This art belongs to the category: Eastern art</code>
+      </div>
+
+      <p>
+        The model then evaluates whether the exhibition description entails that
+        hypothesis. The category with the highest entailment score is selected.
+      </p>
+
+      <p>
+        Because this process relies on a general inference skill rather than on
+        memorized examples from the project, the model can classify records into
+        categories it has never been explicitly trained on. This is why the
+        approach is described as <strong>zero-shot</strong>.
+      </p>
+
+      <h5>Why the hypothesis template mattered</h5>
+
+      <p>
+        The wording of the hypothesis affects how naturally the model can evaluate
+        the entailment relationship.
+      </p>
+
+      <p>
+        The default English template,
+        <code>This example is {}.</code>, is a slightly awkward fit for Russian
+        museum descriptions processed by a multilingual model. Several pipelines
+        therefore used the Russian-language template:
+      </p>
+
+      <div class="method-code-line">
+        <code>Это искусство относится к категории: {}</code>
+      </div>
+
+      <p>
+        The classification task remains the same, but the Russian formulation
+        gives the model a more natural and idiomatic hypothesis to evaluate.
+      </p>
       <p>Several pipelines used the hypothesis template <code>This art belongs to the category: {}</code>, producing a more natural proposition for Russian-language descriptions.</p>
 
       <h4>Rule-based safeguards</h4>
