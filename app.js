@@ -60,32 +60,388 @@ const methodologySections = [
     `
   },
 
-  {
-    id: 'method-cleaning',
-    number: '03',
-    title: 'Text cleaning',
-    html: `
-      <p>Before classification and keyword analysis, descriptions were cleaned of navigation elements, footers, ticket information, opening hours, cookie notices, contact details, social-sharing prompts, and other repeated website boilerplate.</p>
+ {
+  id: 'method-cleaning',
+  number: '03',
+  title: 'Text cleaning',
+  html: `
+    <p>
+      Before classification and keyword analysis, descriptions were cleaned
+      differently for each source. The cleaning architecture depended on
+      whether the relevant text could be isolated directly during scraping or
+      whether the scraper had to collect the full page body first and remove
+      noise afterwards.
+    </p>
 
-      <p>The cleaning method depended on the structure of each source. Deterministic methods were preferred whenever the unwanted material could be identified reliably.</p>
+    <h4>Garage — regex suffix, a single cut-off point</h4>
 
-      <h4>Marker-based extraction</h4>
-      <p>When a website followed a predictable structure, useful text was extracted between stable beginning and ending markers. If descriptions consistently began or ended with ticket information or visitor instructions, only those repeated blocks were removed. The substantive description was preserved without rewriting or shortening it.</p>
+    <pre><code>text = re.sub(
+    r'Ежедневно, 11:00–22:00.*$',
+    '',
+    text,
+    flags=re.DOTALL
+)
 
-      <h4>Anchor-based removal</h4>
-      <p>Regular expressions were used when boilerplate appeared inside the description but could still be identified through recurring phrases. The unwanted fragment was removed without discarding the surrounding exhibition text.</p>
+text = re.sub(
+    r'Скачать пресс-релиз \\(pdf\\)',
+    '',
+    text,
+    flags=re.IGNORECASE
+)
 
-      <h4>Sentence filtering</h4>
-      <p>Very short fragments and sentences containing known interface markers were removed when navigation and descriptive content appeared as separate text elements.</p>
+text = re.sub(r'\\s+', ' ', text).strip()</code></pre>
 
-      <h4>Ollama-assisted cleaning</h4>
-      <p>Ollama was used only when the structure of an extracted description was inconsistent and no reliable marker, regular expression, or sentence-level rule could separate meaningful content from website noise.</p>
+    <p>
+      The Garage cleaner uses a one-sided regular-expression cut-off.
+      <code>re.DOTALL</code> makes the dot character match line breaks as well
+      as ordinary characters. The expression beginning with
+      <code>Ежедневно, 11:00–22:00</code> therefore removes that phrase and
+      everything following it up to the end of the string.
+    </p>
 
-      <p>The local model was instructed to remove irrelevant boilerplate while preserving the substantive description. Ollama was therefore a fallback cleaning method, not a universal summarization stage. It was not applied to every page and was not used when deterministic rules were sufficient.</p>
+    <p>
+      This approach assumes that the repeated museum opening-hours block always
+      appears at the end of the description. A second substitution removes the
+      phrase <code>Скачать пресс-релиз (pdf)</code> wherever it occurs, after
+      which repeated whitespace is reduced to a single space.
+    </p>
 
-      <p>Records were not silently discarded when a cleaning pattern failed. They were retained for inspection or passed through another cleaning method.</p>
-    `
-  },
+    <p>
+      The method has no fallback. If the opening-hours phrase appeared inside
+      meaningful curatorial text, everything following it would also be removed.
+    </p>
+
+    <h4>Hermitage — sentence-level filtering without a single anchor</h4>
+
+    <pre><code>text = re.sub(r'\\b[А-ЯЁA-Z]{3,}\\b', '', text)
+
+sentences = re.split(
+    r'\\. (?=[А-ЯЁA-Z])',
+    text
+)
+
+trash_words = [
+    "цветовая",
+    "палитра",
+    "стандартная",
+    "инверсия",
+    "шрифт",
+    "меню",
+    "посетителям",
+    "эрмитаж",
+    "магазин"
+]
+
+for sentence in sentences:
+    sentence = sentence.strip()
+
+    if len(sentence) &lt; 30:
+        continue
+
+    if any(
+        word in sentence.lower()
+        for word in trash_words
+    ):
+        continue
+
+    cleaned_sentences.append(sentence)</code></pre>
+
+    <p>
+      The Hermitage cleaner does not rely on one fixed beginning or ending
+      marker. Instead, it evaluates the extracted text sentence by sentence.
+    </p>
+
+    <p>
+      First, standalone words containing at least three uppercase Cyrillic or
+      Latin letters are removed. This targets interface elements such as menu
+      buttons and accessibility controls, which are displayed in uppercase on
+      the Hermitage website.
+    </p>
+
+    <p>
+      The remaining text is split at a period followed by a space and an
+      uppercase letter. The lookahead checks the following character without
+      consuming it, helping to avoid false splits inside abbreviations or
+      decimal numbers.
+    </p>
+
+    <p>
+      Each sentence is then tested against two rules:
+    </p>
+
+    <ul>
+      <li>fragments shorter than 30 characters are discarded;</li>
+      <li>
+        sentences containing any of the listed interface or navigation terms
+        are discarded.
+      </li>
+    </ul>
+
+    <p>
+      A sentence must pass both filters to remain in the final description.
+      Unlike the anchor-based cleaners, this method makes many independent
+      decisions at sentence level.
+    </p>
+
+    <h4>MAMM — paired start and end anchors</h4>
+
+    <pre><code>pattern_start = r'.*?(1 2 3 4 5 6 7)'
+
+text = re.sub(
+    pattern_start,
+    '',
+    text,
+    flags=re.IGNORECASE | re.DOTALL
+)
+
+pattern_end = (
+    r'(Idea:.*|'
+    r'Exhibition schedule.*|'
+    r'Supported by.*)'
+)
+
+text = re.sub(
+    pattern_end,
+    '',
+    text,
+    flags=re.IGNORECASE | re.DOTALL
+)
+
+text = re.sub(
+    r'Ogoniok archive',
+    '',
+    text,
+    flags=re.IGNORECASE
+)</code></pre>
+
+    <p>
+      MAMM required separate cut-off rules for the beginning and end of the
+      useful description. At the beginning, a lazy regular-expression pattern
+      removes everything up to the first occurrence of the slide counter
+      <code>1 2 3 4 5 6 7</code>.
+    </p>
+
+    <p>
+      The lazy quantifier <code>.*?</code> selects the shortest possible text
+      leading to the first matching counter. A greedy expression could remove
+      useful content if the counter appeared more than once.
+    </p>
+
+    <p>
+      At the end, the description is cut from the first matching marker among:
+    </p>
+
+    <ul>
+      <li><code>Idea:</code></li>
+      <li><code>Exhibition schedule</code></li>
+      <li><code>Supported by</code></li>
+    </ul>
+
+    <p>
+      A separate substitution removes the phrase
+      <code>Ogoniok archive</code> wherever it occurs in the remaining text.
+      If none of the end markers is present, the text remains unchanged up to
+      its natural end.
+    </p>
+
+    <h4>
+      Pushkin Museum — primary anchor, fallback anchor, and iterative cleaning
+    </h4>
+
+    <pre><code>PRIMARY_MARKER = "Стать другом"
+
+idx = text.rfind(PRIMARY_MARKER)
+
+if idx == -1:
+    idx = text.rfind(
+        FALLBACK_MARKER
+    )  # "Правила посещения"
+
+remainder = text[start:]
+remainder = strip_trailing_phrases(
+    remainder
+)</code></pre>
+
+    <p>
+      The Pushkin Museum cleaner uses <code>Стать другом</code> as its primary
+      start marker. The code calls <code>rfind</code> rather than
+      <code>find</code>, selecting the last occurrence of the phrase.
+    </p>
+
+    <p>
+      This was empirically more reliable when the same interface label appeared
+      several times on one page. The final occurrence was usually the element
+      immediately preceding the curatorial description.
+    </p>
+
+    <p>
+      If the primary marker is absent, the cleaner searches for the fallback
+      marker <code>Правила посещения</code>. If neither marker is found, the
+      text is retained and only its whitespace is normalized.
+    </p>
+
+    <h5>Iterative removal of repeated interface phrases</h5>
+
+    <pre><code>def strip_trailing_phrases(text):
+    changed = True
+
+    while changed:
+        changed = False
+        stripped = text.lstrip()
+
+        for phrase in TRAILING_PHRASES:
+            if stripped.startswith(phrase):
+                stripped = stripped[
+                    len(phrase):
+                ]
+                changed = True
+
+    return text</code></pre>
+
+    <p>
+      After the start marker has been applied, the remaining text may begin with
+      several consecutive interface phrases:
+    </p>
+
+    <ul>
+      <li><code>Сувениры</code></li>
+      <li><code>Поделиться</code></li>
+      <li><code>Доступно по Пушкинской карте</code></li>
+      <li><code>Узнать больше</code></li>
+      <li><code>Правила посещения</code></li>
+    </ul>
+
+    <p>
+      The <code>while changed</code> loop repeatedly removes matching phrases
+      from the beginning until no further phrase is found. This allows several
+      consecutive interface fragments to be removed during one cleaning call.
+    </p>
+
+    <p>
+      The Pushkin cleaner uses only a beginning anchor. Everything following
+      that anchor, apart from the removable interface phrases, is treated as
+      useful text until the natural end of the page.
+    </p>
+
+    <h4>Tretyakov Gallery — paired anchors with alternatives at both ends</h4>
+
+    <pre><code>START_MARKERS = [
+    "О мероприятии",
+    "Описание"
+]
+
+for marker in START_MARKERS:
+    idx = text.find(marker)
+
+    if idx != -1:
+        start = idx + len(marker)
+        break
+
+END_MARKERS = [
+    "ПОДЕЛИТЬСЯ",
+    "Программа к выставке",
+    "ЧИТАТЬ ДАЛЕЕ"
+]
+
+end = len(text)
+
+for marker in END_MARKERS:
+    idx = text.find(marker, start)
+
+    if idx != -1:
+        end = min(end, idx)</code></pre>
+
+    <p>
+      The Tretyakov cleaner uses alternative markers for both the beginning and
+      the end of the useful description.
+    </p>
+
+    <p>
+      The possible start markers are:
+    </p>
+
+    <ul>
+      <li><code>О мероприятии</code></li>
+      <li><code>Описание</code></li>
+    </ul>
+
+    <p>
+      They are checked in priority order. The first marker found wins because
+      the loop stops with <code>break</code>. The first marker is the main
+      option for newer page templates, while the second acts as a fallback for
+      older pages.
+    </p>
+
+    <p>
+      The possible end markers are:
+    </p>
+
+    <ul>
+      <li><code>ПОДЕЛИТЬСЯ</code></li>
+      <li><code>Программа к выставке</code></li>
+      <li><code>ЧИТАТЬ ДАЛЕЕ</code></li>
+    </ul>
+
+    <p>
+      For the end position, the cleaner searches for every marker after the
+      selected start point and keeps the earliest occurrence in the actual
+      text. The beginning is therefore selected by marker priority, while the
+      end is selected by its position on the page.
+    </p>
+
+    <p>
+      If no start marker is found, the original text is returned with normalized
+      whitespace. The cleaner does not search for an end marker unless it has
+      first identified a valid beginning.
+    </p>
+
+    <h4>
+      Russian Museum and The Art Newspaper Russia — cleaning during scraping
+    </h4>
+
+    <pre><code>desc_tag = (
+    item.find(
+        class_="event-about-text"
+    )
+    or item.find(
+        class_="paragraph"
+    )
+)  # Russian Museum
+
+desc_tag = item.find(
+    class_="postPreviewsItemTitle2"
+)  # The Art Newspaper Russia</code></pre>
+
+    <p>
+      The Russian Museum and <em>The Art Newspaper Russia</em> use a different
+      architecture. Instead of extracting the complete page body and cleaning
+      it afterwards, their scrapers target the specific HTML element containing
+      the required description.
+    </p>
+
+    <p>
+      For the Russian Museum, the scraper first selects
+      <code>event-about-text</code> and uses <code>paragraph</code> as a
+      fallback. For <em>The Art Newspaper Russia</em>, it selects
+      <code>postPreviewsItemTitle2</code>.
+    </p>
+
+    <p>
+      Only the text inside these elements is collected. Menus, footers, cookie
+      notices, and unrelated interface elements are therefore excluded during
+      scraping rather than removed in a separate cleaning script.
+    </p>
+
+    <p>
+      This method was possible because these two websites provided sufficiently
+      stable and specific CSS classes for the required content. On Garage,
+      Hermitage, MAMM, Pushkin, and Tretyakov pages, the description was either
+      distributed across several elements or mixed with interface content, so
+      the pipeline instead extracted the full page text and removed unwanted
+      content afterwards.
+    </p>
+  `
+},
 
   {
     id: 'method-classification',
@@ -126,7 +482,109 @@ const methodologySections = [
       </div>
 
       <p>The category describes the primary cultural and geographic focus of a record rather than the nationality of the institution publishing it. Each dataset was classified independently; records from different institutions were not pooled into a single classification run.</p>
+      <h4>How the Transformer Actually Works</h4>
 
+      <p>
+        The classification step relies on mDeBERTa, a member of the BERT family
+        of transformer models. Here is what that means in practice.
+      </p>
+
+      <h5>What a transformer does</h5>
+
+      <p>
+        Older text models read a sentence roughly from left to right, with each
+        word affecting the next. A transformer instead considers all words in a
+        passage at once and learns, through a mechanism called
+        <strong>self-attention</strong>, how much each word should pay attention
+        to every other word.
+      </p>
+
+      <p>
+        For example, in the phrase
+        <em>“the museum that closed its Western wing,”</em> the model can connect
+        <em>“closed”</em> directly to <em>“Western wing”</em>, regardless of how
+        many words appear between them.
+      </p>
+
+      <p>
+        BERT-style models—Bidirectional Encoder Representations from
+        Transformers—process context in both directions simultaneously, using
+        information from both before and after each word. This is what
+        <em>bidirectional</em> means.
+      </p>
+
+      <h5>What makes it mDeBERTa specifically</h5>
+
+      <p>
+        DeBERTa is a refinement of BERT that separates a word’s content from its
+        position in the sentence when computing attention, rather than combining
+        both into a single representation. This generally improves how precisely
+        the model captures grammatical and semantic relationships.
+      </p>
+
+      <p>
+        The <strong>m</strong> prefix means that the model is multilingual. It was
+        trained across many languages, including Russian, so it can process
+        Cyrillic text without requiring a separate Russian-specific model.
+      </p>
+
+      <h5>What zero-shot classification means</h5>
+
+      <p>
+        The model was never trained on this project’s museum data or on the three
+        categories used here: Western, Eastern, and National Russian art.
+      </p>
+
+      <p>
+        Instead, this checkpoint was fine-tuned on a general task called
+        <strong>natural language inference</strong>, or NLI. In NLI, the model is
+        given two sentences and asked whether the first entails, contradicts, or
+        is neutral toward the second.
+      </p>
+
+      <p>
+        Zero-shot classification reuses this ability. Each category label is
+        converted into a hypothesis sentence, such as:
+      </p>
+
+      <div class="method-code-line">
+        <code>This art belongs to the category: Eastern art</code>
+      </div>
+
+      <p>
+        The model then evaluates whether the exhibition description entails that
+        hypothesis. The category with the highest entailment score is selected.
+      </p>
+
+      <p>
+        Because this process relies on a general inference skill rather than on
+        memorized examples from the project, the model can classify records into
+        categories it has never been explicitly trained on. This is why the
+        approach is described as <strong>zero-shot</strong>.
+      </p>
+
+      <h5>Why the hypothesis template mattered</h5>
+
+      <p>
+        The wording of the hypothesis affects how naturally the model can evaluate
+        the entailment relationship.
+      </p>
+
+      <p>
+        The default English template,
+        <code>This example is {}.</code>, is a slightly awkward fit for Russian
+        museum descriptions processed by a multilingual model. Several pipelines
+        therefore used the Russian-language template:
+      </p>
+
+      <div class="method-code-line">
+        <code>Это искусство относится к категории: {}</code>
+      </div>
+
+      <p>
+        The classification task remains the same, but the Russian formulation
+        gives the model a more natural and idiomatic hypothesis to evaluate.
+      </p>
       <p>Several pipelines used the hypothesis template <code>This art belongs to the category: {}</code>, producing a more natural proposition for Russian-language descriptions.</p>
 
       <h4>Rule-based safeguards</h4>
