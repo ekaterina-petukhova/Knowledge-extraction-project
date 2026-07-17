@@ -96,7 +96,7 @@
         <div style="text-align:center;">
           <h2 class="section-heading" style="margin-bottom:24px;">Abstract</h2>
           <p class="lead" style="max-width:720px;margin:0 auto;">
-            This project analyzes the structural shift in exhibition policy at the Pushkin Museum and Tretyakov Gallery before and after 2022. Using semantic ontologies and knowledge graphs, we quantify how Russian museums repositioned their institutional identity from <span class="highlight">"Global Cultural Hub"</span> to <span class="highlight">"Archival/Provenance-focused Institution"</span>.
+            This project analyzes the structural shift in exhibition and coverage discourse across six Russian museums in Moscow and St. Petersburg &mdash; the Pushkin Museum, the Tretyakov Gallery, Garage, MAMM, the State Russian Museum and the State Hermitage Museum &mdash; plus one independent art publication, before and after 2022. Using semantic ontologies, knowledge graphs and TF-IDF keyword analysis, we quantify how these institutions repositioned their identity from <span class="highlight">"Global Cultural Hub"</span> to <span class="highlight">"Archival/Provenance-focused Institution"</span> &mdash; with one notable exception that turns the story East instead.
           </p>
         </div>
 
@@ -459,13 +459,17 @@
     <div class="container">
       <div class="section-stack" style="gap:64px;">
         <section class="reveal">
-          <p class="lead" style="max-width:720px;">Garage has no historical exhibition calendar to fall back on: unlike the Tretyakov Gallery and Pushkin Museum, it does not stage a steady programme of new exhibitions, which would make an exhibition-by-exhibition analysis unreliable. Instead, we analyzed the museum's own <span class="tag">news publications</span> &mdash; 369 in total &mdash; as the clearest record of what the institution chooses to say about itself, year by year.</p>
+          <p class="lead" style="max-width:720px;">Garage has no historical exhibition calendar to fall back on: unlike the Tretyakov Gallery and Pushkin Museum, it does not stage a steady programme of new exhibitions, which would make an exhibition-by-exhibition analysis unreliable. Instead, we analyzed the museum's own <span class="tag">news publications</span> &mdash; 368 in total &mdash; as the clearest record of what the institution chooses to say about itself, year by year. Read the split with care: 339 of those publications are from before 2022, and only <strong>29</strong> are from after &mdash; by far the most lopsided before/after split of any institution in this study, so percentages on this page rest on a much smaller post-2022 sample than elsewhere on the site.</p>
         </section>
 
-        <section class="stat-grid reveal">
+        <section class="stat-grid stat-grid-4 reveal">
           <div class="stat-card">
-            <div class="num">369</div>
+            <div class="num">368</div>
             <div class="label">News publications analyzed &middot; garagemca.org</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">339 / 29</div>
+            <div class="label">Publications before vs. after 2022</div>
           </div>
           <div class="stat-card">
             <div class="num">66.6%</div>
@@ -498,13 +502,65 @@
         <section class="reveal">
           <div class="transform-box">
             <h2>Institutional Transformation: A Data-Driven Conclusion</h2>
-            <p style="margin-bottom:20px;">The statistical shift between the periods before and after 2022 reveals a profound transformation in the museum's institutional strategy:</p>
+            <p style="margin-bottom:20px;">The statistical shift between the periods before and after 2022 reveals a profound transformation in the museum's institutional strategy &mdash; read against a post-2022 sample of just 29 publications:</p>
             <ul class="home-list" style="margin-bottom:20px;">
-              <li><span><strong>Consolidation of the National Focus</strong> &mdash; the increase in the share of National Russian Art from 79.4% to 96.6% indicates a near-total alignment with domestic cultural production, positioning the museum as the primary platform for Russian contemporary art in the absence of international exchange.</span></li>
-              <li><span><strong>Complete Erosion of the Western Vector</strong> &mdash; the decline of Western Art representation from 15.6% to 0.0% is a quantitative indicator of the abrupt cessation of international collaborations, marking the formal end of the museum's previous role as a bridge between the global Western art market and the Russian scene.</span></li>
-              <li><span><strong>Marginalization of the &ldquo;Pivot to the East&rdquo;</strong> &mdash; despite broader geopolitical discourse around a shift toward Asian markets, Eastern Art actually decreased from 5.0% to 3.4%, suggesting that within Garage's own programming, the &ldquo;Pivot to the East&rdquo; remains an aspirational concept rather than an implemented institutional reality.</span></li>
+              <li><span><strong>Consolidation of the National Focus</strong> &mdash; the increase in the share of National Russian Art from 79.4% (269 of 339) to 96.6% (28 of 29) indicates a near-total alignment with domestic cultural production, positioning the museum as the primary platform for Russian contemporary art in the absence of international exchange.</span></li>
+              <li><span><strong>Complete Erosion of the Western Vector</strong> &mdash; Western Art goes from 53 of 339 publications (15.6%) before 2022 to 0 of 29 (0.0%) after. Zero is a real and striking result, but on a sample this size it means &ldquo;no Western-tagged article appeared in this window,&rdquo; not a precisely-measured rate &mdash; one additional article would already have changed the picture.</span></li>
+              <li><span><strong>Marginalization of the &ldquo;Pivot to the East&rdquo;</strong> &mdash; Eastern Art goes from 17 of 339 (5.0%) to 1 of 29 (3.4%). At this sample size a single publication is worth roughly 3.4 percentage points, so this figure is indicative rather than precise &mdash; but it still doesn't support a &ldquo;pivot to the East&rdquo; narrative for Garage specifically.</span></li>
             </ul>
-            <p>The data quantifies Garage's transition from a globally integrated cultural institution to a localized entity, characterized by a near-exclusive focus on national artistic production.</p>
+            <p>The data quantifies Garage's transition from a globally integrated cultural institution to a localized entity, characterized by a near-exclusive focus on national artistic production &mdash; a conclusion we're confident in for the national/Western split (built on hundreds of publications on both sides for the direction, if not the exact after-2022 percentage), and one to treat as suggestive rather than conclusive for the smaller Eastern-Art figure specifically.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Holding the Category Constant</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;">The chart above compares Garage's whole publication corpus before and after 2022 &mdash; but the after-2022 corpus is already 96.6% National Russian Art, so a full-corpus keyword comparison would mostly just re-measure that category shift, not tell us anything new. Instead, we held the category fixed: every publication below was already classified as <span class="tag">National Russian Art</span>, both before and after 2022, so the question becomes narrower and more defensible &mdash; not &ldquo;how did Garage's coverage change&rdquo;, but &ldquo;did the character of its national discourse change, independent of the category shift itself?&rdquo;</p>
+        </section>
+
+        <section class="chart-box reveal">
+          <div class="chart-header">
+            <h2 class="section-heading" style="margin-bottom:4px;">National Discourse Only: Before vs. After 2022</h2>
+            <p class="chart-sub">TF-IDF on National Russian Art publications only &mdash; 269 before 2022, 28 after. Hover a bar for its exact weight &middot; click a keyword to compare it across periods.</p>
+          </div>
+
+          <div class="chart-legend" id="garageNationalKeywordLegend"></div>
+
+          <div class="chart-svg-wrap">
+            <svg id="garageNationalKeywordSvg" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="chart-tooltip" id="garageNationalKeywordTooltip"></div>
+          </div>
+
+          <div class="chart-detail" id="garageNationalKeywordDetail">Hover or click a bar to see the numbers behind it &mdash; remember the after-2022 side is only 28 publications.</div>
+        </section>
+
+        <section class="reveal">
+          <div class="transform-box">
+            <h2>The Same Category, a Different Register</h2>
+            <p>Restricting the comparison to publications already tagged National Russian Art removes the category shift as a confound &mdash; both sides describe the same kind of art, just at different points in time. Even so, the register moves: <code>книга</code> (book) rises more than five-fold (0.0065 &rarr; 0.0346), and <code>искусстве</code> (art, prepositional case) more than doubles, while <code>проекта</code> (project) and <code>россии</code> (Russia, as an explicit noun) both ease down. The clearest single pair falls just outside this chart's top ten: <code>триеннале</code> (triennial) and <code>конкурса</code> (open call) &mdash; words describing an open, participatory festival format &mdash; fade from a combined weight of 0.0378 before 2022 to just 0.0081 after, while <code>ссср</code> (USSR) and <code>институций</code> (institutions) &mdash; words invoking the country's own institutional history &mdash; more than triple, from 0.0170 to 0.0561 combined. On a sample of 28 post-2022 publications this is suggestive rather than conclusive, but it points to the same pattern seen everywhere else on this site: even holding the topic constant, Garage's own language leans further into institutional self-reference and further away from open, festival-style participation.</p>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="reveal">
+          <h2 class="section-heading">Full Term List (National Category Only)</h2>
+          <p class="lead" style="max-width:720px;margin-top:16px;margin-bottom:32px;">All ten terms are Russian-language and marked <span class="tag">RU</span>. Weights are the mean TF-IDF score per document, restricted to publications already classified as National Russian Art in both periods.</p>
+
+          <div class="keyword-tables-grid">
+            <div class="keyword-table-card">
+              <h3>Before 2022 <span class="count-pill">269 publications</span></h3>
+              <table class="keyword-table">
+                <tbody id="garageNationalKeywordTableBefore"></tbody>
+              </table>
+            </div>
+            <div class="keyword-table-card">
+              <h3>After 2022 <span class="count-pill post">28 publications</span></h3>
+              <table class="keyword-table">
+                <tbody id="garageNationalKeywordTableAfter"></tbody>
+              </table>
+            </div>
           </div>
         </section>
 

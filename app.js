@@ -1230,7 +1230,7 @@ function createGroupedCompareChart(cfg) {
   function showTooltip(e, item, series, value) {
     const tooltip = document.getElementById(cfg.tooltipId);
     if (!tooltip) return;
-    tooltip.innerHTML = `<strong>${cfg.itemLabel(item)}</strong> &middot; ${series.label}<br>${cfg.tooltipValue(value)}`;
+    tooltip.innerHTML = `<strong>${cfg.itemLabel(item)}</strong> &middot; ${series.label}<br>${cfg.tooltipValue(value, item, series)}`;
     tooltip.classList.add('visible');
     positionTooltip(e);
   }
@@ -1562,18 +1562,25 @@ buildKeywordTable('tretyakovKeywordTableBefore', tretyakovKeywordFullBefore);
 buildKeywordTable('tretyakovKeywordTableAfter', tretyakovKeywordFullAfter);
 
 // ===== Garage Museum: category balance, before vs. after 2022 =====
+// Before/after totals are 339 and 29 publications respectively - a 12:1
+// imbalance, the most extreme of any institution in this study. Counts are
+// carried alongside every percentage so a reader can see e.g. "0 of 29" is
+// not the same strength of evidence as "0 of 339" would be.
 const garageCategoryData = [
   {
     key: 'national', category: 'National Russian Art', before: 79.4, after: 96.6,
+    beforeCount: 269, beforeTotal: 339, afterCount: 28, afterTotal: 29,
     note: 'the increase from 79.4% to 96.6% indicates a near-total alignment with domestic cultural production &mdash; Garage becomes the primary platform for Russian contemporary art in the absence of international exchange.'
   },
   {
     key: 'western', category: 'Western Art', before: 15.6, after: 0.0,
-    note: 'the drop from 15.6% to 0.0% is a complete cessation of international collaborations, marking the formal end of Garage\'s role as a bridge between the Western art market and the Russian scene.'
+    beforeCount: 53, beforeTotal: 339, afterCount: 0, afterTotal: 29,
+    note: 'the drop from 15.6% to 0.0% is a complete cessation of international collaborations, marking the formal end of Garage\'s role as a bridge between the Western art market and the Russian scene &mdash; though with only 29 publications after 2022, &ldquo;0.0%&rdquo; means zero Western-tagged articles out of 29, not zero out of a comparably large sample.'
   },
   {
     key: 'eastern', category: 'Eastern Art', before: 5.0, after: 3.4,
-    note: 'the decline from 5.0% to 3.4% shows that, in Garage\'s own programming, the &ldquo;Pivot to the East&rdquo; remains aspirational rather than an implemented institutional reality.'
+    beforeCount: 17, beforeTotal: 339, afterCount: 1, afterTotal: 29,
+    note: 'the decline from 5.0% to 3.4% shows that, in Garage\'s own programming, the &ldquo;Pivot to the East&rdquo; remains aspirational rather than an implemented institutional reality &mdash; though at 1 of 29 publications, a single additional article would have shifted this figure by more than 3 percentage points.'
   }
 ];
 
@@ -1587,9 +1594,61 @@ createGroupedCompareChart({
   items: garageCategoryData, itemKey: d => d.key, itemLabel: d => d.category,
   series: garageSeries, W: 720, H: 420, marginLeft: 44,
   yMax: 100, yTicks: [0, 20, 40, 60, 80, 100],
-  tooltipValue: v => `${v.toFixed(1)}% of publications`,
-  onSelect: item => `<strong>${item.category}</strong>: ${item.before.toFixed(1)}% before 2022 &rarr; ${item.after.toFixed(1)}% after &mdash; ${item.note}`
+  tooltipValue: (v, item, series) => {
+    const count = series.key === 'before' ? item.beforeCount : item.afterCount;
+    const total = series.key === 'before' ? item.beforeTotal : item.afterTotal;
+    return `${count} of ${total} publications (${v.toFixed(1)}%)`;
+  },
+  onSelect: item => `<strong>${item.category}</strong>: ${item.beforeCount} of ${item.beforeTotal} (${item.before.toFixed(1)}%) before 2022 &rarr; ${item.afterCount} of ${item.afterTotal} (${item.after.toFixed(1)}%) after &mdash; ${item.note}`
 }).init();
+
+// ===== Garage: national-discourse TF-IDF, category held constant =====
+// Computed from garage_categorized.csv filtered to category ==
+// "национальное российское искусство" only (269 before 2022, 28 after) via
+// Knowledge-extraction-data/garage/national_discourse_tfidf.py, mean TF-IDF
+// per document. Two grammatical duplicates (art / programme, two forms
+// each) are excluded from the interactive chart to avoid a repeated label,
+// but kept in the full table below.
+const garageNationalKeywordFullData = [
+  { key: 'art',        label: 'art',        before: 0.0641, after: 0.0666 },
+  { key: 'programme',  label: 'programme',  before: 0.0382, after: 0.0387 },
+  { key: 'russia',     label: 'Russia',     before: 0.0292, after: 0.0264 },
+  { key: 'art2',       label: 'art',        before: 0.0160, after: 0.0382 },
+  { key: 'willbe',     label: 'will be',    before: 0.0241, after: 0.0266 },
+  { key: 'project',    label: 'project',    before: 0.0248, after: 0.0183 },
+  { key: 'books',      label: 'books',      before: 0.0163, after: 0.0250 },
+  { key: 'book',       label: 'book',       before: 0.0065, after: 0.0346 },
+  { key: 'participants', label: 'participants', before: 0.0148, after: 0.0251 },
+  { key: 'programme2', label: 'programme',  before: 0.0191, after: 0.0203 }
+];
+
+const garageNationalKeywordCompareData = garageNationalKeywordFullData.filter(d => d.key !== 'art2' && d.key !== 'programme2');
+
+const garageNationalKeywordSeries = [
+  { key: 'before', label: 'Before 2022', color: '#2F6663' },
+  { key: 'after',  label: 'After 2022',  color: '#A06060' }
+];
+
+createGroupedCompareChart({
+  svgId: 'garageNationalKeywordSvg', legendId: 'garageNationalKeywordLegend', tooltipId: 'garageNationalKeywordTooltip', detailId: 'garageNationalKeywordDetail',
+  items: garageNationalKeywordCompareData, itemKey: d => d.key, itemLabel: d => d.label,
+  series: garageNationalKeywordSeries, W: 640, H: 340, marginLeft: 40,
+  yMax: 0.08, yTicks: [0, 0.02, 0.04, 0.06, 0.08], yTickLabel: t => t.toFixed(2),
+  tooltipValue: (v, item, series) => {
+    const n = series.key === 'before' ? 269 : 28;
+    return `Mean TF-IDF: ${v.toFixed(4)} (${n} publications)`;
+  },
+  onSelect: item => {
+    const delta = item.after - item.before;
+    return `<strong>"${item.label}"</strong> (RU), National-category publications only: ${item.before.toFixed(4)} before 2022 (269 pubs) &rarr; ${item.after.toFixed(4)} after (${delta >= 0 ? '+' : ''}${delta.toFixed(4)}, just 28 pubs).`;
+  }
+}).init();
+
+const garageNationalKeywordFullBefore = garageNationalKeywordFullData.map(d => ({ word: d.label, weight: d.before, ru: true }));
+const garageNationalKeywordFullAfter = garageNationalKeywordFullData.map(d => ({ word: d.label, weight: d.after, ru: true }));
+
+buildKeywordTable('garageNationalKeywordTableBefore', garageNationalKeywordFullBefore);
+buildKeywordTable('garageNationalKeywordTableAfter', garageNationalKeywordFullAfter);
 
 // ===== Russian Museum: national component share & TF-IDF keyword shift =====
 // Values verified against russian_museum_national_share.csv and
